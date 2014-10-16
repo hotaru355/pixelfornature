@@ -1,0 +1,268 @@
+@CHARSET "UTF-8";
+
+html {
+	width: 100%;
+	height: 100%;
+	background-repeat: no-repeat;
+	background-position: center top;
+	background-attachment: fixed;
+	background-size: cover;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+}
+
+body {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+.hCentered {
+	position: relative;
+	display: block;
+	margin: 0 auto 0 auto;
+}
+
+.shadowed {
+	-webkit-box-shadow: 0px 0px 10px 4px #0f0f0f;
+	box-shadow: 0px 0px 10px 4px #0f0f0f;
+}
+
+div#content {
+	position: relative;
+	max-width: 1024px;
+	height: 100%;
+	display: block;
+}
+
+div#main {
+	width: 100%;
+	height: 50%;
+	min-height: 350px;
+}
+
+div#form {
+	width: 100%;
+	height: 20%;
+	min-height: 100px;
+}
+
+div#controls {
+	width: 100%;
+	height: 20%;
+	min-height: 80px;
+}
+
+input#submit,input#upload,div#progressbar {
+	position: relative;
+	min-width: 100px;
+	max-width: 300px;
+	width: 30%;
+	margin: 0px 0 0 -15%;
+	left: 50%;
+}
+
+div#breadcumbs {
+	position: relative;
+	min-width: 100px;
+	max-width: 600px;
+	width: 30%;
+	height: 80px;
+	margin: 50px 0 0 -15%;
+	left: 50%;
+	display: table;
+	table-layout: fixed;
+}
+
+div.crumb {
+	display: table-cell;
+	text-align: center;
+	min-width: 50px;
+	max-width: 80px;
+	min-height: 50px;
+	max-height: 80px;
+}
+
+div#crumb1 {
+	left: 0;
+}
+
+div#crumb2 {
+	left: 50%;
+	margin: 0 0 0 -15%;
+}
+
+div#crumb3 {
+	right: 0;
+}
+
+/* Auswahl */
+div.jcarousel {
+	position: relative;
+	overflow: hidden;
+	width: 90%;
+	height: 92px;
+	float: left;
+}
+
+div.jcarousel ul {
+	position: relative;
+	width: 10000em;
+	height: 100%;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+div.jcarousel li {
+	float: left;
+	width: 128px;
+	height: 72px;
+	margin: 10px 10px;
+}
+
+div.jcarousel-prev,div.jcarousel-next {
+	width: 5%;
+	height: 100%;
+	float: left;
+	font-family: "Arial", "Sans-serif";
+	font-style: normal;
+	font-size: 5em;
+	color: rgba(255, 255, 255, 0.8);
+	cursor: pointer;
+}
+
+div.jcarousel-prev span {
+	float: right;
+	text-shadow: -2px 2px 5px #333, 1px 0px 1px rgba(150, 150, 150, 0.75);
+}
+
+div.jcarousel-next span {
+	float: left;
+	text-shadow: 2px 2px 5px #333, -1px 0px 1px rgba(150, 150, 150, 0.75);
+}
+
+img.galeryItem {
+	width: 100%;
+	height: 100%;
+}
+
+/* Ausschnitt */
+div#clipping {
+	position: relative;
+	margin: 50px auto 0 auto;
+	overflow: hidden;
+	-moz-background-clip: padding; /* Firefox 3.6 */
+	-webkit-background-clip: padding; /* Safari 4? Chrome 6? */
+	background-clip: padding-box; /* Firefox 4, Safari 5, Opera 10, IE 9 */
+}
+
+div#clippingLabel {
+	position: absolute;
+	top: 63px;
+	left: 0px;
+	background: rgba(0, 0, 0, 0.6);
+}
+
+div#labelUserName {
+	padding-right: 0px;
+}
+
+.labelText {
+	position: relative;
+	float: left;
+	padding: 10px 10px 10px 10px;
+	font-family: "Verdana", "Sans-serif";
+	font-style: normal;
+	font-size: 24px;
+	color: #f0f0f0;
+	opacity: 0.8;
+	text-align: left;
+	text-decoration: none;
+}
+
+label#nameLabel {
+	float: none;
+	display: block;
+	text-align: center;
+}
+
+div#logo {
+	position: absolute;
+	top: 25px;
+	left: 631px;
+}
+
+div#profilePhotoOverlay {
+	position: absolute;
+	top: 210px;
+	left: 23px;
+	width: 170px;
+	height: 105px;
+	background: rgba(255, 255, 255, 0.8);
+}
+
+div#uiControls {
+	width: 600px;
+	margin: 20px auto 0 auto;
+}
+
+div#slider {
+	width: 70%;
+	float: left;
+}
+
+input#reset {
+	width: 20%;
+	float: right;
+}
+
+input#name {
+	width: 200px;
+	margin: 0 auto 30px auto;
+	display: block;
+	font: inherit;
+	color: inherit;
+	background: rgba(255, 255, 255, 0.5);
+	text-align: inherit;
+	outline: none;
+	cursor: text;
+}
+
+div#illegalNameMsg {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	min-width: 100px;
+	max-width: 300px;
+	width: 30%;
+	margin: 0px 0 0 -15%;
+}
+
+h3#illegalNameHeader {
+	text-align: center;
+}
+
+/* Vorschau */
+.ui-icon {
+	float: left;
+	margin-right: .3em;
+}
+
+.initiallyHidden {
+	display: none;
+}
+
+span.progressLabel {
+	position: absolute;
+	top: 5px;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	font-weight: bold;
+	text-shadow: 1px 1px 0 #fff;
+	text-align: center;
+}

@@ -1,0 +1,9 @@
+**/.htaccess
+library/Zend
+*~
+public/images/captcha/*
+public/images/tmp/*
+.buildpath
+.project
+.settings/*
+data/logs/*

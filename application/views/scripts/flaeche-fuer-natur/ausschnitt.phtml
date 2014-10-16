@@ -1,0 +1,95 @@
+<?php
+// Seitentitel
+$this->headTitle()
+    ->prepend("Ausschnitt wählen");
+
+// CSS
+$this->headLink()
+    ->appendStylesheet("/css/skins/smoothness/jquery-ui-1.10.3.custom.min.css");
+$this->headLink()
+    ->appendStylesheet("/css/flaeche-fuer-natur.css");
+
+// JavaScript
+$this->headScript()
+    ->prependFile("//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js");
+$this->headScript()
+    ->appendFile("//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js");
+$this->headScript()
+    ->appendFile("/js/jquery/jquery.panzoom.min.js");
+$this->headScript()
+    ->appendFile("/js/purl/purl.js");
+$this->headScript()
+    ->appendFile("/js/flaeche-fuer-natur.js");
+$this->headScript()
+    ->appendScript(
+        sprintf(
+                "
+	var original = {
+		width : %d,
+		height : %d,
+        ratio : %f
+	};
+
+	// Bilddimensionen der Facebook Coverfotos
+	var fbCover = {
+		width : %d,
+		height : %d,
+		minScale : %f,
+		maxScale : 1,
+	};", $this->dimensions ["original"] ["width"], 
+                $this->dimensions ["original"] ["height"], 
+                $this->dimensions ["original"] ["width"] / $this->dimensions ["original"] ["height"], 
+                $this->dimensions ["facebook"] ["cover"] ["width"], $this->dimensions ["facebook"] ["cover"] ["height"], 
+                $this->dimensions ["facebook"] ["cover"] ["width"] / $this->dimensions ["original"] ["width"]));
+$this->headScript()
+    ->appendFile("/js/ausschnitt.js");
+
+$htmlEntities = new Zend_Filter_HtmlEntities();
+?>
+<div id="main" class="hCentered">
+    <div id="clipping" class="shadowed" style="<?php
+    echo sprintf("width:%dpx;height:%dpx;", $this->dimensions ["facebook"] ["cover"] ["width"], 
+            $this->dimensions ["facebook"] ["cover"] ["height"]);
+    ?>">
+        <img id="clippingImage"
+            src="/images/galerie/<?php echo $htmlEntities->filter($this->params["image"]); ?>"
+        >
+        <div id="clippingLabel">
+            <div id="labelUserName" class="labelText"></div>
+            <div id="labelConst" class="labelText">spendet Fläche für Natur</div>
+        </div>
+        <div id="logo">
+            <img id="Naturefundlogo" alt="Naturefund-Logo" src="/images/Naturefund Logo BG.png">
+        </div>
+        <div id="profilePhotoOverlay"></div>
+    </div>
+    <div id="uiControls">
+        <div id="slider"></div>
+        <input type="button" id="reset" value="Reset" />
+    </div>
+</div>
+
+<div id="form" class="hCentered">
+    <form id="form" action="vorschau" method="get">
+        <label id="nameLabel" class="labelText">Gib Deinen Namen ein</label>
+        <input type="text" id="name" name="name" maxlength="25" />
+        <input type="hidden" id="x" name="x" value="0" />
+        <input type="hidden" id="y" name="y" value="0" />
+        <input type="hidden" id="scale" name="scale" value="0" />
+        <input type="hidden" id="image" name="image"
+            value="<?php echo $htmlEntities->filter($this->params["image"]); ?>"
+        />
+        <input type="hidden" id="step" name="step" value="3" />
+        <input type="submit" id="submit" value="Weiter" />
+    </form>
+    <div id="breadcumbs">
+        <?php echo $this->partial("breadcrumbs.phtml", $this->params); ?>
+    </div>
+    <div id="illegalNameMsg" class="initiallyHidden ui-widget-content ui-corner-all">
+        <h3 id="illegalNameHeader" class="ui-widget-header ui-corner-all">Name nicht erlaubt</h3>
+        <p>Bitte vermeiden Sie die folgenden Worte in Ihren Namen:</p>
+        <p id="illegalWords"></p>
+    </div>
+</div>
+
+<div id="controls"></div>

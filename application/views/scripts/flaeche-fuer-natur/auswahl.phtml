@@ -1,0 +1,56 @@
+<?php
+// Seitentitel
+$this->headTitle()
+    ->prepend("Bild wählen");
+
+// CSS
+$this->headLink()
+    ->appendStylesheet("/css/flaeche-fuer-natur.css");
+$this->headLink()
+    ->appendStylesheet("/css/skins/smoothness/jquery-ui-1.10.3.custom.min.css");
+
+// JavaScript
+$this->headScript()
+    ->prependFile("//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js");
+$this->headScript()
+    ->appendFile("//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js");
+$this->headScript()
+    ->appendFile("/js/jcarousel/jquery.jcarousel.min.js");
+$this->headScript()
+    ->appendFile("/js/purl/purl.js");
+$this->headScript()
+    ->appendFile("/js/flaeche-fuer-natur.js");
+$this->headScript()
+    ->appendFile("/js/auswahl.js");
+
+?>
+
+<div id="main"></div>
+<div id="form">
+    <form action="ausschnitt" method="get">
+        <input type="hidden" id="image" name="image" value="" />
+        <input type="hidden" id="step" name="step" value="2" />
+        <input type="submit" id="submit" value="Weiter" />
+    </form>
+    <div id="breadcumbs">
+	       <?php echo $this->partial("breadcrumbs.phtml", $this->params); ?>
+        </div>
+</div>
+<div id="controls" class="hCentered">
+    <div class="jcarousel-next"><span>&lsaquo;</span></div>
+    <div class="jcarousel">
+        <ul class="galeryList">
+            <?php foreach ($this->galeryFiles as $file) : ?>
+                <?php if (! is_dir($file)) : ?>
+                <li><img class="galeryItem shadowed" alt="Naturfoto"
+                src="/images/galerie/<?php echo $file; ?>"
+            /></li>
+                <?php endif; ?>
+            <?php endforeach; ?>
+	   </ul>
+    </div>
+    <div class="jcarousel-prev"><span>&rsaquo;</span></div>
+
+</div>
+
+

@@ -1,0 +1,9 @@
+<?php $this->headTitle()->prepend('Email Verifizierung'); ?>
+
+<p>
+<?php if( $this->erfolgreich) { ?>
+Verifizierung war erfolgreich. Bitte klicken Sie auf <a href="" >Login</a>.
+<?php } else { ?>
+Verifizierung war NICHT erfolgreich. Bitte vergewissern Sie sich, dass Sie den Link aus der Verifizierungsemail richtig kopiert haben.
+<?php } ?>
+</p>

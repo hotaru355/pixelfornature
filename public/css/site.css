@@ -1,0 +1,10 @@
+@CHARSET "UTF-8";
+
+html {
+	font-family: Verdana, sans-serif;
+	font-size: 62.5%; /* 1em is equal to 10 pixels */
+}
+
+body {
+	font-size: 1.2em;
+}

@@ -1,0 +1,12 @@
+<?php $this->headTitle()->prepend('Willkommen'); ?>
+
+<div id="content">
+<?php
+$auth = Zend_Auth::getInstance();
+if ($auth->hasIdentity()) {
+    echo 'Hallo ' . $auth->getIdentity();
+} else {
+    echo 'Willkommen bei Naturefund';
+}
+?>
+</div>

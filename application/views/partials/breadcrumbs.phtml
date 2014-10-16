@@ -1,0 +1,36 @@
+<?php
+$htmlEntities = new Zend_Filter_HtmlEntities();
+
+$params = array(
+        "step" => ($this->step) ? (($this->currentStep > $this->step) ? $this->currentStep : $htmlEntities->filter(
+                $this->step)) : 1,
+        "x" => $htmlEntities->filter($this->x),
+        "y" => $htmlEntities->filter($this->y),
+        "scale" => $htmlEntities->filter($this->scale),
+        "name" => $htmlEntities->filter($this->name),
+        "image" => $htmlEntities->filter($this->image)
+);
+
+$disabled = array(
+        "ausschnitt" => ($params ["step"] < 2) ? "$('#a_ausschnitt').button('disable');" : "",
+        "vorschau" => ($params ["step"] < 3) ? "$('#a_vorschau').button('disable');" : ""
+);
+
+$this->headScript()
+    ->appendScript(
+        sprintf("$(document).ready(function() {
+    $('a').button();
+    %s
+    %s
+});", $disabled ["ausschnitt"], $disabled ["vorschau"]));
+
+?>
+<div id="crumb1" class="crumb">
+    <a id="a_auswahl" href="auswahl?<?php echo http_build_query($params); ?>">Auswahl</a>
+</div>
+<div id="crumb2" class="crumb">
+    <a id="a_ausschnitt" href="ausschnitt?<?php echo http_build_query($params); ?>">Ausschnitt</a>
+</div>
+<div id="crumb3" class="crumb">
+    <a id="a_vorschau" href="vorschau?<?php echo http_build_query($params); ?>">Vorschau</a>
+</div>

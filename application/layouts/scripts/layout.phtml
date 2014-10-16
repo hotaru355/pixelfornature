@@ -1,0 +1,17 @@
+<?php echo $this->doctype(); ?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+  <?php echo $this->headMeta(); ?>
+  <?php echo $this->headTitle(); ?>
+  <?php echo $this->headLink(); ?>
+  <?php echo $this->headScript(); ?>
+</head>
+<body>
+<!--     <div id=mitglied> -->
+        <?php //echo $this->eingeloggtAls(); ?>
+<!--     </div> -->
+	<div id="content" class="hCentered" >
+        <?php echo $this->layout()->content; ?>
+    </div>
+</body>
+</html>
