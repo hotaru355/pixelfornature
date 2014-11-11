@@ -6,4 +6,4 @@ public/images/tmp/*
 .buildpath
 .project
 .settings/*
-data/logs/*
+logs/*

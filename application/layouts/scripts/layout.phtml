@@ -1,17 +1,34 @@
 <?php echo $this->doctype(); ?>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+
 <head>
-  <?php echo $this->headMeta(); ?>
-  <?php echo $this->headTitle(); ?>
-  <?php echo $this->headLink(); ?>
-  <?php echo $this->headScript(); ?>
+    <?php echo $this->headTitle(); ?>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <?php echo $this->headMeta(); ?>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/css/flaeche-fuer-natur.css">
+    <?php echo $this->headLink(); ?>
+
+    <!-- JQuery -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="/js/flaeche-fuer-natur.js"></script>
+    <?php echo $this->headScript(); ?>
+
 </head>
+
 <body>
-<!--     <div id=mitglied> -->
-        <?php //echo $this->eingeloggtAls(); ?>
-<!--     </div> -->
-	<div id="content" class="hCentered" >
-        <?php echo $this->layout()->content; ?>
-    </div>
+    <!--     <div id=mitglied> -->
+    <?php //echo $this->eingeloggtAls(); ?>
+    <!--     </div> -->
+
+    <?php echo $this->layout()->content; ?>
 </body>
+
 </html>

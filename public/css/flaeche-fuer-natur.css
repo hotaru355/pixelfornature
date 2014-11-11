@@ -17,7 +17,10 @@ body {
 	height: 100%;
 	margin: 0;
 	padding: 0;
+	background-color:rgba(0, 0, 0, 0.0);
 }
+
+@link-color: #c06806;
 
 .hCentered {
 	position: relative;
@@ -28,6 +31,28 @@ body {
 .shadowed {
 	-webkit-box-shadow: 0px 0px 10px 4px #0f0f0f;
 	box-shadow: 0px 0px 10px 4px #0f0f0f;
+}
+
+div#bgWrapper {
+position: fixed;
+    width: 200%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    z-index: -100; 
+}
+
+div.bg {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+	background-position: center top;
+	background-attachment: fixed;
+	background-size: cover;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;    
+	background-repeat: no-repeat;
 }
 
 div#content {
@@ -63,93 +88,112 @@ input#submit,input#upload,div#progressbar {
 	margin: 0px 0 0 -15%;
 	left: 50%;
 }
-
-div#breadcumbs {
-	position: relative;
-	min-width: 100px;
-	max-width: 600px;
-	width: 30%;
-	height: 80px;
-	margin: 50px 0 0 -15%;
-	left: 50%;
-	display: table;
-	table-layout: fixed;
-}
-
-div.crumb {
-	display: table-cell;
-	text-align: center;
-	min-width: 50px;
-	max-width: 80px;
-	min-height: 50px;
-	max-height: 80px;
-}
-
-div#crumb1 {
-	left: 0;
-}
-
-div#crumb2 {
-	left: 50%;
-	margin: 0 0 0 -15%;
-}
-
-div#crumb3 {
-	right: 0;
-}
-
 /* Auswahl */
-div.jcarousel {
-	position: relative;
-	overflow: hidden;
-	width: 90%;
-	height: 92px;
-	float: left;
-}
 
-div.jcarousel ul {
-	position: relative;
-	width: 10000em;
-	height: 100%;
-	list-style: none;
-	margin: 0;
-	padding: 0;
-}
-
-div.jcarousel li {
-	float: left;
-	width: 128px;
-	height: 72px;
-	margin: 10px 10px;
-}
-
-div.jcarousel-prev,div.jcarousel-next {
-	width: 5%;
-	height: 100%;
-	float: left;
-	font-family: "Arial", "Sans-serif";
-	font-style: normal;
-	font-size: 5em;
-	color: rgba(255, 255, 255, 0.8);
-	cursor: pointer;
-}
-
-div.jcarousel-prev span {
-	float: right;
-	text-shadow: -2px 2px 5px #333, 1px 0px 1px rgba(150, 150, 150, 0.75);
-}
-
-div.jcarousel-next span {
-	float: left;
-	text-shadow: 2px 2px 5px #333, -1px 0px 1px rgba(150, 150, 150, 0.75);
-}
-
-img.galeryItem {
+div#controller {
 	width: 100%;
-	height: 100%;
+}
+
+img#cameraController {
+	z-index: 1;
 }
 
 /* Ausschnitt */
+.lightboxDark {
+    position: absolute;
+    color: rgba(255,225,225,0.9);
+    background-color:rgba(0, 0, 0, 0.6);
+    z-index: 100;
+}
+
+
+div#menu{
+	top: -100%;
+    height: 100%;
+	margin: 0px 15px;
+    padding: 5px 15px;
+    overflow-y: auto;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+span#openMenu {
+	float: right;
+	padding: 20px 20px;
+}
+
+span#closeMenu {
+	float: right;
+	padding-top: 10px;
+	padding-bottom: 20px;
+}
+
+div#helpBox {
+    position: absolute;
+    background-color: rgba(255,255,255,0.9);
+    color: rgba(0, 0, 0, 0.6);
+    z-index: 100;
+    display: none;
+    border: 0px solid;
+    border-radius: 25px;
+}
+
+div#helpBox h1,
+div#helpBox h2,
+div#helpBox p {
+	text-align: center;
+}
+
+span#closeHelp {
+	float: right;
+	padding-top: 10px;
+	padding-bottom: 20px;
+}
+
+div.pixelCount {
+    color: green;
+    text-align: center;
+    font-size: 200%;
+    font-weight: 900;
+    border: 2px solid;
+    border-radius: 5px;
+    border-color: green;
+}
+
+hr.mainColumn {
+	height: 4px;
+	color: green;
+	background-color: green;
+	border: 0;
+}
+
+div#rotationSliderContainer { 
+    position: relative;
+    top: -95px;
+    width: 270px;
+    height: 135px;
+     border-style: solid;
+     border-width: 0px 2px 2px 2px;
+     border-color: #00aa00;
+     border-radius: 0px 0px 135px 135px;
+     -moz-border-radius: 0px 0px 135px 135px;
+     -webkit-border-radius: 0px 0px 135px 135px;
+    margin: 0px auto;
+    cursor: default;
+}
+
+div#rotationSlider { 
+    position: absolute;
+    height: 20px;
+    width: 20px;
+    background: #008800;
+    border-radius: 10px;
+    cursor: pointer;
+    z-index: 3;
+}
+
 div#clipping {
 	position: relative;
 	margin: 50px auto 0 auto;
@@ -190,45 +234,55 @@ label#nameLabel {
 }
 
 div#logo {
-	position: absolute;
+	float: right;
 	top: 25px;
-	left: 631px;
 }
 
-div#profilePhotoOverlay {
+img#profilePhotoOverlay {
 	position: absolute;
-	top: 210px;
+	top: 120px;
 	left: 23px;
-	width: 170px;
-	height: 105px;
-	background: rgba(255, 255, 255, 0.8);
 }
+
+
+div.blur { 
+	-webkit-filter: blur(3px);
+	-moz-filter: blur(3px);
+	-o-filter: blur(3px);
+	-ms-filter: blur(3px);
+	filter: blur(3px);
+}
+
+
 
 div#uiControls {
 	width: 600px;
 	margin: 20px auto 0 auto;
 }
 
-div#slider {
-	width: 70%;
-	float: left;
-}
 
 input#reset {
 	width: 20%;
 	float: right;
 }
 
+::-webkit-input-placeholder { /* WebKit browsers */
+    color: white;
+}
+
 input#name {
+	position: absolute;
+	top: 30px;
+	left: 10px;
 	width: 200px;
-	margin: 0 auto 30px auto;
-	display: block;
-	font: inherit;
-	color: inherit;
-	background: rgba(255, 255, 255, 0.5);
-	text-align: inherit;
-	outline: none;
+	border: 2px solid white;
+	padding: 5px;
+	font-size: large;
+	color: white;
+	background: rgba(255, 255, 255, 0.0);
+	text-align: left;
 	cursor: text;
+	outline: none;
 }
 
 div#illegalNameMsg {

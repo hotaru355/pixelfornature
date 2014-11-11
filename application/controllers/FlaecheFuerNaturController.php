@@ -3,6 +3,8 @@ class FlaecheFuerNaturController extends Zend_Controller_Action
 {
     private $log;
     private $dimensions;
+    private $galeryFiles;
+    private $galeryPath;
     const FILE_NOT_FOUND_ERROR = 10000;
     const INVALID_PARAM_ERROR = 10001;
 
@@ -14,6 +16,8 @@ class FlaecheFuerNaturController extends Zend_Controller_Action
         $this->view->addScriptPath(APPLICATION_PATH . "/views/partials");
         $this->dimensions = $this->getInvokeArg('bootstrap')
             ->getOption('m2spende')['dimensions'];
+        $this->galeryPath = realpath(APPLICATION_PATH . "/../public/images/galerie");
+        $this->galeryFiles = glob($this->galeryPath . "/*");
     }
 
     public function indexAction()
@@ -25,18 +29,22 @@ class FlaecheFuerNaturController extends Zend_Controller_Action
         $this->view->params ["currentStep"] = 1;
         
         // Lade jedes Bild aus dem Galerieverzeichnis in das Karusell
-        $galeryPath = realpath(APPLICATION_PATH . "/../public/images/galerie");
-        $galeryFiles = scandir($galeryPath);
-        $this->view->assign("galeryFiles", $galeryFiles);
+
+        $galeryFilesJs = array_map(function($file) {
+            return("'" . str_replace(realpath(APPLICATION_PATH . "/../public/"), "", $file) . "'");
+        }, $this->galeryFiles);
+        $galeryFilesJs = "[" . implode(",", $galeryFilesJs) . "]";
+
+        $this->view->assign("galeryFilesJs", $galeryFilesJs);
     }
 
     public function ausschnittAction()
     {
-        $bild = $this->getParam("bild");
-        $bildPath = realpath(APPLICATION_PATH . "/../public/images/galerie/" . $bild);
-        if (file_exists($bildPath)) {
+        $imageIdx = $this->getParam("image");
+        if (file_exists($this->galeryFiles[$imageIdx])) {
             $this->view->params ["currentStep"] = 2;
             $this->view->assign("dimensions", $this->dimensions);
+            $this->view->assign("imagePath", str_replace(realpath(APPLICATION_PATH . "/../public/"), "", $this->galeryFiles[$imageIdx]));
         } else {
             $this->_helper->redirector('auswahl', 'flaeche-fuer-natur');
         }

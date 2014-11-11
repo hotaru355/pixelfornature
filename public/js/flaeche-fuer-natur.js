@@ -8,42 +8,20 @@ if (typeof Object.create !== 'function') {
 }
 
 imageHandler = {
-	paramName : '',
-	defaultImagePath : '',
-	galeryPath : '',
+	paramName : 'image',
 	image : '',
-	imagePath : '',
 
 	init : function(config) {
-		if (typeof config !== 'undefined') {
-			this.paramName = typeof config.paramName !== 'undefined' ? config.paramName
-					: 'image';
-			this.defaultImagePath = typeof config.defaultImagePath !== 'undefined' ? config.defaultImagePath
-					: '';
-			this.galeryPath = typeof config.galeryPath !== 'undefined' ? config.galeryPath
-					: '/images/galerie/';
+		if (config !== undefined && config.paramName !== undefined) {
+			this.paramName = config.paramName;
 		}
 		this.image = ($.url().param(this.paramName));
-		this.imagePath = (this.image) ? this.galeryPath + this.image : this.defaultImagePath;
 	},
 
 	setBackgroundImage : function(newPath) {
-		if (newPath) {
+		if (newPath !== undefined) {
 			this.imagePath = newPath;
 		}
-		$('html').css('backgroundImage', 'url(' + this.imagePath + ')');
-	},
-
-	findCarouselIndex : function(listItem) {
-		var startIndex = 0;
-		var path = this.imagePath;
-		if (this.image) {
-			listItem.each(function(index, element) {
-				if ($(this).attr('src') === path) {
-					startIndex = index;
-				}
-			});
-		}
-		return startIndex;
+		$('html').css('backgroundImage', 'url(' + this.image + ')');
 	},
 };
