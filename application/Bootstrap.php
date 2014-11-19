@@ -7,9 +7,12 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $this->bootstrap('View');
         $view = $this->getResource('View');
         
+        $doctypeHelper = new Zend_View_Helper_Doctype();
+        $doctypeHelper->doctype('HTML5');
+
         // Titel der Seite
-        $view->headTitle('Naturefund.de')
-            ->setSeparator(' :: ');
+        $view->headTitle('Pixel 4 Nature')
+            ->setSeparator(' - ');
         
         // Globale CSS Datei(en)
         $view->headLink()

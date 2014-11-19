@@ -1,0 +1,28 @@
+<?php echo 'STEP:'. $this->currentStep ?>
+<?php // print_r($this); ?>
+
+<div id="controllerDiv" class="center-block<?php echo ($this->step == 1) ? ' imageSelectable' : ''; ?>">
+    <img id="controllerImg" usemap="#controllMap" draggable="false" alt="Bedienelement einer Kamera" 
+        src="/images/img_trans.gif"></img>
+    <map name="controllMap">
+        <area id="backCtrl" alt="Zurück"
+            <?php if ($this->step == 1) {?>
+                title="Vorheriges Bild" href="javascript:void(0);"
+            <?php } ?>
+            shape="poly" coords="30,30,70,70,57,101,70,131,30,174,0,101,30,30">
+        <area id="forwardCtrl" alt="Vorwärts"
+            <?php if ($this->step == 1) {?>
+                 title="Nächstes Bild" href="javascript:void(0);"
+            <?php } ?>
+            shape="poly" coords="172,172,132,132,146,101,132,70,172,30,202,101,172,172">
+        <area id="flashCtrl" alt="Blitz" title="Hilfe" href="javascript:void(0);"
+            shape="poly" coords="30,30,70,70,101,55,132,70,172,30,101,0,30,30">
+        <area id="infoCtrl" alt="Info" title="Menü" href="javascript:void(0);"
+             shape="poly" coords="132,132,172,172,101,202,30,174,70,131,101,145,132,132">
+        <area id="selectCtrl" alt="Auslöser" title="Auslöser" href="javascript:void(0);"
+             shape="circle" coords="101,101,42">
+    </map>
+</div>
+<div id="rotationSliderContainer" class="<?php echo ($this->step == 1) ? 'hidden' : ''; ?>">
+    <div id="rotationSlider"></div>
+</div>

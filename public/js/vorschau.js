@@ -1,31 +1,4 @@
 (function() {
-	// Liest aktuelles Bild von Queryparams
-	var handler = Object.create(imageHandler);
-	handler.init({});
-
-	$(document).ready(
-			function() {
-				// Setze Hintergrundbild
-				handler.setBackgroundImage();
-
-				// Ladebalken
-				$('#progressbar').progressbar({
-					value : false,
-				});
-				
-				// Bildmatrix und Besuchername
-				matrix = 'matrix(' + $.url().param('scale') + ', 0, 0, '
-						+ $.url().param('scale') + ', '
-						+ $.url().param("x") + ', '
-						+ $.url().param("y") + ')';
-				transform = {
-					"transform" : matrix,
-					"-ms-transform" : matrix,
-					"-webkit-transform" : matrix
-				};
-				$('#clippingImage').css(transform);
-				$('#labelUserName').html($.url().param('name'));
-			});
 
 	// Init Facebook
 	window.fbAsyncInit = function() {
@@ -47,13 +20,13 @@
 		});
 
 		$('#upload').button().click(function() {
-			uploadAsync({
-				accessToken : '',
-				signedRequest : '',
-				userID : ''
-			});
+			// uploadAsync({
+			// 	accessToken : '',
+			// 	signedRequest : '',
+			// 	userID : ''
+			// });
 
-//			FB.login();
+			FB.login();
 		});
 	};
 
@@ -73,13 +46,6 @@
 	// Uebermittelt asynchron den Bildausschnitt und die Facebookzugangsdaten an
 	// den Server und verarbeitet die Antwort
 	function uploadAsync(authResponse) {
-		imageProps = {
-			image : $.url().param("image"),
-			x : $.url().param("x"),
-			y : $.url().param("x"),
-			scale : $.url().param("scale"),
-			name : $.url().param("name"),
-		};
 
 		$.ajax({
 			url : 'hochladen',
@@ -89,7 +55,7 @@
 				'accessToken' : authResponse['accessToken'],
 				'signedRequest' : authResponse['signedRequest'],
 				'userID' : authResponse['userID'],
-				'imageProps' : imageProps,
+				// 'imageProps' : imageProps,
 			},
 			global : true,
 			beforeSend : function() {
@@ -111,5 +77,27 @@
 			$('#commError').show();
 		});
 	}
+
+	$(function() {
+
+		// Ladebalken
+		$('#progressbar').progressbar({
+			value : false,
+		});
+		
+		// Bildmatrix und Besuchername
+		matrix = 'matrix(' + $.url().param('scale') + ', 0, 0, '
+				+ $.url().param('scale') + ', '
+				+ $.url().param("x") + ', '
+				+ $.url().param("y") + ')';
+		transform = {
+			"transform" : matrix,
+			"-ms-transform" : matrix,
+			"-webkit-transform" : matrix
+		};
+		$('#clippingImage').css(transform);
+		$('#labelUserName').html($.url().param('name'));
+	});
+
 
 })();

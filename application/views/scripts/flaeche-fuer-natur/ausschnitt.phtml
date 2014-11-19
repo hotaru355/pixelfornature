@@ -1,7 +1,15 @@
 <?php
 // Seitentitel
 $this->headTitle()
-    ->prepend("Ausschnitt wählen");
+    ->append("2. Wähle einen Ausschnitt");
+
+$this->headStyle()->appendStyle(sprintf("
+    div#clipping {
+        width: %dpx;
+        height: %dpx;
+    }", 
+    $this->dimensions["facebook"]["cover"]["width"], 
+    $this->dimensions["facebook"]["cover"]["height"]));
 
 // JavaScript
 $this->headScript()
@@ -40,115 +48,97 @@ $this->headScript()
 $htmlEntities = new Zend_Filter_HtmlEntities();
 ?>
 
-<div id="bgWrapper">
-    <div id="bg0" class="bg blur"></div>
-    <div id="bg1" class="bg blur"></div>
-</div>
 
-<div id="helpBox" class="container">
-    <div class="row">
-        <div class="col-md-12 col-sm-12 col-xs-12">
-            <span id="closeHelp" class="glyphicon glyphicon-remove clickable"></span>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-12">
-            <h1>Schritt 2 von 3</h1>
-            <h2>Personalisiere deine Fläche</h2>
+<div class="absoluteWrapper" >
+    <div id="helpBox" class="container transparentLight">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <button id="closeHelp" type="button" class="close">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+            </div>
         </div>
         <div class="row">
-            <div class="col-sm-1 col-sm-offset-1">
-                <img src="/images/hilfe1-1.png"/ class="hCentered">
-                <p>Mit den Pfeiltasten kannst du die Bilder durchstöbern.</p>
+            <div class="col-sm-12">
+                <h1>Schritt 2 von 3</h1>
+                <h2>Personalisiere deine Fläche</h2>
             </div>
-            <div class="col-sm-1">
-                <div class="hCentered">
-                    <span class="glyphicon glyphicon-chevron-right"></span>
+            <div class="row">
+                <div class="col-sm-1 col-sm-offset-1">
+                    <img src="/images/hilfe1-1.png"/ class="center-block">
+                    <p>Mit den Pfeiltasten kannst du die Bilder durchstöbern.</p>
                 </div>
-            </div>
-            <div class="col-sm-1">
-                <img src="/images/hilfe1-1.png"/ class="hCentered">
-                <p>Mit dem Drehknopf kannst du rein- und rauszoomen.</p>
-            </div>
-            <div class="col-sm-1">
-                <div class="hCentered">
-                    <span class="glyphicon glyphicon-chevron-right"></span>
+                <div class="col-sm-1">
+                    <div class="center-block">
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                    </div>
                 </div>
-            </div>
-            <div class="col-sm-1">
-                <img src="/images/hilfe1-1.png"/ class="hCentered">
-                <p>Mit geklickter Maustaste kannst du in der Fläche den Ausschnitt wählen.</p>
-            </div>
-            <div class="col-sm-1">
-                <div class="hCentered">
-                    <span class="glyphicon glyphicon-chevron-right"></span>
+                <div class="col-sm-1">
+                    <img src="/images/hilfe1-1.png"/ class="center-block">
+                    <p>Mit dem Drehknopf kannst du rein- und rauszoomen.</p>
                 </div>
-            </div>
-            <div class="col-sm-1">
-                <img src="/images/hilfe1-1.png"/ class="hCentered">
-                <p>In dem Textfeld kannst du deinen Namen eintragen.</p>
-            </div>
-            <div class="col-sm-1">
-                <div class="hCentered">
-                    <span class="glyphicon glyphicon-chevron-right"></span>
+                <div class="col-sm-1">
+                    <div class="center-block">
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                    </div>
                 </div>
-            </div>
-            <div class="col-sm-1">
-                <img src="/images/hilfe1-2.png" class="hCentered" />
-                <p>Mit dem Auslöser bestätigst du deine Auswahl.</p>
+                <div class="col-sm-1">
+                    <img src="/images/hilfe1-1.png"/ class="center-block">
+                    <p>Mit geklickter Maustaste kannst du in der Fläche den Ausschnitt wählen.</p>
+                </div>
+                <div class="col-sm-1">
+                    <div class="center-block">
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    <img src="/images/hilfe1-1.png"/ class="center-block">
+                    <p>In dem Textfeld kannst du deinen Namen eintragen.</p>
+                </div>
+                <div class="col-sm-1">
+                    <div class="center-block">
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    <img src="/images/hilfe1-2.png" class="center-block" />
+                    <p>Mit dem Auslöser bestätigst du deine Auswahl.</p>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
 
 <div id="logo">
     <img id="Naturefundlogo" alt="Naturefund-Logo" src="/images/Naturefund Logo.png" />
 </div>
-<div id="content" class="hCentered">
 
-    <div id="main" class="">
-        <div id="clipping" class="shadowed" style="<?php
-        echo sprintf("width:%dpx;height:%dpx;",
-            $this->dimensions["facebook"]["cover"]["width"], 
-            $this->dimensions["facebook"]["cover"]["height"]);
-        ?>">
-            <img id="clippingImage" src="<?php echo $htmlEntities->filter($this->imagePath); ?>" />
-            <form id="" action="vorschau" method="get">
-                <input type="text" id="name" name="name" maxlength="25" placeholder="Dein Name"/>
-                <input type="hidden" id="x" name="x" value="0" />
-                <input type="hidden" id="y" name="y" value="0" />
-                <input type="hidden" id="scale" name="scale" value="0" />
-                <input type="hidden" id="image" name="image"
-                    value="<?php echo $htmlEntities->filter($this->imagePath); ?>"
-                />
-                <input type="hidden" id="step" name="step" value="3" />
-            </form>
-            <img id="profilePhotoOverlay" src="/images/fbHead.png">
-        </div>
-        <div id="illegalNameMsg" class="initiallyHidden ui-widget-content ui-corner-all">
-            <h3 id="illegalNameHeader" class="ui-widget-header ui-corner-all">Name nicht erlaubt</h3>
-            <p>Bitte vermeiden Sie die folgenden Worte in Ihren Namen:</p>
-            <p id="illegalWords"></p>
+<div id="content" class="container">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div id="clipping" class="shadowed center-block">
+                <img id="clippingImage" src="<?php echo $htmlEntities->filter($this->imagePath); ?>" />
+                <form id="ausschnitt" action="vorschau" method="get">
+                    <input type="text" id="name" name="name" maxlength="25" placeholder="Dein Name"/>
+                    <input type="hidden" id="x" name="x" value="0" />
+                    <input type="hidden" id="y" name="y" value="0" />
+                    <input type="hidden" id="scale" name="scale" value="0" />
+                    <input type="hidden" id="image" name="image"
+                        value="<?php echo $htmlEntities->filter($this->params["image"]); ?>"
+                    />
+                </form>
+                <img id="profilePhotoOverlay" src="/images/fbHead.png" />
+            </div>
         </div>
     </div>
-    <div id="uiControls">
-        <img id="cameraController" src="/images/ausloeser.png" class="hCentered" alt="Kontrollelement" usemap="#controllMap" draggable="false">
-        <map name="controllMap">
-            <area id="backCtrl" alt="Zurück" title="Vorheriges Bild" href="javascript:void(0);"
-                shape="poly" coords="30,30,70,70,57,101,70,131,30,174,0,101,30,30">
-            <area id="forwardCtrl" alt="Vorwärts" title="Nächstes Bild" href="javascript:void(0);"
-                shape="poly" coords="172,172,132,132,146,101,132,70,172,30,202,101,172,172">
-            <area id="flashCtrl" alt="Blitz" title="??" href="javascript:void(0);"
-                shape="poly" coords="30,30,70,70,101,55,132,70,172,30,101,0,30,30">
-            <area id="helpCtrl" alt="Info" title="Info" href="javascript:void(0);"
-                 shape="poly" coords="132,132,172,172,101,202,30,174,70,131,101,145,132,132">
-            <area id="selectCtrl" alt="Auslöser" title="Auslöser" href="javascript:void(0);"
-                 shape="circle" coords="101,101,42">
-        </map>
-        <div id="rotationSliderContainer">
-            <div id="rotationSlider"></div>
+    <div class="row">
+        <div class="col-sm-4 col-sm-offset-4">
+            <div id="illegalNameMsg" class="initiallyHidden ui-widget-content ui-corner-all">
+                <h3 id="illegalNameHeader" class="ui-widget-header ui-corner-all">Name nicht erlaubt</h3>
+                <p>Bitte vermeiden Sie die folgenden Worte in Ihren Namen:</p>
+                <p id="illegalWords"></p>
+            </div>
         </div>
-        <input type="button" id="reset" value="Reset" />
     </div>
 </div>

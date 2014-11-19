@@ -1,7 +1,7 @@
 <?php
 // Seitentitel
 $this->headTitle()
-    ->prepend("Bild wählen");
+    ->append("1. Wähle ein Bild");
 
 // JavaScript
 $this->headScript()
@@ -13,153 +13,41 @@ $this->headScript()
     ->appendFile("/js/auswahl.js");
 ?>
 
-<div id="bgWrapper">
-    <div id="bg0" class="bg"></div>
-    <div id="bg1" class="bg"></div>
-</div>
 
-<div id="menuHandle" class="container">
-    <div class="row">
-        <div class="col-sm-1 col-sm-offset-11">
-            <span id="openMenu" class="glyphicon glyphicon-leaf lightboxDark clickable" title="Menü"></span>
-        </div>
-    </div>
-</div>
-<div id="menu" class="container-fluid lightboxDark">
-    <div class="row">
-        <div class="col-md-12 col-sm-12 col-xs-12">
-            <span id="closeMenu" class="glyphicon glyphicon-remove clickable"></span>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-3">
-            Die Kampagne
-            <hr />
-
-            <h3>Bisher gespendete Pixel</h3>
-            <div class="pixelCount">
-                517.944 px&sup2;
-            </div>
-            <hr />
-
-            <h3>Die letzten Pixelspender</h3>
-            <ul>
-                <li>Aaron Wolber aus Köln</li>
-                <li>Katja W. aus Wiesbaden</li>
-                <li>Jonathan aus Haan</li>
-            </ul>
-            <hr />
-
-            <h3>Pixel für Natur</h3>
-            <p>Du kannst jetzt auch digitale Fläche spenden, ganz
-            umsonst und mit großer Wirkung für die Natur! Das Prinzip
-            ist ganz einfach: Du suchst dir nach Belieben ein Bild aus
-            und verwendest es bei Facebook als Titelbild.</p>
-            <button type="button" class="btn btn-default">Mehr erfahren</button>
-        </div>
-        <div class="col-sm-6">
-            Aktuelles Projekt
-            <hr class="mainColumn" />
-
-            <h3>Hangquellmoor in Baden-Württemberg</h3>
-            <p>
-            Naturefund will mit dem Förderverein Stiftung Wilde Argen ein Hangquellmoor kaufen und
-            schützen. Das Moor liegt im Voralpenland, umfasst 8.853 m² und grenzt an die Obere Argen,
-            einer der letzten wilden Gebirgsflüsse Europas. Mädesüß-Perlmutterfalter, Kaisermantel,
-            Wildbiene und die größte einheimische Libelle, die seltene Gestreifte Quelljungfer, kommen
-            hier vor. Das Moor ist ein wichtiger Lebensraum für zahlreiche seltene Arten.
-            <br />
-            Machen Sie mit! Bei diesem Projekt sichern Sie mit 5,00 EUR volle 4 m&sup2; für Libellen &amp; Co!
-            </p>
-            <button type="button" class="btn btn-default">Jetzt spenden</button>
-        </div>
-        <div class="col-sm-3">
-            Das Unternehmen
-            <hr />
-
-            <h3>Über Naturefund</h3>
-            <p>Wir setzen uns für den Naturschutz ein. Wir kaufen
-            Land für Natur, um Lebensraum für die Artenvielfalt zu
-            bewahren. Auch im Klimaschutz sind wir aktiv, wobei wir
-            vor allem Wälder schützen und Bäume pflanzen.<p>
-            <button type="button" class="btn btn-default">Mehr erfahren</button>
-            <hr />
-
-            <h3>Mein Naturefund Account</h3>
-            <p>Um deine Pixel zu sammeln, melde dich einfach mit
-            deinem persönlichen Naturefund-Account an:</p>
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="E-Mail">
-                <input type="text" class="form-control" placeholder="Passwort">
-                <span class="input-group-addon glyphicon glyphicon-chevron-right"></span>
-            </div>
-            <a>Noch nicht registriert? Jetzt mitmachen!</a><br />
-            <a>Passwort vergessen?</a>
-            <hr />
-
-            <h3>Newsletter</h3>
-            <p>Möchtest du immer auf dem neusten Stand bleiben? Dann
-            abboniere jetzt den Naturefund-Newsletter:</p>
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="E-Mail">
-                <span class="input-group-addon glyphicon glyphicon-chevron-right"></span>
-            </div>
-        </div>
-    </div>
-</div>
-<div id="helpBox" class="container">
-    <div class="row">
-        <div class="col-md-12 col-sm-12 col-xs-12">
-            <span id="closeHelp" class="glyphicon glyphicon-remove clickable"></span>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-12">
-            <h1>Schritt 1 von 3</h1>
-            <h2>Durchstöbere die Bilder</h2>
-        </div>
+<div class="absoluteWrapper" >
+    <div id="helpBox" class="container transparentLight">
         <div class="row">
-            <div class="col-sm-3 col-sm-offset-2">
-                <img src="/images/hilfe1-1.png"/ class="hCentered">
-                <p>Mit den Pfeiltasten kannst du die Bilder durchstöbern.</p>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <button id="closeHelp" type="button" class="close">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
             </div>
-            <div class="col-sm-2">
-                <div class="hCentered">
-                    <span class="glyphicon glyphicon-chevron-right"></span>
+        </div>
+        <div id="helpContent" class="row">
+            <div class="col-sm-12">
+                <h1>Schritt 1 von 3</h1>
+                <h2>Durchstöbere die Bilder</h2>
+            </div>
+            <div class="row">
+                <div class="col-sm-3 col-sm-offset-2 col-md-2 col-md-offset-3">
+                    <img src="/images/hilfe1-1.png"/ class="center-block">
+                    <p>Mit den Pfeiltasten kannst du die Bilder durchstöbern.</p>
+                </div>
+                <div class="col-sm-2">
+                    <span class="glyphicon glyphicon-chevron-right center-block"></span>
+                </div>
+                <div class="col-sm-3 col-md-2">
+                    <img src="/images/hilfe1-2.png" class="center-block" />
+                    <p>Mit dem Auslöser bestätigst du deine Auswahl.</p>
                 </div>
             </div>
-            <div class="col-sm-3">
-                <img src="/images/hilfe1-2.png" class="hCentered" />
-                <p>Mit dem Auslöser bestätigst du deine Auswahl.</p>
-            </div>
         </div>
     </div>
 </div>
 
+<form id="auswahl" action="ausschnitt" method="get">
+    <input type="hidden" id="image" name="image" value="" />
+</form>
 
-<div id="content" class="hCentered">
-    <div id="main"></div>
-    <div id="form">
-        <form id="auswahl" action="ausschnitt" method="get">
-            <input type="hidden" id="image" name="image" value="" />
-            <input type="hidden" id="step" name="step" value="2" />
-        </form>
-        <div id="controller">
-            <img id="cameraController" src="/images/ausloeser.png" class="hCentered" alt="Kontrollelement" usemap="#controllMap" draggable="false">
-            <map name="controllMap">
-                <area id="backCtrl" alt="Zurück" title="Vorheriges Bild" href="javascript:void(0);"
-                    shape="poly" coords="30,30,70,70,57,101,70,131,30,174,0,101,30,30">
-                <area id="forwardCtrl" alt="Vorwärts" title="Nächstes Bild" href="javascript:void(0);"
-                    shape="poly" coords="172,172,132,132,146,101,132,70,172,30,202,101,172,172">
-                <area id="flashCtrl" alt="Blitz" title="??" href="javascript:void(0);"
-                    shape="poly" coords="30,30,70,70,101,55,132,70,172,30,101,0,30,30">
-                <area id="helpCtrl" alt="Info" title="Info" href="javascript:void(0);"
-                     shape="poly" coords="132,132,172,172,101,202,30,174,70,131,101,145,132,132">
-                <area id="selectCtrl" alt="Auslöser" title="Auslöser" href="javascript:void(0);"
-                     shape="circle" coords="101,101,42">
-            </map>
-        </div>
-    </div>
-</div>
-
-
+<div id="content"></div>

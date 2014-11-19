@@ -22,7 +22,7 @@
 		var scale = $.url().param('scale');
 		if (x && y && scale) {
 			$('#slider').slider('value', scale);
-			$('#clippingImage').panzoom('setMatrix', [scale, 0, 0, scale, x, y]);
+			$('img#clippingImage').panzoom('setMatrix', [scale, 0, 0, scale, x, y]);
 		}
 	}
 
@@ -67,20 +67,6 @@
 	        'z-index': -1
 	    });
 
-	    $('area#helpCtrl').click(function() {
-		    $('div#helpBox').css('display', 'block');
-		});
-
-	    $('span#closeHelp').click(function() {
-	        $('div#helpBox').css('display', 'none');
-	    });
-
-		$('#select_ctrl').click(function() {
-			$('#image').val(imageUrls[selected]);
-			$('#auswahl_form').submit();
-		});
-
-
 		var initialMatrix = getInitialMatrix();
 		$('#slider').circleSlider({
 			min: fbCover.minScale,
@@ -90,13 +76,13 @@
 			container: 'rotationSliderContainer',
 			slider: 'rotationSlider',
 			slide: function(event, value) {
-				$('#clippingImage').panzoom('zoom', value);
+				$('img#clippingImage').panzoom('zoom', value);
 			}
 		});
 
 
 		// Panzoom Initialisierung
-		$('#clippingImage').panzoom({
+		$('img#clippingImage').panzoom({
 			$reset: $('#reset'),
 			startTransform: initialMatrix.toString,
 			minScale: fbCover.minScale,
@@ -117,12 +103,23 @@
 		 * in die HTML-Form
 		 */
 		$('form').submit(function(event) {
-			var matrix = $('#clippingImage').panzoom('getMatrix');
+			var matrix = $('img#clippingImage').panzoom('getMatrix');
 			var scale = matrix[0];
-			$('#x').val(parseFloat(matrix[4]).toFixed(2));
-			$('#y').val(parseFloat(matrix[5]).toFixed(2));
-			$('#scale').val(parseFloat(scale).toFixed(4));
-			return isValidName($('#name').val());
+			var nameEntered = $('input#name').val();
+			$('input#x').val(parseFloat(matrix[4]).toFixed(2));
+			$('input#y').val(parseFloat(matrix[5]).toFixed(2));
+			$('input#scale').val(parseFloat(scale).toFixed(4));
+			return (isValidName(nameEntered));
+		});
+
+	    $('area#selectCtrl').click(function() {
+		    $('form#ausschnitt').submit();
+		}).mouseenter(function() {
+			$('div#controllerDiv').css('background-position', '0 -203px');
+		}).mousedown(function() {
+			$('div#controllerDiv').css('background-position', '-203px -203px');
+		}).mouseleave(function() {
+			$('div#controllerDiv').css('background-position', '0 -406px');
 		});
 
 	});

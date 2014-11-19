@@ -1,6 +1,8 @@
 <?php echo $this->doctype(); ?>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
-
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de" 
+>
+<!-- manifest="http://pixelfornature.local/pixelfornature.appcache">
+ -->
 <head>
     <?php echo $this->headTitle(); ?>
 
@@ -11,14 +13,15 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="/css/flaeche-fuer-natur.css">
+    <link rel="stylesheet" href="/css/pixelfornature.css">
     <?php echo $this->headLink(); ?>
+    <?php echo $this->headStyle() ?>
 
     <!-- JQuery -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <!-- Bootstrap -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-    <script src="/js/flaeche-fuer-natur.js"></script>
+    <script src="/js/pixelfornature.js"></script>
     <?php echo $this->headScript(); ?>
 
 </head>
@@ -27,8 +30,194 @@
     <!--     <div id=mitglied> -->
     <?php //echo $this->eingeloggtAls(); ?>
     <!--     </div> -->
+    <div id="bgWrapper">
+        <div id="bg0" class="bg<?php echo ($this->step == 2) ? ' blur' : ''; ?>"></div>
+        <div id="bg1" class="bg<?php //echo ($this->step == 3) ? ' transparentLight' : ''; ?>"></div>
+    </div>
+
+    <ul class="hidden">
+        <li>
+            <div id="menuLanding" class="container-fluid slidingHorizontal">
+                <div id="" class="row">
+                    <div class="col-sm-3">
+                        Die Kampagne
+                        <hr />
+
+                        <h3>Bisher gespendete Pixel</h3>
+                        <div class="pixelCount">
+                            517.944 px&sup2;
+                        </div>
+                        <hr />
+
+                        <h3>Die letzten Pixelspender</h3>
+                        <ul>
+                            <li>Aaron Wolber aus Köln</li>
+                            <li>Katja W. aus Wiesbaden</li>
+                            <li>Jonathan aus Haan</li>
+                        </ul>
+                        <hr />
+
+                        <h3>Pixel für Natur</h3>
+                        <p>Du kannst jetzt auch digitale Fläche spenden, ganz
+                        umsonst und mit großer Wirkung für die Natur! Das Prinzip
+                        ist ganz einfach: Du suchst dir nach Belieben ein Bild aus
+                        und verwendest es bei Facebook als Titelbild.</p>
+                        <button type="button" class="btn btn-default">Mehr erfahren</button>
+                    </div>
+                    <div class="col-sm-6">
+                        Aktuelles Projekt
+                        <hr class="mainColumn" />
+
+                        <h3>Hangquellmoor in Baden-Württemberg</h3>
+                        <p>
+                        Naturefund will mit dem Förderverein Stiftung Wilde Argen ein Hangquellmoor kaufen und
+                        schützen. Das Moor liegt im Voralpenland, umfasst 8.853 m² und grenzt an die Obere Argen,
+                        einer der letzten wilden Gebirgsflüsse Europas. Mädesüß-Perlmutterfalter, Kaisermantel,
+                        Wildbiene und die größte einheimische Libelle, die seltene Gestreifte Quelljungfer, kommen
+                        hier vor. Das Moor ist ein wichtiger Lebensraum für zahlreiche seltene Arten.
+                        <br />
+                        Machen Sie mit! Bei diesem Projekt sichern Sie mit 5,00 EUR volle 4 m&sup2; für Libellen &amp; Co!
+                        </p>
+                        <button type="button" class="btn btn-default">Jetzt spenden</button>
+                    </div>
+                    <div class="col-sm-3">
+                        Das Unternehmen
+                        <hr />
+
+                        <h3>Über Naturefund</h3>
+                        <p>Wir setzen uns für den Naturschutz ein. Wir kaufen
+                        Land für Natur, um Lebensraum für die Artenvielfalt zu
+                        bewahren. Auch im Klimaschutz sind wir aktiv, wobei wir
+                        vor allem Wälder schützen und Bäume pflanzen.<p>
+                        <button type="button" class="btn btn-default">Mehr erfahren</button>
+                        <hr />
+
+                        <h3>Mein Naturefund Account</h3>
+                        <p>Um deine Pixel zu sammeln, melde dich einfach mit
+                        deinem persönlichen Naturefund-Account an:</p>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="E-Mail">
+                            <input type="text" class="form-control" placeholder="Passwort">
+                            <span class="input-group-addon glyphicon glyphicon-chevron-right"></span>
+                        </div>
+                        <a id="registerNow">Noch nicht registriert? Jetzt mitmachen!</a><br />
+                        <a id="lostPassword">Passwort vergessen?</a>
+                        <hr />
+
+                        <h3>Newsletter</h3>
+                        <p>Möchtest du immer auf dem neusten Stand bleiben? Dann
+                        abboniere jetzt den Naturefund-Newsletter:</p>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="E-Mail">
+                            <span class="input-group-addon glyphicon glyphicon-chevron-right"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div id="menuNewMember" class="container-fluid slidingHorizontal">
+            <div id="" class="row">
+                <div class="col-sm-4 col-sm-offset-4">
+                    <h2>Einen neuen Naturefund Account erstellen</h2>
+                    <?php echo $this->neuesMitgliedForm; ?>
+                    <button type="button" class="btn btn-default">Registrieren</button>
+                </div>
+            </div>
+            </div>
+        </li>
+        <li>
+            <div id="menuResetPassword" class="row slidingHorizontal">
+                <div class="col-sm-4 col-sm-offset-4">
+                    <h2>Dein Passwort zurücksetzen</h2>
+                    <input type="text" placeholder="E-Mail" />
+                    <button type="btn btn-default">Zurücksetzen</button>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div id="menuAccount" class="row slidingHorizontal">
+                <div class="col-sm-3">
+                    Deine Naturefund-Erfolge
+                    <hr />
+
+                    <h3>Deine bisher gespendeten Pixel</h3>
+                    <div class="pixelCount">
+                        517.944 px&sup2;
+                    </div>
+                    <hr />
+                </div>
+                <div class="col-sm-6">
+                    Deine Aktivitäten
+                    <hr class="mainColumn" />
+                    <h2><strong>Hallo Max</strong>, das hast du bereits mit Naturefund erreicht:</h2>
+                    <ul>
+                        <li><p>Am <strong>19. Mai 2014</strong> hast du <strong>24.689 px&sup2;</strong> für das <strong>Hangquellmoor in Baden-Württemberg</strong> gespendet.</p></li>
+                        <li><p>Am <strong>07. März 2014</strong> hast du <strong>48.674 px&sup2;</strong> für die <strong>Streuobstwiese Musterstadt</strong> gespendet.</p></li>
+                        <li><p>Am <strong>27. Februar 2014</strong> hast du <strong>17.342 px&sup2;</strong> für den <strong>Buchenwald Hümmel</strong> gespendet.</p></li>
+                        <li><p>Du bist am <strong>14. Februar 2014</strong> Weltretter bei Naturefund geworden.</p></li>
+                    </ul>
+                </div>
+                <div class="col-sm-3">
+                    Konto Einstellungen
+                    <hr />
+                    <h3>Ihre Angaben</h3>
+                    <h3>Ihre Zugangsdaten</h3>
+                    <a href="">Möchten Sie Ihr Konto löschen?</a>
+                </div>
+            </div>
+        </li>
+    </ul>
+
+    <div id="menu" class="transparentDark">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <button id="closeMenu" type="button" class="close">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="slidingFrame">
+            <div id="slidingContainer">
+            </div>
+        </div>
+    </div>
 
     <?php echo $this->layout()->content; ?>
+
+    <div>
+        <div id="controllerDiv" class="center-block<?php echo ($this->step == 1) ? ' imageSelectable' : ''; ?>">
+            <img id="controllerImg" usemap="#controllMap" draggable="false" alt="Bedienelement einer Kamera" 
+                src="/images/img_trans.gif"></img>
+            <map name="controllMap">
+                <area id="backCtrl" alt="Zurück"
+                    <?php if ($this->step == 1) {?>
+                        title="Vorheriges Bild" href="javascript:void(0);"
+                    <?php } ?>
+                    shape="poly" coords="30,30,70,70,57,101,70,131,30,174,0,101,30,30">
+                <area id="forwardCtrl" alt="Vorwärts"
+                    <?php if ($this->step == 1) {?>
+                         title="Nächstes Bild" href="javascript:void(0);"
+                    <?php } ?>
+                    shape="poly" coords="172,172,132,132,146,101,132,70,172,30,202,101,172,172">
+                <area id="flashCtrl" alt="Blitz" title="Hilfe" href="javascript:void(0);"
+                    shape="poly" coords="30,30,70,70,101,55,132,70,172,30,101,0,30,30">
+                <area id="infoCtrl" alt="Info" title="Menü" href="javascript:void(0);"
+                     shape="poly" coords="132,132,172,172,101,202,30,174,70,131,101,145,132,132">
+                <area id="selectCtrl" alt="Auslöser" title="Auslöser" href="javascript:void(0);"
+                     shape="circle" coords="101,101,42">
+            </map>
+        </div>
+        <?php if ($this->step == 2) { ?>
+        <div id="rotationSliderContainer" class="">
+            <div id="rotationSlider"></div>
+        </div>
+        <?php } ?>
+    </div>
+
 </body>
 
 </html>

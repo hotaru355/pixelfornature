@@ -1,15 +1,34 @@
-(function() {
-	$(function() {
 
-		// open/close menu
-	    $('span#openMenu').click(function() {
-	        $('div#menu').animate({top: '0px'});
-	        $('div#menuHandle').animate({top: '-100%'});
-	    });
-	    $('span#closeMenu').click(function() {
-	        $('div#menu').animate({top: '-100%'});
-	        $('div#menuHandle').animate({top: '0px'});
-	    });
+
+(function() {
+	function preload(images, cb) {
+		var imageCount = 0;
+		images.forEach(function(image) {
+			imageObj = new Image();
+			imageObj.onload = function() {
+				imageCount++;
+				if (imageCount === images.length) {
+					cb()
+				}
+			}
+			imageObj.src = image;
+		})
+	}
+	var appCache = window.applicationCache;
+
+	appCache.addEventListener('cached', function() {
+		alert('cached')
+	}, false);
+	appCache.addEventListener('updateready', function() {
+		alert('updated')
+	}, false);
+
+
+
+	$(function() {
+		// preload(imageUrls, function(){
+		// 	alert('done')
+		// })
 
 	    const first = 0;
 	    const last = imageUrls.length - 1;
@@ -26,8 +45,10 @@
 	    });
 	 
 	    // camera controller
-	    $('area#backCtrl').click(function() {
-			$('img#cameraController').attr('src', '/images/ausloeserBackHvr.png');
+	    $('area#backCtrl').mouseenter(function() {
+			$('div#controllerDiv').css('background-position', '0 0');
+		}).mousedown(function() {
+			$('div#controllerDiv').css('background-position', '-203px 0');
 
 	        $('div#bg' + visibleBg).css('z-index', -1);
 
@@ -35,17 +56,15 @@
 	        visibleBg = (visibleBg === 0) ? 1 : 0;
 	        selected = (selected > first) ? selected-1 : last;
 	        $('div#bg' + visibleBg).css({
-	            left: '0px',
+	            left: 0,
 	            'z-index': -2,
 	            'background-image': 'url("' + imageUrls[selected] + '")'
 	        });
 	        $('div#bg' + prevVisibleBg).animate({left: '100%'});
-		}).mouseenter(function() {
-			$('img#cameraController').attr('src', '/images/ausloeserBackHvr.png');
-		}).mousedown(function() {
-			$('img#cameraController').attr('src', '/images/ausloeserBackDwn.png');
+		}).mouseup(function() {
+			$('div#controllerDiv').css('background-position', '0 0');
 		}).mouseleave(function() {
-			$('img#cameraController').attr('src', '/images/ausloeser.png');
+			$('div#controllerDiv').css('background-position', '-203px -406px');
 		});
 	    
 	    $('area#forwardCtrl').click(function() {
@@ -65,20 +84,13 @@
 			$('input#image').val(selected);
 		    $('form#auswahl').submit();
 		}).mouseenter(function() {
-			$('img#cameraController').attr('src', '/images/ausloeserSlctHvr.png');
+			$('div#controllerDiv').css('background-position', '0 -203px');
 		}).mousedown(function() {
-			$('img#cameraController').attr('src', '/images/ausloeserSlctDwn.png');
+			$('div#controllerDiv').css('background-position', '-203px -203px');
 		}).mouseleave(function() {
-			$('img#cameraController').attr('src', '/images/ausloeser.png');
+			$('div#controllerDiv').css('background-position', '-203px -406px');
 		});
 
-	    $('area#helpCtrl').click(function() {
-		    $('div#helpBox').css('display', 'block');
-		});
-
-	    $('span#closeHelp').click(function() {
-	        $('div#helpBox').css('display', 'none');
-	    });
 
 	});
 })();
