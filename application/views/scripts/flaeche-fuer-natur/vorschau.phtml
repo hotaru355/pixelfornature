@@ -19,8 +19,7 @@ $this->headStyle()->appendStyle(sprintf("
 
 
 // JavaScript JQuery
-$this->headScript()
-    ->appendFile("/js/purl/purl.js");
+
 $this->headScript()
     ->appendFile("/js/vorschau.js");
 
@@ -50,17 +49,8 @@ $htmlEntities = new Zend_Filter_HtmlEntities();
             <div class="col-sm-12">
                 <div id="clipping">
                     <img src="<?php echo $this->generatedPath; ?>">
-<!--                     <img id="clippingImage" src="<?php echo $this->imagePath; ?>">
-                    <div id="clippingLabel">
-                        <div id="labelUserName" class="labelText"></div>
-                        <div id="labelConst" class="labelText">spendet Fläche für Natur</div>
-                    </div>
-                    <div id="logo">
-                        <img id="Naturefundlogo" alt="Naturefund-Logo" src="/images/Naturefund Logo BG.png">
-                    </div>
-                    <div id="profilePhotoOverlay"></div>
                 </div>
- -->            </div>
+            </div>
         </div>
 
         <div class="row">
@@ -74,43 +64,17 @@ $htmlEntities = new Zend_Filter_HtmlEntities();
                 <p class="text-center">Oder du kannst das Bild auf deinen Computer downloaden und manuell bei Facebook hochladen.</p>
             </div>
         </div>
-    </div>
-
-
-
-
-    <div id="form" class="hCentered">
-        <div id="progressbar" class="initiallyHidden" >
-            <span class="progressLabel">Lade...</span>
-        </div>
-        <div id="successMsg" class="initiallyHidden ui-widget infoMsg">
-            <div class="ui-state-highlight ui-corner-all">
-                <p>
-                    <span class="ui-icon ui-icon-info"></span> <strong>OK!</strong><br /> Ihr neues
-                    Cover-Photo wurde erfolgreich zu Ihren Facebook-Photos hinzugefügt und befindet sich
-                    in einem Fotoalbum mit dem Namen "Naturefund". Bitte besätigen Sie das neue
-                    Cover-Bild im geöffneten Browserfenster.
-                </p>
-            </div>
-        </div>
-        <div id="commError" class="initiallyHidden ui-widget infoMsg">
-            <div class="ui-state-error ui-corner-all">
-                <p>
-                    <span class="ui-icon ui-icon-alert"></span> <strong>Kommikationsfehler</strong>:<br />
-                    Bei der Kommunikation mit dem Naturefund-Server trat ein Fehler auf. Ihr Bild wurde
-                    nicht hochgeladen!
-                </p>
-            </div>
-        </div>
-        <div id="facebookError" class="initiallyHidden ui-widget infoMsg">
-            <div class="ui-state-error ui-corner-all">
-                <p>
-                    <span class="ui-icon ui-icon-alert"></span> <strong>Fehler</strong> (<span
-                        id="errorCode"
-                    ></span>):<br /> Bei der Kommunikation mit Facebook trat ein Fehler auf. Ihr Bild
-                    wurde nicht hochgeladen!<br /> Bitte probieren Sie es zu einem späteren Zeitpunkt
-                    noch einmal.
-                </p>
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2">
+                <div id="successMsg" class="alert alert-success initiallyHidden" role="alert">
+                    <p><span class="glyphicon glyphicon-ok-circle"></span>&nbsp;<strong>OK!</strong><br />Ihr neues Cover-Photo wurde erfolgreich zu Ihren Facebook-Photos hinzugefügt und befindet sich in einem Fotoalbum mit dem Namen "Naturefund". Bitte besätigen Sie das neue Cover-Bild im geöffneten Browserfenster.</p>
+                </div>
+                <div id="commError" class="alert alert-danger initiallyHidden" role="alert">
+                    <p><span class="glyphicon glyphicon-warning-sign"></span>&nbsp;<strong>Kommikationsfehler:</strong><br />Bei der Kommunikation mit dem Naturefund-Server trat ein Fehler auf. Ihr Bild wurde nicht hochgeladen!</p>
+                </div>
+                <div id="facebookError" class="alert alert-danger initiallyHidden" role="alert">
+                    <p><span class="glyphicon glyphicon-warning-sign"></span>&nbsp;<strong>Fehler</strong>&nbsp;(<span id="errorCode"></span>):<br />Bei der Kommunikation mit Facebook trat ein Fehler auf. Ihr Bild konnte nicht hochgeladen werden!<br />Bitte probieren Sie es zu einem späteren Zeitpunkt noch einmal.</p>
+                </div>
             </div>
         </div>
     </div>

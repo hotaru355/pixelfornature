@@ -98,7 +98,6 @@ class FlaecheFuerNaturController extends Zend_Controller_Action {
 			$this->_helper->layout->disableLayout();
 
 			Zend_Loader::loadFile("ValidationService.php");
-			Zend_Loader::loadFile("ImageService.php");
 			Zend_Loader::loadFile("FacebookService.php");
 
 			try {
