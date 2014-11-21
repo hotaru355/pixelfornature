@@ -22,28 +22,13 @@
 	} (document, 'script', 'facebook-jssdk'));
 
 
-		// Eventhandler wenn Authentifizierungsstatus sich aendert
-		// FB.Event.subscribe('auth.authResponseChange', function(response) {
-		// 	if (response.status === 'connected') {
-		// 		uploadAsync(response['authResponse']);
-		// 	} else {
-		// 		alert('just diconnected');
-		// 	}
-		// });
-
-
 	// Uebermittelt asynchron den Bildausschnitt und die Facebookzugangsdaten an
 	// den Server und verarbeitet die Antwort
-	function uploadAsync(authResponse) {
+	function uploadAsync(popup) {
 		$.ajax({
 			url : 'hochladen',
 			type : 'GET',
 			dataType : 'json',
-			// data : {
-			// 	'accessToken' : authResponse['accessToken'],
-			// 	'signedRequest' : authResponse['signedRequest'],
-			// 	'userID' : authResponse['userID']
-			// },
 			global : true,
 			beforeSend : function() {
 				$('button#upload').attr('disabled', 'disabled');
@@ -55,8 +40,8 @@
 			$('button#upload').removeAttr('disabled');
 		}).done(function(responseJson) {
 			if (responseJson.linkUrl) {
-				$('div#successMsg').show();
-				window.open(responseJson.linkUrl, '_blank', 'fullscreen=yes,height=600,width=900,scrollbars=yes');
+				popup.location.href = responseJson.linkUrl;
+				window.location.href = 'danke';
 			} else {
 				$('span#errorCode').html(responseJson.errorCode);
 				$('div#facebookError').show();
@@ -67,11 +52,12 @@
 	}
 
 	$(function() {
-		$('#upload').button().click(function() {
+		$('button#upload').click(function() {
+			var popup = window.open('', '_blank', 'fullscreen=yes,height=600,width=900,scrollbars=yes');
 			FB.getLoginStatus(function(response) {
 				if (response.status === 'connected') {
 					console.log('Already logged in. Going straight to goal.');
-					uploadAsync(response.authResponse);
+					uploadAsync(popup);
 				} else if (response.status === 'not_authorized') {
 					// The person is logged into Facebook, but not your app.
 					// if (!isset($permissions['data'][0]['user_photos'])
@@ -80,17 +66,23 @@
 					FB.login(function(response) {
 						if (response.status === 'connected') {
 							console.log('Just logged in. Going to goal now.');
-							uploadAsync(response.authResponse);
+							uploadAsync(popup);
 						} else if (response.status === 'not_authorized') {
 							// The person is logged into Facebook, but not your app.
 						} else {
 						// The person is not logged into Facebook, so we're not sure if
 						// they are logged into this app or not.
 						}
-					}, {scope: 'user_photos,publish_actions,manage_pages'});
+					}, {scope: 'publish_actions'});
 				}
 			});
 		});
+		$('button#closeOverlay').click(function() {
+			$('div#overlay').css('top', '-100%');
+			setTimeout(function() {
+				window.location.href = '/'
+			}, 1000);
+		})
 
 	});
 })();

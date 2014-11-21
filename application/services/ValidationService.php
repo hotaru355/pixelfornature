@@ -108,9 +108,7 @@ class ValidationService {
 		));
 		if (!$floatValidator->isValid($dirtyX) && !$floatValidator->isValid($dirtyY) &&
 			!$floatValidator->isValid($dirtyScale)) {
-			throw new Exception(sprintf("Invalid numerical value, x=%s, y=%s, scale=%s", $dirtyX, $dirtyY, $dirtyScale),
-
-				$this::INVALID_PARAM_ERROR);
+			throw new Exception("Invalid numerical value, x={$dirtyX}, y={$dirtyY}, scale={$dirtyScale}", $this::INVALID_PARAM_ERROR);
 		}
 	}
 

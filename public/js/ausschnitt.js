@@ -35,7 +35,7 @@
 	function isValidName(name) {
 		var isValid = false;
 		$.ajax({
-			url: '/validierung/validiere-woerter',
+			url: '/validierung/woerter',
 			type: 'GET',
 			dataType: 'json',
 			async: false,

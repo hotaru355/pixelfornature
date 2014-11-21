@@ -32,7 +32,7 @@
 
 	    const first = 0;
 	    const last = imageUrls.length - 1;
-	    var selected = ($.url().param('image')) || first;
+
 	    var visibleBg = 0;
 
 	    // init bg divs

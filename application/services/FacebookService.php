@@ -24,15 +24,8 @@ class FacebookService {
 				)
 			))->execute()->getGraphObject();
 
-			$this->log->debug(print_r($response, true));
-
-			$fbImageLink = "https://www.facebook.com/me?preview_cover=" . $response['data']['id'];
+			$fbImageLink = "https://www.facebook.com/me?preview_cover=" . $response->getProperty('id');
 		}
-
-		// $request = new Facebook\FacebookRequest($fbSession, 'GET', '/me');
-		// $response = $request->execute();
-		// $graphObject = $response->getGraphObject();
-		// $this->log->debug($graphObject);
 
 		return $fbImageLink;
 	}

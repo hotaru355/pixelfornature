@@ -71,15 +71,6 @@ div.bg {
 	background-repeat: no-repeat;
 }
 
-.fullScreen {
-	position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0px;
-    left: 0px;
-    /* sit on top of camera control */
-    z-index: 10;
-}
 
 .absoluteWrapper {
 	position: absolute;
@@ -106,29 +97,27 @@ div.bg {
     background-color:rgba(0, 0, 0, 0.7);
 }
 
-
-button.close {
-	float: right;
-}
-
-button#closeMenu {
-	padding-top: 10px;
-	padding-bottom: 20px;
-}
-
-button#closeHelp {
-	padding-top: 10px;
-	padding-bottom: 20px;
-}
-
-div#menu{
+.fullscreenOverlay{
 	position: absolute;
-	top: -100%;
+	top: 0;
 	left: 0;
     height: 100%;
     width: 100%;
     overflow-y: auto;
     z-index: 100;
+}
+
+button.close {
+	float: right;
+}
+
+button.close {
+	margin-top: 10px;
+	margin-bottom: 20px;
+}
+
+div#menu{
+	top: -100%;
 }
 
 div.pixelCount {
@@ -337,8 +326,23 @@ h3#illegalNameHeader {
 /* Vorschau
  **********/
 
+div#overlay {
+	position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    /* sit on top of camera control */
+    z-index: 10;
+   	-moz-transition: top 1s;
+	-webkit-transition: top 1s;
+	-ms-transition: top 1s;
+	-o-transition: top 1s;
+	transition: top 1s;
+}
+
 button#upload,
-button#download {
+a#download {
 	width: 80%;
 	margin: 20px auto;
 }

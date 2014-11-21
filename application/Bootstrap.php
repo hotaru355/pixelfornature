@@ -33,4 +33,9 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
 		Zend_Registry::set('Zend_Log', $log);
 	}
 
+	protected function _initRoutes() {
+		$router = Zend_Controller_Front::getInstance()->getRouter();
+		include APPLICATION_PATH . "/configs/routes.php";
+	}
+
 }

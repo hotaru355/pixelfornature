@@ -119,14 +119,11 @@ $htmlEntities = new Zend_Filter_HtmlEntities();
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div id="clipping" class="shadowed center-block">
                 <img id="clippingImage" src="<?php echo $htmlEntities->filter($this->imagePath); ?>" />
-                <form id="ausschnitt" action="vorschau" method="get">
+                <form id="ausschnitt" action="vorschau" method="POST">
                     <input type="text" id="name" name="name" maxlength="25" placeholder="Dein Name"/>
                     <input type="hidden" id="x" name="x" value="0" />
                     <input type="hidden" id="y" name="y" value="0" />
                     <input type="hidden" id="scale" name="scale" value="0" />
-                    <input type="hidden" id="image" name="image"
-                        value="<?php echo $htmlEntities->filter($this->params["image"]); ?>"
-                    />
                 </form>
                 <img id="profilePhotoOverlay" src="/images/fbHead.png" />
             </div>

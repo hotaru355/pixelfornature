@@ -8,7 +8,9 @@ $this->headScript()
     ->appendFile("/js/purl/purl.js");
 
 $this->headScript()
-    ->appendScript("var imageUrls = " . $this->galeryFilesJs . ";");
+    ->appendScript(
+        "var imageUrls = {$this->galeryFilesJs};
+        var selected = {$this->imageIndex};");
 $this->headScript()
     ->appendFile("/js/auswahl.js");
 ?>
@@ -46,7 +48,7 @@ $this->headScript()
     </div>
 </div>
 
-<form id="auswahl" action="ausschnitt" method="get">
+<form id="auswahl" action="ausschnitt" method="POST">
     <input type="hidden" id="image" name="image" value="" />
 </form>
 

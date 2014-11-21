@@ -1,7 +1,7 @@
 <?php
 // Seitentitel
 $this->headTitle()
-    ->prepend("Vorschau");
+    ->prepend("3. Spende deine Fläche");
 
 // CSS
 $this->headStyle()->appendStyle(sprintf("
@@ -26,11 +26,11 @@ $this->headScript()
 $htmlEntities = new Zend_Filter_HtmlEntities();
 ?>
 
-<div id="" class="fullScreen transparentLight">
+<div id="overlay" class="fullScreen transparentLight">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
-                <button id="closeHelp" type="button" class="close">
+                <button id="closeOverlay" type="button" class="close">
                     <span aria-hidden="true">&times;</span>
                     <span class="sr-only">Close</span>
                 </button>
@@ -59,21 +59,18 @@ $htmlEntities = new Zend_Filter_HtmlEntities();
                 <p class="text-center">Du kannst dich im nächsten Schritt mit deinem Facebook-Account anmelden und das Bild automatisch hochladen lassen. Das war‘s schon!</p>
             </div>
             <div class="col-sm-4">
-                <a href="<?php echo $this->generatedPath; ?>" download="PixelForNature.png">
-                <button id="download" type="button" class="btn btn-default center-block">Downloaden</button></a>
+                <a id="download" href="<?php echo $this->generatedPath; ?>" download="PixelForNature.png"
+                class="btn btn-default center-block" role="button">Downloaden</a>
                 <p class="text-center">Oder du kannst das Bild auf deinen Computer downloaden und manuell bei Facebook hochladen.</p>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-8 col-sm-offset-2">
-                <div id="successMsg" class="alert alert-success initiallyHidden" role="alert">
-                    <p><span class="glyphicon glyphicon-ok-circle"></span>&nbsp;<strong>OK!</strong><br />Ihr neues Cover-Photo wurde erfolgreich zu Ihren Facebook-Photos hinzugefügt und befindet sich in einem Fotoalbum mit dem Namen "Naturefund". Bitte besätigen Sie das neue Cover-Bild im geöffneten Browserfenster.</p>
-                </div>
                 <div id="commError" class="alert alert-danger initiallyHidden" role="alert">
-                    <p><span class="glyphicon glyphicon-warning-sign"></span>&nbsp;<strong>Kommikationsfehler:</strong><br />Bei der Kommunikation mit dem Naturefund-Server trat ein Fehler auf. Ihr Bild wurde nicht hochgeladen!</p>
+                    <p><span class="glyphicon glyphicon-warning-sign"></span>&nbsp;<strong>Kommikationsfehler:</strong><br />Leider lief bei der Kommunikation mit dem Naturefund-Server etwas schief und das Bild konnte nicht hochgeladen werden.</p>
                 </div>
                 <div id="facebookError" class="alert alert-danger initiallyHidden" role="alert">
-                    <p><span class="glyphicon glyphicon-warning-sign"></span>&nbsp;<strong>Fehler</strong>&nbsp;(<span id="errorCode"></span>):<br />Bei der Kommunikation mit Facebook trat ein Fehler auf. Ihr Bild konnte nicht hochgeladen werden!<br />Bitte probieren Sie es zu einem späteren Zeitpunkt noch einmal.</p>
+                    <p><span class="glyphicon glyphicon-warning-sign"></span>&nbsp;<strong>Fehler</strong>&nbsp;(<span id="errorCode"></span>):<br />Leider lief bei der Kommunikation mit dem Facebook-Server etwas schief und das Bild konnte nicht hochgeladen werden. Vielleicht probierst du es einfach später noch einmal.</p>
                 </div>
             </div>
         </div>
