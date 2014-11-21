@@ -39,11 +39,11 @@
 			url : 'hochladen',
 			type : 'GET',
 			dataType : 'json',
-			data : {
-				'accessToken' : authResponse['accessToken'],
-				'signedRequest' : authResponse['signedRequest'],
-				'userID' : authResponse['userID']
-			},
+			// data : {
+			// 	'accessToken' : authResponse['accessToken'],
+			// 	'signedRequest' : authResponse['signedRequest'],
+			// 	'userID' : authResponse['userID']
+			// },
 			global : true,
 			beforeSend : function() {
 				$('button#upload').attr('disabled', 'disabled');
@@ -54,11 +54,11 @@
 		}).always(function() {
 			$('button#upload').removeAttr('disabled');
 		}).done(function(responseJson) {
-			if (responseJson['link']) {
+			if (responseJson.linkUrl) {
 				$('div#successMsg').show();
-				window.open(responseJson['link'], '_blank', 'fullscreen=yes,height=600,width=900,scrollbars=yes');
+				window.open(responseJson.linkUrl, '_blank', 'fullscreen=yes,height=600,width=900,scrollbars=yes');
 			} else {
-				$('span#errorCode').html(responseJson['errorCode']);
+				$('span#errorCode').html(responseJson.errorCode);
 				$('div#facebookError').show();
 			}
 		}).fail(function(responseJson) {
@@ -87,7 +87,7 @@
 						// The person is not logged into Facebook, so we're not sure if
 						// they are logged into this app or not.
 						}
-					}, {scope: 'user_photos,manage_pages'});
+					}, {scope: 'user_photos,publish_actions,manage_pages'});
 				}
 			});
 		});

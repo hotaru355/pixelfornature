@@ -5,40 +5,34 @@ class FacebookService {
 
 	public function __construct() {
 		$this->log = Zend_Registry::get('Zend_Log');
-		// Zend_Loader::loadFile("facebook.php");
-
-		// $this->facebook = new Facebook(
-		//         array(
-		//                 "appId" => "1410418365855348",
-		//                 "secret" => "c39cebabff11320e15ee20870cdc60ad",
-		//                 "cookie" => true,
-		//                 "fileUpload" => true
-		//         ));
 	}
 
-	public function uploadPhoto($accessData, $imagePath) {
-		Facebook\FacebookSession::setDefaultApplication("1410418365855348", "c39cebabff11320e15ee20870cdc60ad");
+	public function uploadPhoto($imagePath) {
+		Facebook\FacebookSession::setDefaultApplication(
+			"1410418365855348", // AppId
+			"c39cebabff11320e15ee20870cdc60ad"// AppSecret
+		);
+		$fbImageLink = null;
+		$fbSession = (new Facebook\FacebookJavaScriptLoginHelper())->getSession();
 
-		$helper = new Facebook\FacebookJavaScriptLoginHelper();
-		try {
-			$session = $helper->getSession();
-		} catch (Facebook\FacebookRequestException $ex) {
-			// When Facebook returns an error
-			$this->log->error($ex);
-		} catch (\Exception $ex) {
-			// When validation fails or other local issues
-			$this->log->error($ex);
+		if ($fbSession) {
+			$response = (new Facebook\FacebookRequest(
+				$fbSession, 'POST', '/me/photos',
+				array(
+					'source' => new CURLFile($imagePath, 'image/png'),
+					'message' => 'Ich spende Pixel für Natur!',
+				)
+			))->execute()->getGraphObject();
+
+			$this->log->debug(print_r($response, true));
+
+			$fbImageLink = "https://www.facebook.com/me?preview_cover=" . $response['data']['id'];
 		}
-		if ($session) {
-			// Logged in
-		}
 
-		$request = new Facebook\FacebookRequest($session, 'GET', '/me');
-		$response = $request->execute();
-		$graphObject = $response->getGraphObject();
-
-		$this->log->debug($response);
-		$this->log->debug($graphObject);
+		// $request = new Facebook\FacebookRequest($fbSession, 'GET', '/me');
+		// $response = $request->execute();
+		// $graphObject = $response->getGraphObject();
+		// $this->log->debug($graphObject);
 
 		return $fbImageLink;
 	}

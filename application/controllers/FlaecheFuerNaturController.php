@@ -101,27 +101,28 @@ class FlaecheFuerNaturController extends Zend_Controller_Action {
 			Zend_Loader::loadFile("FacebookService.php");
 
 			try {
-				// Lade hoch zu Facebook
-				$accessData = array(
-					"accessToken" => $this->getParam("accessToken"),
-					"signedRequest" => $this->getParam("signedRequest"),
-					"userID" => $this->getParam("userID")
-				);
-				$this->session->fbAccessData = $accessData;
-
 				$facebookService = new FacebookService();
-				$link = $facebookService->uploadPhoto($accessData, $this->session->generatedPath);
+				$link = $facebookService->uploadPhoto($this->session->generatedPath);
 				$result = array(
 					"errorCode" => null,
 					"errorMsg" => null,
-					"link" => $link,
+					"linkUrl" => $link,
 				);
-			} catch (Exception $e) {
-				$this->log->err(sprintf("Error code: %d\n%s", $e->getCode(), $e->getMessage()));
+			} catch (Facebook\FacebookRequestException $ex) {
+				// When Facebook returns an error
+				$this->log->err(sprintf("Error code: %d\n%s", $ex->getCode(), $ex->getMessage()));
 				$result = array(
-					"errorCode" => $e->getCode(),
-					"errorMsg" => $e->getMessage(),
-					"link" => null
+					"errorCode" => $ex->getCode(),
+					"errorMsg" => $ex->getMessage(),
+					"linkUrl" => null
+				);
+			} catch (\Exception $ex) {
+				// When validation fails or other local issues
+				$this->log->err($ex);
+				$result = array(
+					"errorCode" => $ex->getCode(),
+					"errorMsg" => $ex->getMessage(),
+					"linkUrl" => null
 				);
 			}
 			echo Zend_Json::encode($result);
