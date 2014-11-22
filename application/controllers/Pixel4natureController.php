@@ -145,6 +145,7 @@ class Pixel4natureController extends Zend_Controller_Action {
 
 	public function dankeAction() {
 		if (isset($this->session->donatedPixels)) {
+			$this->view->assign("imagePath", $this->session->image['pathRel']);
 			$this->view->assign("squarePixels", $this->session->donatedPixels);
 		} else {
 			// Es wurde nichts gespendet. Zurueck zur Auswahl.

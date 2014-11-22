@@ -3,43 +3,14 @@
 $this->headTitle()
     ->prepend("Danke!");
 
+$this->headStyle()->appendStyle(
+    "div#bg0 {
+        background-image: url('{$this->imagePath}');
+    }");
+
 $this->headScript()
     ->appendFile("/js/danke.js");
-
 ?>
 
-
-<div class="transparentDark fullscreenOverlay" >
-    <div id="" class="container-fluid">
-        <div class="row">
-            <div class="col-md-12 col-sm-12 col-xs-12">
-                <button id="closeThankyou" type="button" class="close">
-                    <span aria-hidden="true">&times;</span>
-                    <span class="sr-only">Close</span>
-                </button>
-            </div>
-        </div>
-    </div>
-    <div id="" class="container">
-        <div class="row">
-            <div class="col-sm-4 col-sm-offset-4">
-                <h2>Du hast erfolgreich</h2>
-                <div class="pixelCount">
-                    <?php echo $this->squarePixels ?> px&sup2;
-                </div>
-                <h2>gespendet.</h2>
-                <hr />
-                <p>Um deine Pixel zu sammeln, melde dich einfach mit deinem persönlichen Naturefund-Account an:</p>
-                <form>
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="E-Mail">
-                        <input type="text" class="form-control" placeholder="Passwort">
-                        <span class="input-group-addon glyphicon glyphicon-chevron-right"></span>
-                    </div>
-                    <a>Noch nicht registriert? Jetzt mitmachen!</a><br />
-                    <a>Passwort vergessen?</a>
-                </form>
-            </div>
-        </div>
-    </div>
+<div id="content">
 </div>

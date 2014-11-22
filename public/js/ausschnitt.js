@@ -58,14 +58,9 @@
 	}
 
 	$(function() {
-	    // init bg divs
-	    $('div#bg0').css({
-	        'background-image': 'url("' + imagePath + '")',
-	        'z-index': -1
-	    });
-	    $('div#bg1').css({
-	        'z-index': -1
-	    });
+
+	    // init menu
+	    $('div#slidingContainer').append($('div#menuLanding'));
 
 		var initialMatrix = getInitialMatrix();
 		$('#slider').circleSlider({

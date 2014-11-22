@@ -19,7 +19,7 @@ class FacebookService {
 			$response = (new Facebook\FacebookRequest(
 				$fbSession, 'POST', '/me/photos',
 				array(
-					'source' => new CURLFile($imagePath, 'image/png'),
+					'source' => '@' . 'image/png',
 					'message' => 'Ich spende Pixel für Natur!',
 				)
 			))->execute()->getGraphObject();
@@ -30,37 +30,6 @@ class FacebookService {
 		return $fbImageLink;
 	}
 
-	public function uploadPhoto2($accessData, $imagePath) {
-		$this->facebook->setAccessToken($accessData["accessToken"]);
-
-		try {
-			$albums = $this->facebook->api("/me/albums");
-			$album_id = "";
-
-			foreach ($albums["data"] as $item) {
-				if ($item["type"] == "cover") {
-					$album_id = $item["id"];
-					break;
-				}
-			}
-			// $this->_log->info("albumID: " . $album_id);
-
-			$args = array(
-				'message' => 'Hochgeladen von Naturefund.de',
-				'source' => '@' . $imagePath,
-			);
-
-			// $data = $facebook->api("/" . $album_id . "/photos", 'post', $args);
-			$data = $this->facebook->api("/me/photos", 'post', $args);
-			$pictue = $this->facebook->api('/' . $data['id']);
-			$fbImageLink = "https://www.facebook.com/profile.php?preview_cover=" . $data['id'];
-		} catch (FacebookApiException $e) {
-			$result = $e->getResult();
-			throw new Exception($result["error"]["message"], $result["error"]["code"], $e);
-		}
-
-		return $fbImageLink;
-	}
 }
 
 // $facebook->setFileUploadSupport(true);

@@ -43,7 +43,10 @@
 	    $('div#bg1').css({
 	        'z-index': -1
 	    });
-	 
+
+	    // init menu
+	    $('div#slidingContainer').append($('div#menuLanding'));
+
 	    // camera controller
 	    $('area#backCtrl').mouseenter(function() {
 			$('div#controllerDiv').css('background-position', '0 0');

@@ -100,8 +100,8 @@
                             <input type="text" class="form-control" placeholder="Passwort">
                             <span class="input-group-addon glyphicon glyphicon-chevron-right"></span>
                         </div>
-                        <a id="registerNow">Noch nicht registriert? Jetzt mitmachen!</a><br />
-                        <a id="lostPassword">Passwort vergessen?</a>
+                        <a class="registerNow">Noch nicht registriert? Jetzt mitmachen!</a><br />
+                        <a class="lostPassword">Passwort vergessen?</a>
                         <hr />
 
                         <h3>Newsletter</h3>
@@ -117,53 +117,81 @@
         </li>
         <li>
             <div id="menuNewMember" class="container-fluid slidingHorizontal">
-            <div id="" class="row">
-                <div class="col-sm-4 col-sm-offset-4">
-                    <h2>Einen neuen Naturefund Account erstellen</h2>
-                    <?php echo $this->neuesMitgliedForm; ?>
-                    <button type="button" class="btn btn-default">Registrieren</button>
-                </div>
-            </div>
-            </div>
-        </li>
-        <li>
-            <div id="menuResetPassword" class="row slidingHorizontal">
-                <div class="col-sm-4 col-sm-offset-4">
-                    <h2>Dein Passwort zurücksetzen</h2>
-                    <input type="text" placeholder="E-Mail" />
-                    <button type="btn btn-default">Zurücksetzen</button>
-                </div>
-            </div>
-        </li>
-        <li>
-            <div id="menuAccount" class="row slidingHorizontal">
-                <div class="col-sm-3">
-                    Deine Naturefund-Erfolge
-                    <hr />
-
-                    <h3>Deine bisher gespendeten Pixel</h3>
-                    <div class="pixelCount">
-                        517.944 px&sup2;
+                <div id="" class="row">
+                    <div class="col-sm-4 col-sm-offset-4">
+                        <h2>Einen neuen Naturefund Account erstellen</h2>
+                        <?php echo $this->neuesMitgliedForm; ?>
+                        <button type="button" class="btn btn-default">Registrieren</button>
                     </div>
-                    <hr />
                 </div>
-                <div class="col-sm-6">
-                    Deine Aktivitäten
-                    <hr class="mainColumn" />
-                    <h2><strong>Hallo Max</strong>, das hast du bereits mit Naturefund erreicht:</h2>
-                    <ul>
-                        <li><p>Am <strong>19. Mai 2014</strong> hast du <strong>24.689 px&sup2;</strong> für das <strong>Hangquellmoor in Baden-Württemberg</strong> gespendet.</p></li>
-                        <li><p>Am <strong>07. März 2014</strong> hast du <strong>48.674 px&sup2;</strong> für die <strong>Streuobstwiese Musterstadt</strong> gespendet.</p></li>
-                        <li><p>Am <strong>27. Februar 2014</strong> hast du <strong>17.342 px&sup2;</strong> für den <strong>Buchenwald Hümmel</strong> gespendet.</p></li>
-                        <li><p>Du bist am <strong>14. Februar 2014</strong> Weltretter bei Naturefund geworden.</p></li>
-                    </ul>
+            </div>
+        </li>
+        <li>
+            <div id="menuResetPassword" class="container-fluid slidingHorizontal">
+                <div id="" class="row">
+                    <div class="col-sm-4 col-sm-offset-4">
+                        <h2>Dein Passwort zurücksetzen</h2>
+                        <input type="text" placeholder="E-Mail" />
+                        <button type="btn btn-default">Zurücksetzen</button>
+                    </div>
                 </div>
-                <div class="col-sm-3">
-                    Konto Einstellungen
-                    <hr />
-                    <h3>Ihre Angaben</h3>
-                    <h3>Ihre Zugangsdaten</h3>
-                    <a href="">Möchten Sie Ihr Konto löschen?</a>
+            </div>
+        </li>
+        <li>
+            <div id="menuAccount" class="container-fluid slidingHorizontal">
+                <div id="" class="row">
+                    <div class="col-sm-3">
+                        Deine Naturefund-Erfolge
+                        <hr />
+
+                        <h3>Deine bisher gespendeten Pixel</h3>
+                        <div class="pixelCount">
+                            517.944 px&sup2;
+                        </div>
+                        <hr />
+                    </div>
+                    <div class="col-sm-6">
+                        Deine Aktivitäten
+                        <hr class="mainColumn" />
+                        <h2><strong>Hallo Max</strong>, das hast du bereits mit Naturefund erreicht:</h2>
+                        <ul>
+                            <li><p>Am <strong>19. Mai 2014</strong> hast du <strong>24.689 px&sup2;</strong> für das <strong>Hangquellmoor in Baden-Württemberg</strong> gespendet.</p></li>
+                            <li><p>Am <strong>07. März 2014</strong> hast du <strong>48.674 px&sup2;</strong> für die <strong>Streuobstwiese Musterstadt</strong> gespendet.</p></li>
+                            <li><p>Am <strong>27. Februar 2014</strong> hast du <strong>17.342 px&sup2;</strong> für den <strong>Buchenwald Hümmel</strong> gespendet.</p></li>
+                            <li><p>Du bist am <strong>14. Februar 2014</strong> Weltretter bei Naturefund geworden.</p></li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-3">
+                        Konto Einstellungen
+                        <hr />
+                        <h3>Ihre Angaben</h3>
+                        <h3>Ihre Zugangsdaten</h3>
+                        <a href="">Möchten Sie Ihr Konto löschen?</a>
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div id="menuThankyou" class="container slidingHorizontal">
+                <div class="row">
+                    <div class="col-sm-4 col-sm-offset-4">
+                        <h2>Du hast erfolgreich</h2>
+                        <div class="pixelCount">
+                            <?php echo $this->squarePixels ?> px&sup2;
+                        </div>
+                        <h2>gespendet.</h2>
+                        <hr />
+                        <p>Um deine Pixel zu sammeln, melde dich einfach mit deinem persönlichen Naturefund-Account an:</p>
+                        <form>
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="E-Mail">
+                                <input type="text" class="form-control" placeholder="Passwort">
+                                <span class="input-group-addon glyphicon glyphicon-chevron-right"></span>
+                            </div>
+                            <a class="registerNow">Noch nicht registriert? Jetzt mitmachen!</a><br />
+                            <a class="lostPassword">Passwort vergessen?</a>
+                        </form>
+                    </div>
                 </div>
             </div>
         </li>

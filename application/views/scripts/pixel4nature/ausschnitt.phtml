@@ -3,13 +3,15 @@
 $this->headTitle()
     ->append("2. Wähle einen Ausschnitt");
 
-$this->headStyle()->appendStyle(sprintf("
-    div#clipping {
-        width: %dpx;
-        height: %dpx;
-    }", 
-    $this->dimensions["facebook"]["cover"]["width"], 
-    $this->dimensions["facebook"]["cover"]["height"]));
+$this->headStyle()->appendStyle(
+    "div#clipping {
+        width: {$this->dimensions["facebook"]["cover"]["width"]}px;
+        height: {$this->dimensions["facebook"]["cover"]["height"]}px;
+    }
+
+    div#bg0 {
+        background-image: url('{$this->imagePath}');
+    }");
 
 // JavaScript
 $this->headScript()

@@ -22,21 +22,26 @@
 	var menuNewMember, menuLanding, menuResetPassword, menuAccount;
 
 	function transitionMenu(menuDiv) {
+		placeMenu(menuDiv, '0');
 		$('div#slidingContainer').append(menuDiv);
-		//			console.log('children', $('div#slidingContainer').children())
+		$('div#slidingContainer')[0].offsetHeight;
 		$('div#slidingContainer').children().each(function(index, child) {
 			$(this).css('left', '-50%');
 		})
+	}
+
+	function placeMenu(menuDiv, left) {
+		menuDiv.addClass('noTransition'); // Disable transitions
+		menuDiv.css('left', left);
+		menuDiv[0].offsetHeight; // Trigger a reflow, flushing the CSS changes
+		menuDiv.removeClass('noTransition'); // Re-enable transitions
 	}
 
 	function resetMenu() {
 		if ($('div#slidingContainer').children().length > 1) {
 			$('div#slidingContainer').children().each(function(index, child) {
 				if (index === 0) {
-					$(this).addClass('noTransition'); // Disable transitions
-					$(this).css('left', '0');
-					$(this)[0].offsetHeight; // Trigger a reflow, flushing the CSS changes
-					$(this).removeClass('noTransition'); // Re-enable transitions
+					placeMenu($(this), '0');
 				} else {
 					$(this).remove();
 				}
@@ -46,11 +51,8 @@
 
 	$(function() {
 		menuNewMember = $('div#menuNewMember');
-		menuLanding = $('div#menuLanding');
 		menuResetPassword = $('div#menuResetPassword');
 		menuAccount = $('div#menuAccount');
-
-		$('div#slidingContainer').append(menuLanding);
 
 	    $('area#infoCtrl').click(function() {
 	        resetMenu();
@@ -69,11 +71,11 @@
 	    });
 
 
-		$('a#registerNow').click(function() {
+		$('a.registerNow').click(function() {
 	        transitionMenu(menuNewMember);
 	    });
 
-		$('a#lostPassword').click(function() {
+		$('a.lostPassword').click(function() {
 	        transitionMenu(menuResetPassword);
 	    });
 	})
