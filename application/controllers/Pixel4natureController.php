@@ -8,24 +8,53 @@ class Pixel4natureController extends Zend_Controller_Action {
 	private $galeryFilesRel;
 
 	public function init() {
-		$this->session = new Zend_Session_Namespace('pixelfornature');
 		$this->log = Zend_Registry::get('Zend_Log');
-		// $this->view->assign("params", $this->getRequest()->getParams());
 		$this->view->addScriptPath(APPLICATION_PATH . "/views/partials");
 
-		$this->dimensions = $this->getInvokeArg('bootstrap')->getOption('m2spende')['dimensions'];
+		$this->session = new Zend_Session_Namespace('pixelfornature');
+		$interactionMapper = new Application_Model_DbTable_Interaktion();
+		if (!isset($this->session->project)) {
+			$projectMapper = new Application_Model_DbTable_Projekt();
+			$project = $projectMapper->getCurrent();
+			$this->session->project = $project;
+		}
+		$this->session->project['pixelsTotal'] = $interactionMapper->getPixelsTotalByProject($this->session->project['id']);
+		$this->session->project['lastDonors'] = $interactionMapper->getLastDonors($this->session->project['id']);
+		$this->view->assign("session", $this->session);
 
+		$ajaxContext = $this->_helper->getHelper('AjaxContext');
+		$ajaxContext->addActionContext('hochladen', 'json')->initContext();
+
+		$auth = Zend_Auth::getInstance();
+		$this->view->assign("isLoggedin", $auth->hasIdentity());
+
+		if ($auth->hasIdentity()) {
+			if (!isset($this->session->user)) {
+				// load user!
+				throw new Exception("No session user", 1);
+			}
+			$updateMemberForm = new Application_Form_NewMember("Update");
+			$updateMemberForm->populate((array) $this->session->user);
+			$this->view->assign("updateMemberForm", $updateMemberForm);
+		} else {
+			$loginForm = new Application_Form_Login();
+			$this->view->assign("loginForm", $loginForm);
+			$newMemberForm = new Application_Form_NewMember("Signup");
+			$this->view->assign("newMemberForm", $newMemberForm);
+		}
+
+		$this->dimensions = $this->getInvokeArg('bootstrap')->getOption('m2spende')['dimensions'];
 		$this->galeryPath = realpath(APPLICATION_PATH . "/../public/images/galerie");
 		$this->galeryFilesAbs = glob($this->galeryPath . "/*");
 		$this->galeryFilesRel = array_map(function ($file) {
 			return str_replace(realpath(APPLICATION_PATH . "/../public/"), "", $file);
 		}, $this->galeryFilesAbs);
+		$this->dimensions['squarePixels'] = number_format(
+			$this->dimensions["facebook"]["cover"]["width"] * $this->dimensions["facebook"]["cover"]["height"],
+			0, ",", ".");
+		$this->view->assign("squarePixels", $this->dimensions['squarePixels']);
 
-		$neuesMitgliedForm = new Application_Form_Mitglied();
-		$this->view->assign("neuesMitgliedForm", $neuesMitgliedForm);
-
-		$ajaxContext = $this->_helper->getHelper('AjaxContext');
-		$ajaxContext->addActionContext('hochladen', 'json')->initContext();
+		// var_dump($_SESSION['pixelfornature']['user']);
 	}
 
 	public function auswahlAction() {
@@ -36,7 +65,6 @@ class Pixel4natureController extends Zend_Controller_Action {
 
 		$this->view->assign("step", 1);
 		$this->view->assign("galeryFilesJs", $galeryFilesJs);
-		$this->view->assign("justUploaded", $this->session->justUploaded);
 		if (isset($this->session->image) && isset($this->session->image['index'])) {
 			$this->view->assign("imageIndex", $this->session->image['index']);
 		} else {
@@ -112,12 +140,17 @@ class Pixel4natureController extends Zend_Controller_Action {
 
 			try {
 				$facebookService = new FacebookService();
-				$link = $facebookService->uploadPhoto($this->session->image['generatedRel']);
+				$link = $facebookService->uploadPhoto($this->session->image['generatedAbs']);
 				$result = array(
 					"errorCode" => null,
 					"errorMsg" => null,
 					"linkUrl" => $link,
 				);
+				$auth = Zend_Auth::getInstance();
+				if ($auth->hasIdentity()) {
+					$interactionMapper = new Application_Model_DbTable_Interaktion();
+					$interactionMapper->createDonation($this->session->user['id'], $this->session->project['id'], $this->dimensions['squarePixels']);
+				}
 			} catch (Facebook\FacebookRequestException $ex) {
 				// When Facebook returns an error
 				$this->log->err("Facebook Error: {$ex->getCode()}\n{$ex->getMessage()}");
@@ -136,9 +169,7 @@ class Pixel4natureController extends Zend_Controller_Action {
 				);
 			}
 
-			$this->session->donatedPixels = number_format(
-				$this->dimensions["facebook"]["cover"]["width"] * $this->dimensions["facebook"]["cover"]["height"],
-				0, ",", ".");
+			$this->session->donatedPixels = $this->dimensions['squarePixels'];
 			$this->_helper->json($result);
 		}
 	}
@@ -146,11 +177,48 @@ class Pixel4natureController extends Zend_Controller_Action {
 	public function dankeAction() {
 		if (isset($this->session->donatedPixels)) {
 			$this->view->assign("imagePath", $this->session->image['pathRel']);
-			$this->view->assign("squarePixels", $this->session->donatedPixels);
 		} else {
 			// Es wurde nichts gespendet. Zurueck zur Auswahl.
 			$this->_helper->redirector->gotoUrl('/');
 		}
 	}
 
+// private function _userToArray($userObj) {
+	//         $arrayObj = array(
+	//             'vorname' => $this->getVorname(),
+	//             'name' => $this->getName(),
+	//             'email' => $this->getEmail(),
+	//             'passwort_hash' => $this->getPasswortHash(),
+	//         );
+
+//         if (null !== $this->getAnrede()) {
+	//             $arrayObj['anrede'] = $this->getAnrede();
+	//         }
+	//         if (null !== $this->getStrasse()) {
+	//             $arrayObj['strasse'] = $this->getStrasse();
+	//         }
+	//         if (null !== $this->getPlz()) {
+	//             $arrayObj['plz'] = $this->getPlz();
+	//         }
+	//         if (null !== $this->getOrt()) {
+	//             $arrayObj['ort'] = $this->getOrt();
+	//         }
+	//         if (null !== $this->getLand()) {
+	//             $arrayObj['land'] = $this->getLand();
+	//         }
+	//         if (null !== $this->getVerifizierungHash()) {
+	//             $arrayObj['verifizierung_hash'] = $this->getVerifizierungHash();
+	//         }
+	//         if (null !== $this->getStatus()) {
+	//             $arrayObj['status'] = $this->getStatus();
+	//         }
+	//         if (null !== $this->getDatumGeandert()) {
+	//             $arrayObj['datum_geaendert'] = $this->getDatumGeandert();
+	//         }
+	//         if (null !== $this->getDatumErstellt()) {
+	//             $arrayObj['datum_erstellt'] = $this->getDatumErstellt();
+	//         }
+
+//         return $arrayObj;
+	//     }
 }

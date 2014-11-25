@@ -1,4 +1,3 @@
-
 // imageHandler = {
 // 	paramName : 'image',
 // 	image : '',
@@ -49,34 +48,201 @@
 		}
 	}
 
+	function mapErrorToLabel(errors, idPostfix) {
+		$.map(errors, function(error, id) {
+			var formGroup = $('div#' + id + idPostfix + 'Group');
+			formGroup.addClass('has-error');
+			$.map(errors[id], function(errMsg, errName) {
+				formGroup.append('<label class="control-label" for="' + id + idPostfix + '">' + errMsg + '</label>');
+			});
+		});
+	}
+
+	function clearErrorLabels() {
+		$('div.form-group').removeClass('has-error');
+		$('div.form-group label').remove();
+	}
+
+
 	$(function() {
 		menuNewMember = $('div#menuNewMember');
 		menuResetPassword = $('div#menuResetPassword');
 		menuAccount = $('div#menuAccount');
 
-	    $('area#infoCtrl').click(function() {
-	        resetMenu();
-	        $('div#menu').animate({top: 0});
+		$('area#infoCtrl').click(function() {
+			resetMenu();
+			$('div#menu').animate({
+				top: 0
+			});
 		});
-	    $('button#closeMenu').click(function() {
-	        $('div#menu').animate({top: '-100%'});
-	    });
-
-  	    $('area#flashCtrl').click(function() {
-		    $('div#helpBox').toggle();
+		$('button#closeMenu').click(function() {
+			$('div#menu').animate({
+				top: '-100%'
+			});
 		});
 
-	    $('button#closeHelp').click(function() {
-	        $('div#helpBox').toggle();
-	    });
+		$('area#flashCtrl').click(function() {
+			$('div#helpBox').toggle();
+		});
+
+		$('button#closeHelp').click(function() {
+			$('div#helpBox').toggle();
+		});
 
 
 		$('a.registerNow').click(function() {
-	        transitionMenu(menuNewMember);
-	    });
+			transitionMenu(menuNewMember);
+		});
 
 		$('a.lostPassword').click(function() {
-	        transitionMenu(menuResetPassword);
-	    });
+			transitionMenu(menuResetPassword);
+		});
+
+		$('button#memberAccount').click(function() {
+			transitionMenu(menuAccount);
+		});
+
+		var signupBtn = $('button#registerNewMember');
+		signupBtn.click(function() {
+			$.ajax({
+				url: 'mitglieder/neu',
+				type: 'POST',
+				dataType: 'json',
+				global: true,
+				data: {
+					vorname: $('input#vornameSignup').val(),
+					nachname: $('input#nachnameSignup').val(),
+					email: $('input#emailSignup').val(),
+					passwort: $('input#passwortSignup').val(),
+					passwortWiederholt: $('input#passwortWiederholtSignup').val(),
+				},
+				beforeSend: function() {
+					signupBtn.attr('disabled', 'disabled');
+					clearErrorLabels()
+				}
+			}).always(function() {
+				signupBtn.removeAttr('disabled');
+			}).done(function(responseJson) {
+				if (responseJson.error) {
+					mapErrorToLabel(responseJson.error, 'Signup');
+				} else {
+					location.reload();
+				}
+			}).fail(function(responseJson) {
+				$('div#commError').show();
+			});
+		});
+		
+		var loginBtn = $('button#loginMember');
+		loginBtn.click(function() {
+			$.ajax({
+				url: 'auth/login',
+				type: 'POST',
+				dataType: 'json',
+				global: true,
+				data: {
+					email: $('input#emailLogin').val(),
+					passwort: $('input#passwortLogin').val(),
+				},
+				beforeSend: function() {
+					loginBtn.attr('disabled', 'disabled');
+					clearErrorLabels()
+				}
+			}).always(function() {
+				loginBtn.removeAttr('disabled');
+			}).done(function(responseJson) {
+				if (responseJson.error) {
+					mapErrorToLabel(responseJson.error, 'Login');
+				} else if (responseJson.success) {
+					location.reload();
+				} else {
+					var formGroup = $('div#loginFailed');
+					formGroup.addClass('has-error');
+					formGroup.append('<label class="control-label" for="passwortLogin">Die Anmeldung schlug leider fehl</label>');
+				}
+			}).fail(function(responseJson) {
+				$('div#commError').show();
+			});
+		});
+
+		var logoutBtn = $('button#logoutMember');
+		logoutBtn.click(function() {
+			$.ajax({
+				url: 'auth/logout',
+				type: 'POST',
+				dataType: 'json',
+				global: true,
+				beforeSend: function() {
+					logoutBtn.attr('disabled', 'disabled');
+				}
+			}).always(function() {
+				logoutBtn.removeAttr('disabled');
+			}).done(function(responseJson) {
+				location.reload();
+			}).fail(function(responseJson) {});
+		});
+
+		var updateContactBtn = $('button#updateContact');
+		updateContactBtn.click(function() {
+			$.ajax({
+				url: 'mitglieder/aendern',
+				type: 'POST',
+				dataType: 'json',
+				global: true,
+				data: {
+					vorname: $('input#vornameUpdate').val(),
+					nachname: $('input#nachnameUpdate').val(),
+					strasse: $('input#strasseUpdate').val(),
+					plz: $('input#plzUpdate').val(),
+					ort: $('input#ortUpdate').val(),
+					telefon: $('input#telefonUpdate').val(),
+				},
+				beforeSend: function() {
+					updateContactBtn.attr('disabled', 'disabled');
+					clearErrorLabels()
+				}
+			}).always(function() {
+				updateContactBtn.removeAttr('disabled');
+			}).done(function(responseJson) {
+				if (responseJson.success) {
+					alert('Kontaktdaten wurden aktualisiert!');
+				} else {
+					mapErrorToLabel(responseJson.error, 'Update');
+				}
+			}).fail(function(responseJson) {});
+		});
+
+		var updateCredentialBtn = $('button#updateCredential');
+		updateCredentialBtn.click(function() {
+			var data = {
+				email: $('input#emailUpdate').val()
+			};
+			var password = $('input#passwortUpdate').val();
+			var passwordRep = $('input#passwortWiederholtUpdate').val();
+			if (password !== "" || passwordRep !== "") {
+				data.passwort = password;
+				data.passwortWiederholt = passwordRep;
+			}
+
+			$.ajax({
+				url: 'mitglieder/aendern',
+				type: 'POST',
+				dataType: 'json',
+				global: true,
+				data: data,
+				beforeSend: function() {
+					updateCredentialBtn.attr('disabled', 'disabled');
+					clearErrorLabels()
+				}
+			}).always(function() {
+				updateCredentialBtn.removeAttr('disabled');
+			}).done(function(responseJson) {
+				if (responseJson.success) {
+					alert('Zugangsdaten wurden aktualisiert!');
+				} else {
+					mapErrorToLabel(responseJson.error, 'Update');
+				}
+			}).fail(function(responseJson) {});
+		});
 	})
 })();

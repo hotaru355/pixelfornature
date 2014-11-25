@@ -125,6 +125,8 @@ div.pixelCount {
     text-align: center;
     font-size: 200%;
     font-weight: 900;
+	padding-top: 0.3em;
+	padding-bottom: 0.3em;
     border: 2px solid;
     border-radius: 5px;
     border-color: green;
@@ -174,6 +176,8 @@ div#slidingContainer {
 	left: 0;
 	width: 50%;
 	float: left;
+	padding-left: 3%;
+	padding-right: 3%;
 	-moz-transition: left 1s; 
 	-webkit-transition: left 1s;  
 	-ms-transition: left 1s;  

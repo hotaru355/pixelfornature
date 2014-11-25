@@ -22,8 +22,15 @@
     <!-- Bootstrap -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <script src="/js/pixelfornature.js"></script>
+    <?php
+    if (isset($this->session) && $this->session->loadMenu) {
+        $this->session->loadMenu = false;
+        $this->headScript()->appendScript(
+            "$(function() {
+                $('div#menu').css({top: 0});
+            })");
+    } ?>
     <?php echo $this->headScript(); ?>
-
 </head>
 
 <body>
@@ -45,15 +52,22 @@
 
                         <h3>Bisher gespendete Pixel</h3>
                         <div class="pixelCount">
-                            517.944 px&sup2;
+                            <?php echo number_format($this->session->project['pixelsTotal'], 0, ',', '.'); ?>&nbsp;px&sup2;
                         </div>
                         <hr />
 
                         <h3>Die letzten Pixelspender</h3>
                         <ul>
-                            <li>Aaron Wolber aus Köln</li>
-                            <li>Katja W. aus Wiesbaden</li>
-                            <li>Jonathan aus Haan</li>
+                            <?php
+                            $donorWithCityFormat = '<li><p>%s %s aus %s</p></li>';
+                            $donorWithoutCityFormat = '<li><p>%s %s</p></li>';
+                            foreach ($this->session->project['lastDonors'] as $donor) {
+                                if (isset($donor['ort'])) {
+                                    echo sprintf($donorWithCityFormat, $donor['vorname'], $donor['nachname'], $donor['ort']);
+                                } else {
+                                    echo sprintf($donorWithoutCityFormat, $donor['vorname'], $donor['nachname']);
+                                }
+                            } ?>
                         </ul>
                         <hr />
 
@@ -68,16 +82,8 @@
                         Aktuelles Projekt
                         <hr class="mainColumn" />
 
-                        <h3>Hangquellmoor in Baden-Württemberg</h3>
-                        <p>
-                        Naturefund will mit dem Förderverein Stiftung Wilde Argen ein Hangquellmoor kaufen und
-                        schützen. Das Moor liegt im Voralpenland, umfasst 8.853 m² und grenzt an die Obere Argen,
-                        einer der letzten wilden Gebirgsflüsse Europas. Mädesüß-Perlmutterfalter, Kaisermantel,
-                        Wildbiene und die größte einheimische Libelle, die seltene Gestreifte Quelljungfer, kommen
-                        hier vor. Das Moor ist ein wichtiger Lebensraum für zahlreiche seltene Arten.
-                        <br />
-                        Machen Sie mit! Bei diesem Projekt sichern Sie mit 5,00 EUR volle 4 m&sup2; für Libellen &amp; Co!
-                        </p>
+                        <h3><?php echo $this->session->project['name']; ?></h3>
+                        <?php echo $this->session->project['beschreibung']; ?>
                         <button type="button" class="btn btn-default">Jetzt spenden</button>
                     </div>
                     <div class="col-sm-3">
@@ -93,15 +99,27 @@
                         <hr />
 
                         <h3>Mein Naturefund Account</h3>
+                        <?php 
+                        if ($this->isLoggedin) {?>
+                        <button id="memberAccount" type="button" class="btn btn-default">Mein Account</button>
+                        <button id="logoutMember" type="button" class="btn btn-default">Logout</button>
+                        <?php } else {?>
                         <p>Um deine Pixel zu sammeln, melde dich einfach mit
                         deinem persönlichen Naturefund-Account an:</p>
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="E-Mail">
-                            <input type="text" class="form-control" placeholder="Passwort">
-                            <span class="input-group-addon glyphicon glyphicon-chevron-right"></span>
+                        <div class="form-inline" role="form">
+                            <div id="emailLoginGroup" class="form-group">
+                                <?php echo $this->loginForm->email->renderViewHelper(); ?>
+                            </div>
+                            <div id="passwortLoginGroup" class="form-group">
+                                <?php echo $this->loginForm->passwort->renderViewHelper(); ?>
+                            </div>
+                            <button id="loginMember"><span class="glyphicon glyphicon-chevron-right"></span></button>
+                            <div id="loginFailed" class="form-group">
+                            </div>
                         </div>
                         <a class="registerNow">Noch nicht registriert? Jetzt mitmachen!</a><br />
                         <a class="lostPassword">Passwort vergessen?</a>
+                        <?php } ?>
                         <hr />
 
                         <h3>Newsletter</h3>
@@ -115,17 +133,33 @@
                 </div>
             </div>
         </li>
+        <?php if (!$this->isLoggedin) {?>
         <li>
             <div id="menuNewMember" class="container-fluid slidingHorizontal">
                 <div id="" class="row">
                     <div class="col-sm-4 col-sm-offset-4">
                         <h2>Einen neuen Naturefund Account erstellen</h2>
-                        <?php echo $this->neuesMitgliedForm; ?>
-                        <button type="button" class="btn btn-default">Registrieren</button>
+                        <div id="vornameSignupGroup" class="form-group">
+                            <?php echo $this->newMemberForm->vorname->renderViewHelper() ?>
+                        </div>
+                        <div id="nachnameSignupGroup" class="form-group">
+                            <?php echo $this->newMemberForm->nachname->renderViewHelper() ?>
+                        </div>
+                        <div id="emailSignupGroup" class="form-group">
+                            <?php echo $this->newMemberForm->email->renderViewHelper() ?>
+                        </div>
+                        <div id="passwortSignupGroup" class="form-group">
+                            <?php echo $this->newMemberForm->passwort->renderViewHelper() ?>
+                        </div>
+                        <div id="passwortWiederholtSignupGroup" class="form-group">
+                            <?php echo $this->newMemberForm->passwortWiederholt->renderViewHelper() ?>
+                        </div>
+                        <button id="registerNewMember" type="button" class="btn btn-default btn-block">Registrieren</button>
                     </div>
                 </div>
             </div>
         </li>
+        <?php } else {?>
         <li>
             <div id="menuResetPassword" class="container-fluid slidingHorizontal">
                 <div id="" class="row">
@@ -146,31 +180,81 @@
 
                         <h3>Deine bisher gespendeten Pixel</h3>
                         <div class="pixelCount">
-                            517.944 px&sup2;
+                            <?php echo number_format($this->session->user['pixelsTotal'], 0, ',', '.') ?>&nbsp;px&sup2;
                         </div>
                         <hr />
                     </div>
                     <div class="col-sm-6">
                         Deine Aktivitäten
                         <hr class="mainColumn" />
-                        <h2><strong>Hallo Max</strong>, das hast du bereits mit Naturefund erreicht:</h2>
+                        <h2><strong>Hallo <?php echo $this->session->user['vorname'] ?></strong>, das hast du bereits mit Naturefund erreicht:</h2>
                         <ul>
-                            <li><p>Am <strong>19. Mai 2014</strong> hast du <strong>24.689 px&sup2;</strong> für das <strong>Hangquellmoor in Baden-Württemberg</strong> gespendet.</p></li>
-                            <li><p>Am <strong>07. März 2014</strong> hast du <strong>48.674 px&sup2;</strong> für die <strong>Streuobstwiese Musterstadt</strong> gespendet.</p></li>
-                            <li><p>Am <strong>27. Februar 2014</strong> hast du <strong>17.342 px&sup2;</strong> für den <strong>Buchenwald Hümmel</strong> gespendet.</p></li>
-                            <li><p>Du bist am <strong>14. Februar 2014</strong> Weltretter bei Naturefund geworden.</p></li>
+                            <?php 
+                            $signupFormat = '<li><p>Du bist am <strong>%s</strong> Weltretter bei Naturefund geworden.</p></li>';
+                            $spendeFormat = '<li><p>Am <strong>%s</strong> hast du <strong>%s px&sup2;</strong> für %s gespendet.</p></li>';
+                            date_default_timezone_set('Europe/Berlin');  
+                            setlocale(LC_ALL, "de_DE", "de_DE@euro", "deu", "deu_deu", "german");
+                            
+                            foreach ($this->session->user['timeline'] as $entry) {
+                                $dateFormatted = strftime('%d. %B %Y', strtotime($entry['datum_erstellt']));
+                                if ($entry['type'] == 'signup') {
+                                    echo sprintf($signupFormat, $dateFormatted);
+                                }
+                                if ($entry['type'] == 'pixelspende') {
+                                    echo sprintf($spendeFormat, $dateFormatted, number_format($entry['pixel_gespendet'], 0, ',', '.'), $entry['timeline_name']);
+                                }
+                            }
+                            ?>
                         </ul>
                     </div>
                     <div class="col-sm-3">
                         Konto Einstellungen
                         <hr />
                         <h3>Ihre Angaben</h3>
+                        <em>Ihr Name</em>
+                        <div class="form-inline" role="form">
+                            <div id="vornameUpdateGroup" class="form-group">
+                                <?php echo $this->updateMemberForm->vorname->renderViewHelper() ?>
+                            </div>
+                            <div id="nachnameUpdateGroup" class="form-group">
+                                <?php echo $this->updateMemberForm->nachname->renderViewHelper() ?>
+                            </div>
+                        </div>
+                        <em>Ihre Kontaktdaten</em>
+                        <div class="form-inline" role="form">
+                            <div id="strasseUpdateGroup" class="form-group">
+                                <?php echo $this->updateMemberForm->strasse->renderViewHelper() ?>
+                            </div>
+                            <div id="plzUpdateGroup" class="form-group">
+                                <?php echo $this->updateMemberForm->plz->renderViewHelper() ?>
+                            </div>
+                            <div id="ortUpdateGroup" class="form-group">
+                                <?php echo $this->updateMemberForm->ort->renderViewHelper() ?>
+                            </div>
+                            <div id="telefonUpdateGroup" class="form-group">
+                                <?php echo $this->updateMemberForm->telefon->renderViewHelper() ?>
+                            </div>
+                            <button id="updateContact" type="button" class="btn btn-default">Aktualisieren</button>
+                        </div>
                         <h3>Ihre Zugangsdaten</h3>
+                        <div class="form-inline" role="form">
+                            <div id="emailUpdateGroup" class="form-group">
+                                <?php echo $this->updateMemberForm->email->renderViewHelper() ?>
+                            </div>
+                            <div id="passwortUpdateGroup" class="form-group">
+                                <?php echo $this->updateMemberForm->passwort->renderViewHelper() ?>
+                            </div>
+                            <div id="passwortWiederholtUpdateGroup" class="form-group">
+                                <?php echo $this->updateMemberForm->passwortWiederholt->renderViewHelper() ?>
+                            </div>
+                            <button id="updateCredential" type="button" class="btn btn-default">Aktualisieren</button>
+                        </div>
                         <a href="">Möchten Sie Ihr Konto löschen?</a>
                     </div>
                 </div>
             </div>
         </li>
+        <?php } ?>
         <li>
             <div id="menuThankyou" class="container slidingHorizontal">
                 <div class="row">

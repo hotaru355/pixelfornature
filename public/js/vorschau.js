@@ -40,7 +40,8 @@
 			$('button#upload').removeAttr('disabled');
 		}).done(function(responseJson) {
 			if (responseJson.linkUrl) {
-				popup.location.href = responseJson.linkUrl;
+				//popup.location.href = responseJson.linkUrl;
+				alert(responseJson.linkUrl);
 				window.location.href = 'danke';
 			} else {
 				$('span#errorCode').html(responseJson.errorCode);
@@ -53,7 +54,7 @@
 
 	$(function() {
 		$('button#upload').click(function() {
-			var popup = window.open('', '_blank', 'fullscreen=yes,height=600,width=900,scrollbars=yes');
+			//var popup = window.open('', '_blank', 'fullscreen=yes,height=600,width=900,scrollbars=yes');
 			FB.getLoginStatus(function(response) {
 				if (response.status === 'connected') {
 					console.log('Already logged in. Going straight to goal.');

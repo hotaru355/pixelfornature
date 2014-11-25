@@ -19,8 +19,8 @@ class FacebookService {
 			$response = (new Facebook\FacebookRequest(
 				$fbSession, 'POST', '/me/photos',
 				array(
-					'source' => '@' . 'image/png',
-					'message' => 'Ich spende Pixel für Natur!',
+					'source' => '@' . $imagePath,
+					'message' => 'Ich spende Pixel für Natur! http://pixelfornature.org',
 				)
 			))->execute()->getGraphObject();
 

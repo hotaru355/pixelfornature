@@ -54,3 +54,39 @@ $validiereWoerterRoute = new Zend_Controller_Router_Route(
 	)
 );
 $router->addRoute('validiereWoerter', $validiereWoerterRoute);
+
+$newMemberRoute = new Zend_Controller_Router_Route(
+	'mitglieder/neu',
+	array(
+		'controller' => 'mitglied',
+		'action' => 'hinzufuegen',
+	)
+);
+$router->addRoute('mitgliederNeu', $newMemberRoute);
+
+$updateMemberRoute = new Zend_Controller_Router_Route(
+	'mitglieder/aendern',
+	array(
+		'controller' => 'mitglied',
+		'action' => 'aendern',
+	)
+);
+$router->addRoute('mitgliederAendern', $updateMemberRoute);
+
+$authLoginRoute = new Zend_Controller_Router_Route(
+	'auth/login',
+	array(
+		'controller' => 'authentifizierung',
+		'action' => 'login',
+	)
+);
+$router->addRoute('authLogin', $authLoginRoute);
+
+$authLogoutRoute = new Zend_Controller_Router_Route(
+	'auth/logout',
+	array(
+		'controller' => 'authentifizierung',
+		'action' => 'logout',
+	)
+);
+$router->addRoute('authLogout', $authLogoutRoute);

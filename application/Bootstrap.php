@@ -14,7 +14,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
 		$doctypeHelper->doctype('HTML5');
 
 		// Titel der Seite
-		$view->headTitle('Pixel 4 Nature')
+		$view->headTitle('Pixel for nature')
 		     ->setSeparator(' - ');
 
 		// Globale CSS Datei(en)
