@@ -1,5 +1,4 @@
 <?php
-require_once 'password_compat/Auth.php';
 
 class AuthentifizierungController extends Zend_Controller_Action {
 
@@ -23,21 +22,15 @@ class AuthentifizierungController extends Zend_Controller_Action {
 
 		if ($loginForm->isValid($formData)) {
 			$values = $loginForm->getValues();
-			$user = $this->_authenticate($values['email'], $values['passwort']);
-			if ($user != null) {
-				$session = new Zend_Session_Namespace('pixelfornature');
-				$interaktionMapper = new Application_Model_DbTable_Interaktion();
-				$session->user = (array) $user;
-				$session->user['timeline'] = $interaktionMapper->getTimeline($user->id);
-				$session->user['pixelsTotal'] = $interaktionMapper->getPixelsTotalByMember($user->id);
-				$session->loadMenu = true;
-				$success = true;
-			}
+
+			Zend_Loader::loadFile("AuthenticationService.php");
+			$authService = new AuthenticationService();
+			$success = $authService->loginUser($values['email'], $values['passwort']);
 		}
 
 		$this->_helper->json(array(
 			"success" => $success,
-			"error" => (empty($loginForm->getMessages()) ? "" : $loginForm->getMessages()),
+			"error" => ($loginForm->getMessages() ? $loginForm->getMessages() : ""),
 		));
 
 	}
@@ -46,50 +39,14 @@ class AuthentifizierungController extends Zend_Controller_Action {
 		if (!$this->_request->isXmlHttpRequest() || !$this->getRequest()->isPost()) {
 			return;
 		}
-		$this->_helper->viewRenderer->setNoRender();
-		$this->_helper->layout->disableLayout();
 
-		Zend_Auth::getInstance()->clearIdentity();
-		$session = new Zend_Session_Namespace('pixelfornature');
-		unset($session->user);
+		Zend_Loader::loadFile("AuthenticationService.php");
+		$authService = new AuthenticationService();
+		$success = $authService->logoutUser();
 
 		$this->_helper->json(array(
 			"success" => true
 		));
-	}
-
-	protected function _authenticate($email, $password) {
-		$adapter = $this->_getAuthAdapter();
-		$adapter->setIdentity($email);
-		$adapter->setCredential($password);
-
-		$auth = Zend_Auth::getInstance();
-		$user = null;
-		if ($auth->authenticate($adapter)->isValid()) {
-			$user = $adapter->getResultRowObject(array(
-				'id',
-				'vorname',
-				'nachname',
-				'strasse',
-				'plz',
-				'ort',
-				'email',
-				'telefon'));
-		}
-		return $user;
-	}
-
-	protected function _getAuthAdapter() {
-		$dbAdapter = Zend_Db_Table::getDefaultAdapter();
-		$authAdapter = new Compat_Auth_Adapter_DbTable($dbAdapter);
-
-		$authAdapter->setTableName('mitglieder')
-		            ->setIdentityColumn('email')
-		            ->setCredentialColumn('passwort_hash')
-		            ->setStatusColumn('status')
-		            ->setStatusPassValue('aktiv');
-
-		return $authAdapter;
 	}
 
 	public function bestaetigenAction() {

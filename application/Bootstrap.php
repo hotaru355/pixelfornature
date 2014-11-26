@@ -1,8 +1,6 @@
 <?php
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
 	protected function _initAutoload() {
-		$this->getApplication()
-		     ->getAutoloader();
 		require_once 'facebook-php-sdk-v4-4.0-dev/autoload.php';
 	}
 

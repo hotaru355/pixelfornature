@@ -18,6 +18,7 @@ class MitgliedController extends Zend_Controller_Action {
 		$ajaxContext = $this->_helper->getHelper('AjaxContext');
 		$ajaxContext->addActionContext('hinzufuegen', 'json')->initContext();
 		$ajaxContext->addActionContext('aendern', 'json')->initContext();
+		$ajaxContext->addActionContext('loeschen', 'json')->initContext();
 
 		$this->_helper->viewRenderer->setNoRender();
 		$this->_helper->layout->disableLayout();
@@ -43,6 +44,7 @@ class MitgliedController extends Zend_Controller_Action {
 		$id = null;
 
 		if ($newMemberForm->isValid($formData)) {
+			// save new member
 			$mitglied = new Application_Model_Mitglied();
 			$mitglied->readNewMemberForm($newMemberForm);
 			$mitglied->setStatus('aktiv');
@@ -51,19 +53,25 @@ class MitgliedController extends Zend_Controller_Action {
 					array(
 						"cost" => MitgliedController::ALGORITHMIC_COST
 					)));
-
 			$mitgliedMapper = new Application_Model_DbTable_Mitglied();
 			$id = $mitgliedMapper->save($mitglied);
 
+			// session
 			$session = new Zend_Session_Namespace('pixelfornature');
 			$session->loadMenu = true;
 
+			// create signup interaction
 			$interactionMapper = new Application_Model_DbTable_Interaktion();
 			$interactionMapper->createSignup($id, $session->project['id']);
+
+			// login new member
+			Zend_Loader::loadFile("AuthenticationService.php");
+			$authService = new AuthenticationService();
+			$authService->loginUser($formData['email'], $formData['passwort']);
 		}
 		$this->_helper->json(array(
 			"id" => $id,
-			"error" => (empty($newMemberForm->getMessages()) ? "" : $newMemberForm->getMessages()),
+			"error" => ($newMemberForm->getMessages() ? $newMemberForm->getMessages() : ""),
 		));
 	}
 
@@ -114,12 +122,45 @@ class MitgliedController extends Zend_Controller_Action {
 		$this->_helper->json(array(
 			"id" => $id,
 			"success" => $success,
-			"error" => (empty($newMemberForm->getMessages()) ? "" : $newMemberForm->getMessages()),
+			"error" => ($newMemberForm->getMessages() ? $newMemberForm->getMessages() : ""),
 		));
 	}
 
-	public function entfernenAction() {
-		// action body
+	public function loeschenAction() {
+		if (!$this->_request->isXmlHttpRequest() || !$this->getRequest()->isPost()) {
+			return;
+		}
+		$errors = array();
+		$success = false;
+
+		$auth = Zend_Auth::getInstance();
+		if (!$auth->hasIdentity()) {
+			$errors['not_logged_in'] = "No user is logged in";
+		}
+
+		$session = new Zend_Session_Namespace('pixelfornature');
+		if (!isset($session->user['id'])) {
+			$errors['no_session_user'] = "No session user found";
+		}
+		$id = $session->user['id'];
+
+		if (!$errors) {
+			// logout member
+			Zend_Loader::loadFile("AuthenticationService.php");
+			$authService = new AuthenticationService();
+			$authService->logoutUser();
+
+			// delete member
+			$mitgliedMapper = new Application_Model_DbTable_Mitglied();
+			$mitgliedMapper->delete($id);
+			$success = true;
+		}
+
+		$this->_helper->json(array(
+			"id" => $id,
+			"success" => $success,
+			"error" => ($errors ? $errors : ""),
+		));
 	}
 
 	private function isHuman() {

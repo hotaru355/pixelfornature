@@ -1,7 +1,7 @@
 INSERT INTO `projekte`
 (`name`,`timeline_name`,`beschreibung`,`status`) VALUES(
 	'Hangquellmoor in Baden-Württemberg',
-	'das <strong>Hangquellmoor in Baden-W&uuml;rttemberg</strong>',
+	'das <strong>Hangquellmoor in Baden-Württemberg</strong>',
 	'<p>Naturefund will mit dem Förderverein Stiftung Wilde Argen ein Hangquellmoor kaufen und
     schützen. Das Moor liegt im Voralpenland, umfasst 8.853 m² und grenzt an die Obere Argen,
     einer der letzten wilden Gebirgsflüsse Europas. Mädesüß-Perlmutterfalter, Kaisermantel,

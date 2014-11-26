@@ -73,6 +73,15 @@ $updateMemberRoute = new Zend_Controller_Router_Route(
 );
 $router->addRoute('mitgliederAendern', $updateMemberRoute);
 
+$deleteMemberRoute = new Zend_Controller_Router_Route(
+	'mitglieder/loeschen',
+	array(
+		'controller' => 'mitglied',
+		'action' => 'loeschen',
+	)
+);
+$router->addRoute('mitgliederLoeschen', $deleteMemberRoute);
+
 $authLoginRoute = new Zend_Controller_Router_Route(
 	'auth/login',
 	array(

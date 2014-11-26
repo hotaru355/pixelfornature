@@ -132,7 +132,7 @@
 				$('div#commError').show();
 			});
 		});
-		
+
 		var loginBtn = $('button#loginMember');
 		loginBtn.click(function() {
 			$.ajax({
@@ -244,5 +244,27 @@
 				}
 			}).fail(function(responseJson) {});
 		});
+
+		var deleteAccountBtn = $('a#deleteAccount');
+		deleteAccountBtn.click(function() {
+			if (confirm('Willst Du wirklich Dein Konto löschen?')) {
+				$.ajax({
+					url: 'mitglieder/loeschen',
+					type: 'POST',
+					dataType: 'json',
+					global: true,
+					beforeSend: function() {
+						deleteAccountBtn.attr('disabled', 'disabled');
+					}
+				}).always(function() {
+					deleteAccountBtn.removeAttr('disabled');
+				}).done(function(responseJson) {
+					if (responseJson.success) {
+						location.reload();
+					}
+				}).fail(function(responseJson) {});
+			}
+		});
+
 	})
 })();

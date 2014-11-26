@@ -81,7 +81,7 @@ class ImageService {
 
 		$shellOutput = shell_exec($command);
 
-		if (!empty($shellOutput)) {
+		if ($shellOutput) {
 			throw new Exception($shellOutput, $this::GENERATE_IMAGE_ERROR);
 		}
 

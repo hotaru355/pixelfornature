@@ -10,7 +10,7 @@ class ValidationService {
 
 	public function findOffendingWords($words, $compareCallback) {
 		$blacklistWords = array();
-		if (empty($words)) {
+		if (!$words) {
 			return $blacklistWords;
 		}
 		// $supportedCompares = array(
@@ -84,7 +84,7 @@ class ValidationService {
 	}
 
 	private function validateName($dirtyName) {
-		if (empty($dirtyName)) {
+		if (!$dirtyName) {
 			return;
 		}
 
