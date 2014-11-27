@@ -6,6 +6,9 @@
 			}, 1000);
 		})
 
+		// remove other login page to avoid conflict
+		$('ul#menuPages').remove();
+
 	    // init menu
 	    $('div#slidingContainer').append($('div#menuThankyou'));
 

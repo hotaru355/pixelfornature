@@ -102,8 +102,9 @@
 			transitionMenu(menuAccount);
 		});
 
-		var signupBtn = $('button#registerNewMember');
-		signupBtn.click(function() {
+		$('form#signupNewMember').submit(function(event) {
+			event.preventDefault();
+			var signupBtn = $('form#signupNewMember :submit');
 			$.ajax({
 				url: 'mitglieder/neu',
 				type: 'POST',
@@ -131,10 +132,12 @@
 			}).fail(function(responseJson) {
 				$('div#commError').show();
 			});
+			return false;
 		});
 
-		var loginBtn = $('button#loginMember');
-		loginBtn.click(function() {
+		$('form#loginMember').submit(function(event) {
+			event.preventDefault();
+			var loginBtn = $('form#loginMember :submit');
 			$.ajax({
 				url: 'auth/login',
 				type: 'POST',
@@ -163,6 +166,7 @@
 			}).fail(function(responseJson) {
 				$('div#commError').show();
 			});
+			return false;
 		});
 
 		var logoutBtn = $('button#logoutMember');
@@ -182,44 +186,21 @@
 			}).fail(function(responseJson) {});
 		});
 
-		var updateContactBtn = $('button#updateContact');
-		updateContactBtn.click(function() {
-			$.ajax({
-				url: 'mitglieder/aendern',
-				type: 'POST',
-				dataType: 'json',
-				global: true,
-				data: {
-					vorname: $('input#vornameUpdate').val(),
-					nachname: $('input#nachnameUpdate').val(),
-					strasse: $('input#strasseUpdate').val(),
-					plz: $('input#plzUpdate').val(),
-					ort: $('input#ortUpdate').val(),
-					telefon: $('input#telefonUpdate').val(),
-				},
-				beforeSend: function() {
-					updateContactBtn.attr('disabled', 'disabled');
-					clearErrorLabels()
-				}
-			}).always(function() {
-				updateContactBtn.removeAttr('disabled');
-			}).done(function(responseJson) {
-				if (responseJson.success) {
-					alert('Kontaktdaten wurden aktualisiert!');
-				} else {
-					mapErrorToLabel(responseJson.error, 'Update');
-				}
-			}).fail(function(responseJson) {});
-		});
-
-		var updateCredentialBtn = $('button#updateCredential');
-		updateCredentialBtn.click(function() {
+		$('form#updateMember').submit(function(event) {
+			event.preventDefault();
+			var updateCredentialBtn = $('form#updateUser :submit');
 			var data = {
+				vorname: $('input#vornameUpdate').val(),
+				nachname: $('input#nachnameUpdate').val(),
+				strasse: $('input#strasseUpdate').val(),
+				plz: $('input#plzUpdate').val(),
+				ort: $('input#ortUpdate').val(),
+				telefon: $('input#telefonUpdate').val(),
 				email: $('input#emailUpdate').val()
 			};
 			var password = $('input#passwortUpdate').val();
 			var passwordRep = $('input#passwortWiederholtUpdate').val();
-			if (password !== "" || passwordRep !== "") {
+			if (password || passwordRep) {
 				data.passwort = password;
 				data.passwortWiederholt = passwordRep;
 			}
@@ -238,11 +219,12 @@
 				updateCredentialBtn.removeAttr('disabled');
 			}).done(function(responseJson) {
 				if (responseJson.success) {
-					alert('Zugangsdaten wurden aktualisiert!');
+					alert('Kontodaten wurden aktualisiert!');
 				} else {
 					mapErrorToLabel(responseJson.error, 'Update');
 				}
 			}).fail(function(responseJson) {});
+			return false;
 		});
 
 		var deleteAccountBtn = $('a#deleteAccount');

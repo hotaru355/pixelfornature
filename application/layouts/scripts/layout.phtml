@@ -9,10 +9,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?php echo $this->headMeta(); ?>
 
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/css/pixelfornature.css">
     <?php echo $this->headLink(); ?>
     <?php echo $this->headStyle() ?>
@@ -34,15 +30,12 @@
 </head>
 
 <body>
-    <!--     <div id=mitglied> -->
-    <?php //echo $this->eingeloggtAls(); ?>
-    <!--     </div> -->
     <div id="bgWrapper">
         <div id="bg0" class="bg<?php echo ($this->step == 2) ? ' blur' : ''; ?>"></div>
         <div id="bg1" class="bg<?php //echo ($this->step == 3) ? ' transparentLight' : ''; ?>"></div>
     </div>
 
-    <ul class="hidden">
+    <ul id="menuPages" class="hidden">
         <li>
             <div id="menuLanding" class="container-fluid slidingHorizontal">
                 <div id="" class="row">
@@ -50,13 +43,13 @@
                         Die Kampagne
                         <hr />
 
-                        <h3>Bisher gespendete Pixel</h3>
+                        <h2>Bisher gespendete Pixel</h2>
                         <div class="pixelCount">
                             <?php echo number_format($this->session->project['pixelsTotal'], 0, ',', '.'); ?>&nbsp;px&sup2;
                         </div>
                         <hr />
 
-                        <h3>Die letzten Pixelspender</h3>
+                        <h2>Die letzten Pixelspender</h2>
                         <ul>
                             <?php
                             $donorWithCityFormat = '<li><p>%s %s aus %s</p></li>';
@@ -71,7 +64,7 @@
                         </ul>
                         <hr />
 
-                        <h3>Pixel für Natur</h3>
+                        <h2>Pixel für Natur</h2>
                         <p>Du kannst jetzt auch digitale Fläche spenden, ganz
                         umsonst und mit großer Wirkung für die Natur! Das Prinzip
                         ist ganz einfach: Du suchst dir nach Belieben ein Bild aus
@@ -82,7 +75,7 @@
                         Aktuelles Projekt
                         <hr class="mainColumn" />
 
-                        <h3><?php echo $this->session->project['name']; ?></h3>
+                        <h1><?php echo $this->session->project['name']; ?></h1>
                         <?php echo $this->session->project['beschreibung']; ?>
                         <button type="button" class="btn btn-default">Jetzt spenden</button>
                     </div>
@@ -90,7 +83,7 @@
                         Das Unternehmen
                         <hr />
 
-                        <h3>Über Naturefund</h3>
+                        <h2><strong>Über Naturefund</strong></h2>
                         <p>Wir setzen uns für den Naturschutz ein. Wir kaufen
                         Land für Natur, um Lebensraum für die Artenvielfalt zu
                         bewahren. Auch im Klimaschutz sind wir aktiv, wobei wir
@@ -98,36 +91,43 @@
                         <button type="button" class="btn btn-default">Mehr erfahren</button>
                         <hr />
 
-                        <h3>Mein Naturefund Account</h3>
+                        <h2>Mein Naturefund Account</h2>
                         <?php 
-                        if ($this->isLoggedin) {?>
+                        if ($this->isLoggedin) { ?>
+                        <h2><strong>Hallo <?php echo $this->session->user['vorname'] ?></strong>, schön dich zu sehen!</h2>
                         <button id="memberAccount" type="button" class="btn btn-default">Mein Account</button>
-                        <button id="logoutMember" type="button" class="btn btn-default">Logout</button>
+                        <button id="logoutMember" type="button" class="btn btn-default">Abmelden</button>
                         <?php } else {?>
                         <p>Um deine Pixel zu sammeln, melde dich einfach mit
                         deinem persönlichen Naturefund-Account an:</p>
-                        <div class="form-inline" role="form">
+                        <form id="loginMember" class="form-inline" role="form">
                             <div id="emailLoginGroup" class="form-group">
                                 <?php echo $this->loginForm->email->renderViewHelper(); ?>
                             </div>
                             <div id="passwortLoginGroup" class="form-group">
                                 <?php echo $this->loginForm->passwort->renderViewHelper(); ?>
                             </div>
-                            <button id="loginMember"><span class="glyphicon glyphicon-chevron-right"></span></button>
-                            <div id="loginFailed" class="form-group">
-                            </div>
-                        </div>
+                            <button type="submit"><span class="glyphicon glyphicon-chevron-right"></span></button>
+                            <div id="loginFailed" class="form-group"></div>
+                        </form>
                         <a class="registerNow">Noch nicht registriert? Jetzt mitmachen!</a><br />
                         <a class="lostPassword">Passwort vergessen?</a>
                         <?php } ?>
                         <hr />
 
-                        <h3>Newsletter</h3>
+                        <h2>Newsletter</h2>
                         <p>Möchtest du immer auf dem neusten Stand bleiben? Dann
                         abboniere jetzt den Naturefund-Newsletter:</p>
                         <div class="input-group">
                             <input type="text" class="form-control" placeholder="E-Mail">
                             <span class="input-group-addon glyphicon glyphicon-chevron-right"></span>
+                        </div>
+
+                        <div class="form-inline">
+                            <a class="btn btn-social btn-facebook" href="https://www.facebook.com/naturefund"></a>
+                            <a class="btn btn-social btn-gplus" href="https://plus.google.com/+NaturefundDe/posts"></a>
+                            <a class="btn btn-social btn-twitter" href="https://twitter.com/naturefund"></a>
+                            <a class="btn btn-social btn-youtube" href="http://www.youtube.com/user/Naturefund"></a>
                         </div>
                     </div>
                 </div>
@@ -138,23 +138,25 @@
             <div id="menuNewMember" class="container-fluid slidingHorizontal">
                 <div id="" class="row">
                     <div class="col-sm-4 col-sm-offset-4">
-                        <h2>Einen neuen Naturefund Account erstellen</h2>
-                        <div id="vornameSignupGroup" class="form-group">
-                            <?php echo $this->newMemberForm->vorname->renderViewHelper() ?>
-                        </div>
-                        <div id="nachnameSignupGroup" class="form-group">
-                            <?php echo $this->newMemberForm->nachname->renderViewHelper() ?>
-                        </div>
-                        <div id="emailSignupGroup" class="form-group">
-                            <?php echo $this->newMemberForm->email->renderViewHelper() ?>
-                        </div>
-                        <div id="passwortSignupGroup" class="form-group">
-                            <?php echo $this->newMemberForm->passwort->renderViewHelper() ?>
-                        </div>
-                        <div id="passwortWiederholtSignupGroup" class="form-group">
-                            <?php echo $this->newMemberForm->passwortWiederholt->renderViewHelper() ?>
-                        </div>
-                        <button id="registerNewMember" type="button" class="btn btn-default btn-block">Registrieren</button>
+                        <form id="signupNewMember" role="form">
+                            <h2>Einen neuen Naturefund Account erstellen</h2>
+                            <div id="vornameSignupGroup" class="form-group">
+                                <?php echo $this->newMemberForm->vorname->renderViewHelper() ?>
+                            </div>
+                            <div id="nachnameSignupGroup" class="form-group">
+                                <?php echo $this->newMemberForm->nachname->renderViewHelper() ?>
+                            </div>
+                            <div id="emailSignupGroup" class="form-group">
+                                <?php echo $this->newMemberForm->email->renderViewHelper() ?>
+                            </div>
+                            <div id="passwortSignupGroup" class="form-group">
+                                <?php echo $this->newMemberForm->passwort->renderViewHelper() ?>
+                            </div>
+                            <div id="passwortWiederholtSignupGroup" class="form-group">
+                                <?php echo $this->newMemberForm->passwortWiederholt->renderViewHelper() ?>
+                            </div>
+                            <button type="submit" class="btn btn-default btn-block">Registrieren</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -178,7 +180,7 @@
                         Deine Naturefund-Erfolge
                         <hr />
 
-                        <h3>Deine bisher gespendeten Pixel</h3>
+                        <h2>Deine bisher gespendeten Pixel</h2>
                         <div class="pixelCount">
                             <?php echo number_format($this->session->user['pixelsTotal'], 0, ',', '.') ?>&nbsp;px&sup2;
                         </div>
@@ -187,7 +189,7 @@
                     <div class="col-sm-6">
                         Deine Aktivitäten
                         <hr class="mainColumn" />
-                        <h2><strong>Hallo <?php echo $this->session->user['vorname'] ?></strong>, das hast du bereits mit Naturefund erreicht:</h2>
+                        <h1><strong>Hallo <?php echo $this->session->user['vorname'] ?></strong>, das hast du bereits mit Naturefund erreicht:</h1>
                         <ul>
                             <?php 
                             $signupFormat = '<li><p>Du bist am <strong>%s</strong> Weltretter bei Naturefund geworden.</p></li>';
@@ -210,18 +212,14 @@
                     <div class="col-sm-3">
                         Konto Einstellungen
                         <hr />
-                        <h3>Ihre Angaben</h3>
-                        <em>Ihr Name</em>
-                        <div class="form-inline" role="form">
+                        <form id="updateMember" class="form-inline" role="form">
+                            <h2>Ihre persönlichen Angaben</h2>
                             <div id="vornameUpdateGroup" class="form-group">
                                 <?php echo $this->updateMemberForm->vorname->renderViewHelper() ?>
                             </div>
                             <div id="nachnameUpdateGroup" class="form-group">
                                 <?php echo $this->updateMemberForm->nachname->renderViewHelper() ?>
                             </div>
-                        </div>
-                        <em>Ihre Kontaktdaten</em>
-                        <div class="form-inline" role="form">
                             <div id="strasseUpdateGroup" class="form-group">
                                 <?php echo $this->updateMemberForm->strasse->renderViewHelper() ?>
                             </div>
@@ -234,10 +232,8 @@
                             <div id="telefonUpdateGroup" class="form-group">
                                 <?php echo $this->updateMemberForm->telefon->renderViewHelper() ?>
                             </div>
-                            <button id="updateContact" type="button" class="btn btn-default">Aktualisieren</button>
-                        </div>
-                        <h3>Ihre Zugangsdaten</h3>
-                        <div class="form-inline" role="form">
+
+                            <h2>Ihre Zugangsdaten</h2>
                             <div id="emailUpdateGroup" class="form-group">
                                 <?php echo $this->updateMemberForm->email->renderViewHelper() ?>
                             </div>
@@ -247,38 +243,14 @@
                             <div id="passwortWiederholtUpdateGroup" class="form-group">
                                 <?php echo $this->updateMemberForm->passwortWiederholt->renderViewHelper() ?>
                             </div>
-                            <button id="updateCredential" type="button" class="btn btn-default">Aktualisieren</button>
-                        </div>
+                            <button type="submit" class="btn btn-default">Aktualisieren</button>
+                        </form>
                         <a id="deleteAccount" >Möchten Sie Ihr Konto löschen?</a>
                     </div>
                 </div>
             </div>
         </li>
         <?php } ?>
-        <li>
-            <div id="menuThankyou" class="container slidingHorizontal">
-                <div class="row">
-                    <div class="col-sm-4 col-sm-offset-4">
-                        <h2>Du hast erfolgreich</h2>
-                        <div class="pixelCount">
-                            <?php echo $this->squarePixels ?> px&sup2;
-                        </div>
-                        <h2>gespendet.</h2>
-                        <hr />
-                        <p>Um deine Pixel zu sammeln, melde dich einfach mit deinem persönlichen Naturefund-Account an:</p>
-                        <form>
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="E-Mail">
-                                <input type="text" class="form-control" placeholder="Passwort">
-                                <span class="input-group-addon glyphicon glyphicon-chevron-right"></span>
-                            </div>
-                            <a class="registerNow">Noch nicht registriert? Jetzt mitmachen!</a><br />
-                            <a class="lostPassword">Passwort vergessen?</a>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </li>
     </ul>
 
     <div id="menu" class="transparentDark fullscreenOverlay">

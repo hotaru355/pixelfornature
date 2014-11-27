@@ -1,0 +1,37 @@
+.btn {
+  	border: 0;
+}
+
+.btn-default {
+  color: @btn-default-color;
+  background-color: @color-grey-20;
+  #gradient > .vertical(@start-color: @color-white; @end-color: @color-grey-20);
+
+  &:hover,
+  &.hover,
+  .open > .dropdown-toggle& {
+    color: @btn-default-hover-color;
+  }
+  &:active,
+  &.active,
+  .open > .dropdown-toggle& {
+    color: @btn-default-active-color;
+  	#gradient > .vertical(@start-color: @color-grey-20; @end-color: @color-white);
+  }
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    &,
+    &:hover,
+    &:focus,
+    &.focus,
+    &:active,
+    &.active {
+	    color: @btn-default-hover-color;
+    }
+  }
+
+  .badge {
+    color: @btn-default-hover-color;
+  }
+}

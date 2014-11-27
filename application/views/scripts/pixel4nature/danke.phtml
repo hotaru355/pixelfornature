@@ -12,5 +12,38 @@ $this->headScript()
     ->appendFile("/js/danke.js");
 ?>
 
+<ul class="hidden">
+    <li>
+        <div id="menuThankyou" class="container slidingHorizontal">
+            <div class="row">
+                <div class="col-sm-4 col-sm-offset-4">
+                    <h2>Du hast erfolgreich</h2>
+                    <div class="pixelCount">
+                        <?php echo $this->squarePixels ?> px&sup2;
+                    </div>
+                    <h2>gespendet.</h2>
+                    <hr />
+                    <?php if (!$this->isLoggedin) {?>
+                    <p>Um deine Pixel zu sammeln, melde dich einfach mit deinem persönlichen Naturefund-Account an:</p>
+                    <div id="emailLoginGroup" class="form-group">
+                        <?php echo $this->loginForm->email->renderViewHelper(); ?>
+                    </div>
+                    <div id="passwortLoginGroup" class="form-group">
+                        <?php echo $this->loginForm->passwort->renderViewHelper(); ?>
+                    </div>
+                    <button id="loginMember" class="btn btn-default btn-block">Anmelden</button>
+                    <div id="loginFailed" class="form-group">
+                    </div>
+                    <a class="registerNow">Noch nicht registriert? Jetzt mitmachen!</a><br />
+                    <a class="lostPassword">Passwort vergessen?</a>
+                    <?php } else { ?>
+                    <a id="ok" href="/" class="btn btn-default" type="button">OK!</a>
+                    <?php } ?>
+                </div>
+            </div>
+        </div>
+    </li>
+</ul>
+
 <div id="content">
 </div>

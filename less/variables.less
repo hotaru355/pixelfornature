@@ -1,0 +1,89 @@
+//
+// Variables
+// --------------------------------------------------
+
+
+//== Colors
+//
+
+@color-white: 		#FFFFFF;
+@color-green-dark:	#91AF2D;
+@color-green-light:	#CDD296;
+@color-grey-10:		#E6E6E6;
+@color-grey-20:		#CCCCCC;
+@color-grey-30:		#B3B3B3;
+@color-grey-40:		#999999;
+@color-grey-50:		#808080;
+@color-grey-60:		#666666;
+@color-grey-70:		#4D4D4D;
+@color-grey-80:		#333333;
+@color-grey-90:		#191919;
+
+
+
+//== Scaffolding
+//
+//## Settings for some of the most global styles.
+
+//** Global text color on `<body>`.
+@text-color:            @color-white;
+
+//** Global textual link color.
+@link-color:            @color-white;
+//** Link hover color set via `darken()` function.
+@link-hover-color:      darken(@link-color, 15%);
+//** Link hover decoration.
+@link-hover-decoration: underline;
+
+
+
+//== Typography
+//
+//## Font, line-height, and color for body text, headings, and more.
+
+@font-weight-light:			300;
+@font-weight-normal:		400;
+@font-weight-medium:		500;
+@font-weight-bold:			700;
+
+
+@font-family-sans-serif:	'Fira Sans', sans-serif;
+@font-family-base:			@font-family-sans-serif;
+@font-weight-base:			@font-weight-normal;
+@font-size-base:			16px;
+
+@font-size-h1:				32px;
+@font-size-h2:				24px;
+
+//** Unit-less `line-height` for use in components like buttons.
+@line-height-base:			1.625; // 26/16
+
+//** By default, this inherits from the `<body>`.
+@headings-font-weight:		@font-weight-normal;
+
+
+//== Buttons
+//
+//## For each of Bootstrap's buttons, define text, background and border color.
+
+@btn-font-weight:			@font-weight-medium;
+
+@btn-default-color:			@color-green-dark;
+@btn-default-hover-color:	@color-green-light;
+@btn-default-active-color:	@color-green-light;
+
+
+//== Forms
+//
+//##
+
+//** `<input>` background color
+@input-bg:					rgba(255, 255, 255, 0.2);
+//** Text color for `<input>`s
+@input-color:                    @color-white;
+//** `<input>` border color
+@input-border:                   @color-white;
+//** Border color for inputs on focus
+@input-border-focus:             @color-green-dark;
+//** Placeholder text color
+@input-color-placeholder:        @color-grey-50;
