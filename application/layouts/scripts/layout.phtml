@@ -39,8 +39,8 @@
         <li>
             <div id="menuLanding" class="container-fluid slidingHorizontal">
                 <div id="" class="row">
-                    <div class="col-sm-3">
-                        Die Kampagne
+                    <div class="col-sm-12 col-md-4 col-lg-3">
+                        <h5>Die Kampagne<h5>
                         <hr />
 
                         <h2>Bisher gespendete Pixel</h2>
@@ -71,16 +71,16 @@
                         und verwendest es bei Facebook als Titelbild.</p>
                         <button type="button" class="btn btn-default">Mehr erfahren</button>
                     </div>
-                    <div class="col-sm-6">
-                        Aktuelles Projekt
+                    <div class="col-sm-12 col-md-4 col-lg-6">
+                        <h5>Aktuelles Projekt<h5>
                         <hr class="mainColumn" />
 
                         <h1><?php echo $this->session->project['name']; ?></h1>
                         <?php echo $this->session->project['beschreibung']; ?>
                         <button type="button" class="btn btn-default">Jetzt spenden</button>
                     </div>
-                    <div class="col-sm-3">
-                        Das Unternehmen
+                    <div class="col-sm-12 col-md-4 col-lg-3">
+                        <h5>Der Verein</h5>
                         <hr />
 
                         <h2><strong>Über Naturefund</strong></h2>
@@ -100,17 +100,15 @@
                         <?php } else {?>
                         <p>Um deine Pixel zu sammeln, melde dich einfach mit
                         deinem persönlichen Naturefund-Account an:</p>
-                        <form id="loginMember" class="form-inline" role="form">
-                            <div id="emailLoginGroup" class="form-group">
+                        <form id="loginMember" class="" role="form">
+                            <div id="combiLogin" class="combi-input-container">
                                 <?php echo $this->loginForm->email->renderViewHelper(); ?>
-                            </div>
-                            <div id="passwortLoginGroup" class="form-group">
                                 <?php echo $this->loginForm->passwort->renderViewHelper(); ?>
+                                <button type="submit" class="btn btn-default combi-input-submit">&gt;</button>
                             </div>
-                            <button type="submit"><span class="glyphicon glyphicon-chevron-right"></span></button>
                             <div id="loginFailed" class="form-group"></div>
                         </form>
-                        <a class="registerNow">Noch nicht registriert? Jetzt mitmachen!</a><br />
+                        <a class="signupNow">Noch nicht registriert? Jetzt mitmachen!</a><br />
                         <a class="lostPassword">Passwort vergessen?</a>
                         <?php } ?>
                         <hr />
@@ -118,10 +116,12 @@
                         <h2>Newsletter</h2>
                         <p>Möchtest du immer auf dem neusten Stand bleiben? Dann
                         abboniere jetzt den Naturefund-Newsletter:</p>
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="E-Mail">
-                            <span class="input-group-addon glyphicon glyphicon-chevron-right"></span>
-                        </div>
+                        <form id="orderNewsletter" class="" role="form"> 
+                            <div id="newsletterGroup" class="form-group combi-input-container">
+                                <input type="text" class="form-control combi-input-email-90" placeholder="E-Mail">
+                                <button type="submit" class="btn btn-default combi-input-submit">&gt;</button>
+                            </div>
+                        </form>
 
                         <div class="form-inline">
                             <a class="btn btn-social btn-facebook" href="https://www.facebook.com/naturefund"></a>
@@ -161,7 +161,6 @@
                 </div>
             </div>
         </li>
-        <?php } else {?>
         <li>
             <div id="menuResetPassword" class="container-fluid slidingHorizontal">
                 <div id="" class="row">
@@ -173,10 +172,11 @@
                 </div>
             </div>
         </li>
+        <?php } else {?>
         <li>
             <div id="menuAccount" class="container-fluid slidingHorizontal">
                 <div id="" class="row">
-                    <div class="col-sm-3">
+                    <div class="col-sm-12 col-md-4 col-lg-3">
                         Deine Naturefund-Erfolge
                         <hr />
 
@@ -186,7 +186,7 @@
                         </div>
                         <hr />
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-12 col-md-4 col-lg-6">
                         Deine Aktivitäten
                         <hr class="mainColumn" />
                         <h1><strong>Hallo <?php echo $this->session->user['vorname'] ?></strong>, das hast du bereits mit Naturefund erreicht:</h1>
@@ -209,25 +209,29 @@
                             ?>
                         </ul>
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-12 col-md-4 col-lg-3">
                         Konto Einstellungen
                         <hr />
-                        <form id="updateMember" class="form-inline" role="form">
+                        <form id="updateMember" class="" role="form">
                             <h2>Ihre persönlichen Angaben</h2>
-                            <div id="vornameUpdateGroup" class="form-group">
-                                <?php echo $this->updateMemberForm->vorname->renderViewHelper() ?>
-                            </div>
-                            <div id="nachnameUpdateGroup" class="form-group">
-                                <?php echo $this->updateMemberForm->nachname->renderViewHelper() ?>
+                            <div id="combiNames" class="combi-input-container">
+                                <?php 
+                                $this->updateMemberForm->vorname->class .= ' combi-input-50L';
+                                echo $this->updateMemberForm->vorname->renderViewHelper();
+                                $this->updateMemberForm->nachname->class .= ' combi-input-50R';
+                                echo $this->updateMemberForm->nachname->renderViewHelper();
+                                ?>
                             </div>
                             <div id="strasseUpdateGroup" class="form-group">
                                 <?php echo $this->updateMemberForm->strasse->renderViewHelper() ?>
                             </div>
-                            <div id="plzUpdateGroup" class="form-group">
-                                <?php echo $this->updateMemberForm->plz->renderViewHelper() ?>
-                            </div>
-                            <div id="ortUpdateGroup" class="form-group">
-                                <?php echo $this->updateMemberForm->ort->renderViewHelper() ?>
+                            <div id="combiPlzOrt" class="combi-input-container">
+                                <?php 
+                                $this->updateMemberForm->plz->class .= ' combi-input-50L';
+                                echo $this->updateMemberForm->plz->renderViewHelper();
+                                $this->updateMemberForm->ort->class .= ' combi-input-50R';
+                                echo $this->updateMemberForm->ort->renderViewHelper();
+                                ?>
                             </div>
                             <div id="telefonUpdateGroup" class="form-group">
                                 <?php echo $this->updateMemberForm->telefon->renderViewHelper() ?>
@@ -237,11 +241,13 @@
                             <div id="emailUpdateGroup" class="form-group">
                                 <?php echo $this->updateMemberForm->email->renderViewHelper() ?>
                             </div>
-                            <div id="passwortUpdateGroup" class="form-group">
-                                <?php echo $this->updateMemberForm->passwort->renderViewHelper() ?>
-                            </div>
-                            <div id="passwortWiederholtUpdateGroup" class="form-group">
-                                <?php echo $this->updateMemberForm->passwortWiederholt->renderViewHelper() ?>
+                            <div id="combiPassword" class="combi-input-container">
+                                <?php
+                                $this->updateMemberForm->passwort->class .= ' combi-input-50L';
+                                echo $this->updateMemberForm->passwort->renderViewHelper();
+                                $this->updateMemberForm->passwortWiederholt->class .= ' combi-input-50R';
+                                echo $this->updateMemberForm->passwortWiederholt->renderViewHelper();
+                                ?>
                             </div>
                             <button type="submit" class="btn btn-default">Aktualisieren</button>
                         </form>

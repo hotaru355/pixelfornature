@@ -58,10 +58,26 @@
 		});
 	}
 
+	function mapCombiErrorToLabel(errors, idPostfix) {
+		var formGroup = $('div#combi' + idPostfix);
+		$.map(errors, function(error, id) {
+			$('input#' + id + idPostfix).addClass('is-error');
+			$.map(errors[id], function(errMsg, errName) {
+				formGroup.append('<label class="control-label is-error" for="' + id + idPostfix + '">' + errMsg + '</label>');
+			});
+		});
+	}
+
 	function clearErrorLabels() {
 		$('div.form-group').removeClass('has-error');
 		$('div.form-group label').remove();
 	}
+
+	function clearCombiErrorLabels(idPostfix) {
+		$('div#combi' + idPostfix + ' input').removeClass('is-error');
+		$('div#combi' + idPostfix + ' label').remove();
+	}
+
 
 
 	$(function() {
@@ -90,7 +106,7 @@
 		});
 
 
-		$('a.registerNow').click(function() {
+		$('a.signupNow').click(function() {
 			transitionMenu(menuNewMember);
 		});
 
@@ -149,19 +165,18 @@
 				},
 				beforeSend: function() {
 					loginBtn.attr('disabled', 'disabled');
-					clearErrorLabels()
+					clearCombiErrorLabels('Login');
 				}
 			}).always(function() {
 				loginBtn.removeAttr('disabled');
 			}).done(function(responseJson) {
 				if (responseJson.error) {
-					mapErrorToLabel(responseJson.error, 'Login');
+					mapCombiErrorToLabel(responseJson.error, 'Login')
 				} else if (responseJson.success) {
 					location.reload();
 				} else {
-					var formGroup = $('div#loginFailed');
-					formGroup.addClass('has-error');
-					formGroup.append('<label class="control-label" for="passwortLogin">Die Anmeldung schlug leider fehl</label>');
+					$('div#combiLogin input').addClass('is-error');
+					$('div#combiLogin').append('<label class="control-label is-error" for="passwortLogin">Die Anmeldung schlug leider fehl</label>');
 				}
 			}).fail(function(responseJson) {
 				$('div#commError').show();

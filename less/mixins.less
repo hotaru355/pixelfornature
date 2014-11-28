@@ -1,5 +1,25 @@
-// Button variants
+// Custom mixins
 //
-// Easily pump out default styles, as well as :hover, :focus, :active,
-// and disabled options for all buttons
 
+
+
+.combi-input-left(@width) {
+	width: @width;
+	float: left;
+	border-bottom-right-radius: 0;
+	border-top-right-radius: 0;
+	// if we want to make the devider thinner, use this:
+	// border-right-width: 0px;
+}
+
+.combi-input-middle(@width) {
+	width: @width;
+	float: left;
+	border-radius: 0;
+}
+
+.combi-input-right(@width) {
+	width: @width;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}

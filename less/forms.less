@@ -3,9 +3,76 @@
 // --------------------------------------------------
 
 
+// Common form controls
+//
+// Shared size and type resets for form controls. Apply `.form-control` to any
+// of the following form controls:
+//
+// select
+// textarea
+// input[type="text"]
+// input[type="password"]
+// input[type="datetime"]
+// input[type="datetime-local"]
+// input[type="date"]
+// input[type="month"]
+// input[type="time"]
+// input[type="week"]
+// input[type="number"]
+// input[type="email"]
+// input[type="url"]
+// input[type="search"]
+// input[type="tel"]
+// input[type="color"]
+
 .form-control {
-	//### .form-control-focus(@color-green-dark, @input-border-focus, @color-white);
+	&.is-error {
+	    border-color: @state-danger-text;
+	}
+	
 	&:focus {
 		color: @color-green-dark;
 	}
+	
+	// Placeholder
+	.placeholder();
+
 }
+
+
+// PixelForNature
+// --------------------------------------------------
+
+.combi-input-container {
+	// max-width: 500px;
+}
+
+.combi-input-50L {
+	.combi-input-left(50%);
+}
+
+.combi-input-50R {
+	.combi-input-right(50%);
+}
+
+.combi-input-email-45 {
+	.combi-input-left(45%);
+}
+
+.combi-input-email-90 {
+	.combi-input-left(90%);
+}
+
+.combi-input-password-45 {
+	.combi-input-left(45%);
+}
+
+.combi-input-submit {
+	.combi-input-right(10%);
+	height: 40px; // this should really be calculated ... somehow ...
+}
+
+label.is-error {
+    color: @state-danger-text;
+}
+

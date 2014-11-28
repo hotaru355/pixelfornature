@@ -24,16 +24,16 @@ class Application_Form_Login extends Zend_Form {
 			->setValidators(
 			array(
 				(new Zend_Validate_StringLength())->setMin(0)->setMax(50),
-				new Zend_Validate_EmailAddress()
+				new Zend_Validate_EmailAddress(),
 			))
 		->setFilters(
 			array(
-				new Zend_Filter_StringTrim()
+				new Zend_Filter_StringTrim(),
 			))
 		->setAttribs(
 			array(
 				'id' => $id,
-				'class' => 'form-control',
+				'class' => 'form-control combi-input-email-45',
 				'placeholder' => $label,
 				'maxlength' => '50',
 			));
@@ -50,12 +50,12 @@ class Application_Form_Login extends Zend_Form {
 			->setValidators(
 			array(
 				(new Zend_Validate_StringLength())->setMin(6)->setMax(50),
-				new Zend_Validate_Alnum()
+				new Zend_Validate_Alnum(),
 			))
 		->setAttribs(
 			array(
 				'id' => $id,
-				'class' => 'form-control',
+				'class' => 'form-control combi-input-password-45',
 				'placeholder' => $label,
 				'maxlength' => '50',
 			));

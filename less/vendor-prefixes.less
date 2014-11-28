@@ -1,0 +1,28 @@
+// Vendor Prefixes
+//
+// All vendor mixins are deprecated as of v3.2.0 due to the introduction of
+// Autoprefixer in our Gruntfile. They will be removed in v4.
+
+
+
+// Placeholder text
+.placeholder(@color: @input-color-placeholder, @style: @input-style-placeholder) {
+	// Firefox
+	&::-moz-placeholder {
+		color: @color;
+		opacity: 1; // See https://github.com/twbs/bootstrap/pull/11526
+		font-style: @style
+	}
+
+	// Internet Explorer 10+
+	&:-ms-input-placeholder { 
+		color: @color;
+		font-style: @style
+	}
+
+	// Safari and Chrome
+	&::-webkit-input-placeholder  {
+		color: @color;
+		font-style: @style
+	}
+}

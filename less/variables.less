@@ -30,8 +30,10 @@
 
 //** Global textual link color.
 @link-color:            @color-white;
-//** Link hover color set via `darken()` function.
-@link-hover-color:      darken(@link-color, 15%);
+//** Link hover color
+@link-hover-color:      @color-green-light;
+//** Visisted links color
+@link-visited-color:	darken(@link-color, 15%);
 //** Link hover decoration.
 @link-hover-decoration: underline;
 
@@ -87,3 +89,6 @@
 @input-border-focus:             @color-green-dark;
 //** Placeholder text color
 @input-color-placeholder:        @color-grey-50;
+
+@input-style-placeholder:        italic;
+
