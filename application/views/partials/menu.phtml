@@ -1,0 +1,35 @@
+<?php // versteckte "Lagerstaette" fuer Menueseiten die per JS plaziert werden ?>
+<ul id="menuPages" class="hidden">
+    <?php
+    echo $this->partial('menuLanding.phtml', array(
+        'user' => $this->user,
+        'project' => $this->project,
+        'isLoggedin' => $this->isLoggedin,
+        'loginForm' => $this->loginForm));
+    if (!$this->isLoggedin) {
+        echo $this->partial('menuNewMember.phtml', array('newMemberForm' => $this->newMemberForm));
+        echo $this->partial('menuResetPassword.phtml', array('resetPasswordForm' => $this->resetPasswordForm));
+    } else {
+        echo $this->partial('menuAccount.phtml', array(
+            'user' => $this->user,
+            'updateMemberForm' => $this->updateMemberForm));
+    } ?>
+</ul>
+
+<?php // Container fuer das Hauptmenue ?>
+<div id="menu" class="transparentDark fullscreenOverlay">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <button id="closeMenu" type="button" class="close">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div id="slidingFrame">
+        <div id="slidingContainer">
+        </div>
+    </div>
+</div>

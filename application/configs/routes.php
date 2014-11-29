@@ -82,6 +82,15 @@ $deleteMemberRoute = new Zend_Controller_Router_Route(
 );
 $router->addRoute('mitgliederLoeschen', $deleteMemberRoute);
 
+$resetPasswordRoute = new Zend_Controller_Router_Route(
+	'mitglieder/passwort-zuruecksetzen',
+	array(
+		'controller' => 'mitglied',
+		'action' => 'passwort-zuruecksetzen',
+	)
+);
+$router->addRoute('mitgliederPasswortZuruecksetzen', $resetPasswordRoute);
+
 $authLoginRoute = new Zend_Controller_Router_Route(
 	'auth/login',
 	array(
@@ -99,3 +108,21 @@ $authLogoutRoute = new Zend_Controller_Router_Route(
 	)
 );
 $router->addRoute('authLogout', $authLogoutRoute);
+
+// $resetPasswordRoute = new Zend_Controller_Router_Route(
+// 	'auth/passwort-zuruecksetzen',
+// 	array(
+// 		'controller' => 'authentifizierung',
+// 		'action' => 'passwort-zuruecksetzen',
+// 	)
+// );
+// $router->addRoute('mitgliederPasswortZuruecksetzen', $resetPasswordRoute);
+
+$confirmPasswordRoute = new Zend_Controller_Router_Route(
+	'auth/passwort-bestaetigen',
+	array(
+		'controller' => 'authentifizierung',
+		'action' => 'passwort-bestaetigen',
+	)
+);
+$router->addRoute('mitgliederPasswortBestaetigen', $confirmPasswordRoute);

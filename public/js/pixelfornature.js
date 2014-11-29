@@ -48,37 +48,31 @@
 		}
 	}
 
-	function mapErrorToLabel(errors, idPostfix) {
+	function mapErrorToLabel(errors, idPostfix, combiNameById) {
 		$.map(errors, function(error, id) {
-			var formGroup = $('div#' + id + idPostfix + 'Group');
-			formGroup.addClass('has-error');
-			$.map(errors[id], function(errMsg, errName) {
-				formGroup.append('<label class="control-label" for="' + id + idPostfix + '">' + errMsg + '</label>');
-			});
+			var idName = id + idPostfix;
+			if (combiNameById && combiNameById[id]) {
+				var formGroup = $('div#combi' + combiNameById[id]);
+				$('input#' + idName).addClass('is-error');
+				$.map(errors[id], function(errMsg, errName) {
+					formGroup.append('<label class="control-label is-error" for="' + idName + '">' + errMsg + '</label>');
+				});
+			} else {
+				var formGroup = $('div#' + idName + 'Group');
+				formGroup.addClass('has-error');
+				$.map(errors[id], function(errMsg, errName) {
+					formGroup.append('<label class="control-label" for="' + idName + '">' + errMsg + '</label>');
+				});
+			}
 		});
 	}
 
-	function mapCombiErrorToLabel(errors, idPostfix) {
-		var formGroup = $('div#combi' + idPostfix);
-		$.map(errors, function(error, id) {
-			$('input#' + id + idPostfix).addClass('is-error');
-			$.map(errors[id], function(errMsg, errName) {
-				formGroup.append('<label class="control-label is-error" for="' + id + idPostfix + '">' + errMsg + '</label>');
-			});
-		});
+	function clearErrorLabels(formId) {
+		$('form#' + formId + ' div.form-group').removeClass('has-error');
+		$('form#' + formId + ' div.form-group label').remove();
+		$('form#' + formId + ' div.combi-input-container input').removeClass('is-error');
+		$('form#' + formId + ' div.combi-input-container label').remove();
 	}
-
-	function clearErrorLabels() {
-		$('div.form-group').removeClass('has-error');
-		$('div.form-group label').remove();
-	}
-
-	function clearCombiErrorLabels(idPostfix) {
-		$('div#combi' + idPostfix + ' input').removeClass('is-error');
-		$('div#combi' + idPostfix + ' label').remove();
-	}
-
-
 
 	$(function() {
 		menuNewMember = $('div#menuNewMember');
@@ -135,7 +129,7 @@
 				},
 				beforeSend: function() {
 					signupBtn.attr('disabled', 'disabled');
-					clearErrorLabels()
+					clearErrorLabels('signupNewMember')
 				}
 			}).always(function() {
 				signupBtn.removeAttr('disabled');
@@ -152,6 +146,10 @@
 		});
 
 		$('form#loginMember').submit(function(event) {
+			var combiNameById = {
+				email: 'Login',
+				passwort: 'Login'
+			}
 			event.preventDefault();
 			var loginBtn = $('form#loginMember :submit');
 			$.ajax({
@@ -165,13 +163,13 @@
 				},
 				beforeSend: function() {
 					loginBtn.attr('disabled', 'disabled');
-					clearCombiErrorLabels('Login');
+					clearErrorLabels('loginMember');
 				}
 			}).always(function() {
 				loginBtn.removeAttr('disabled');
 			}).done(function(responseJson) {
 				if (responseJson.error) {
-					mapCombiErrorToLabel(responseJson.error, 'Login')
+					mapErrorToLabel(responseJson.error, 'Login', combiNameById);
 				} else if (responseJson.success) {
 					location.reload();
 				} else {
@@ -202,7 +200,14 @@
 		});
 
 		$('form#updateMember').submit(function(event) {
-			event.preventDefault();
+			var combiNameById = {
+				vorname: 'Names',
+				nachname: 'Names',
+				plz: 'PlzOrt',
+				ort: 'PlzOrt',
+				passwort: 'Password',
+				passwortWiederholt: 'Password'
+			};
 			var updateCredentialBtn = $('form#updateUser :submit');
 			var data = {
 				vorname: $('input#vornameUpdate').val(),
@@ -215,6 +220,8 @@
 			};
 			var password = $('input#passwortUpdate').val();
 			var passwordRep = $('input#passwortWiederholtUpdate').val();
+
+			event.preventDefault();
 			if (password || passwordRep) {
 				data.passwort = password;
 				data.passwortWiederholt = passwordRep;
@@ -228,7 +235,7 @@
 				data: data,
 				beforeSend: function() {
 					updateCredentialBtn.attr('disabled', 'disabled');
-					clearErrorLabels()
+					clearErrorLabels('updateMember')
 				}
 			}).always(function() {
 				updateCredentialBtn.removeAttr('disabled');
@@ -236,9 +243,38 @@
 				if (responseJson.success) {
 					alert('Kontodaten wurden aktualisiert!');
 				} else {
-					mapErrorToLabel(responseJson.error, 'Update');
+					mapErrorToLabel(responseJson.error, 'Update', combiNameById);
 				}
 			}).fail(function(responseJson) {});
+			return false;
+		});
+
+		$('form#resetPassword').submit(function(event) {
+			event.preventDefault();
+			var signupBtn = $('form#resetPassword :submit');
+			$.ajax({
+				url: 'auth/passwort-zuruecksetzen',
+				type: 'POST',
+				dataType: 'json',
+				global: true,
+				data: {
+					email: $('input#emailResetPassword').val(),
+				},
+				beforeSend: function() {
+					signupBtn.attr('disabled', 'disabled');
+					clearErrorLabels('resetPassword')
+				}
+			}).always(function() {
+				signupBtn.removeAttr('disabled');
+			}).done(function(responseJson) {
+				if (responseJson.error) {
+					mapErrorToLabel(responseJson.error, 'ResetPassword');
+				} else {
+					alert('Eine E-Mail zum Zurücksetzen deines Passworts wurde an dich gesand!');
+				}
+			}).fail(function(responseJson) {
+				$('div#commError').show();
+			});
 			return false;
 		});
 

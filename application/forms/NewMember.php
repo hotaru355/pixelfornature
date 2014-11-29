@@ -1,13 +1,13 @@
 <?php
 class Application_Form_NewMember extends Zend_Form {
 	public $postfix;
-	private $identity;
-	private $skipIdentity;
+	private $excludeCondition;
+	private $validateIdentity;
 
-	function __construct($idPostfix = '', $identity = null, $skipIdentity = false) {
+	function __construct($idPostfix = '', $validateIdentity = "no", $excludeCondition = null) {
 		$this->postfix = $idPostfix;
-		$this->identity = $identity;
-		$this->skipIdentity = $skipIdentity;
+		$this->excludeCondition = $excludeCondition;
+		$this->validateIdentity = $validateIdentity;
 		parent::__construct();
 	}
 
@@ -54,11 +54,11 @@ class Application_Form_NewMember extends Zend_Form {
 			->setRequired($required)
 			->setValidators(
 			array(
-				(new Zend_Validate_StringLength())->setMin(0)->setMax(50)->setMessage('Bitte kürzer als 50 Buchstaben halten')
+				(new Zend_Validate_StringLength())->setMin(0)->setMax(50)->setMessage('Bitte kürzer als 50 Buchstaben halten'),
 			))
 			->setFilters(
 			array(
-				new Zend_Filter_StringTrim()
+				new Zend_Filter_StringTrim(),
 			));
 		return $element;
 	}
@@ -67,10 +67,20 @@ class Application_Form_NewMember extends Zend_Form {
 		$id = $name . $this->postfix;
 		$validators = array(
 			(new Zend_Validate_StringLength())->setMin(0)->setMax(50)->setMessage('Bitte kürzer als 50 Buchstaben halten'),
-			(new Zend_Validate_EmailAddress())->setMessage('Das ist keine gültige E-Mail')
+			(new Zend_Validate_EmailAddress())->setMessage('Das ist keine gültige E-Mail'),
 		);
-		if (!$this->skipIdentity) {
-			array_push($validators, (new Zend_Validate_Db_NoRecordExists('mitglieder', 'email', $this->identity))->setMessage('Ein Konto mit dieser E-Mail existiert bereits'));
+		switch ($this->validateIdentity) {
+			case 'notExists':
+				array_push($validators, (new Zend_Validate_Db_NoRecordExists('mitglieder', 'email', $this->excludeCondition))
+						->setMessage('Ein Konto mit dieser E-Mail existiert bereits'));
+				break;
+			case 'exists':
+				array_push($validators, (new Zend_Validate_Db_RecordExists('mitglieder', 'email', $this->excludeCondition))
+					->setMessage('Ein Konto mit dieser E-Mail existiert nicht'));
+				break;
+			default:
+				// no additional validation
+			break;
 		}
 
 		$email = new Zend_Form_Element_Text($id);
@@ -81,7 +91,7 @@ class Application_Form_NewMember extends Zend_Form {
 			->setFilters(
 			array(
 				new Zend_Filter_StringTrim(),
-				new Zend_Filter_StringToLower()
+				new Zend_Filter_StringToLower(),
 			))
 			->setAttribs(
 			array(
@@ -124,7 +134,7 @@ class Application_Form_NewMember extends Zend_Form {
 			array(
 				(new Zend_Validate_StringLength())->setMin(6)->setMax(50)->setMessage('Bitte zwischen 6-50 Zeichen verwenden'),
 				(new Zend_Validate_Alnum())->setMessage('Bitte nur Buchstaben und Ziffern verwenden'),
-				//(new Zend_Validate_Identical())->setToken($passwortWiederholtId)->setMessage('Die Passwörter stimmen nicht überein')
+					//(new Zend_Validate_Identical())->setToken($passwortWiederholtId)->setMessage('Die Passwörter stimmen nicht überein')
 			))
 		->setAttribs(
 			array(
@@ -147,7 +157,7 @@ class Application_Form_NewMember extends Zend_Form {
 			array(
 				(new Zend_Validate_StringLength())->setMin(6)->setMax(50)->setMessage('Bitte zwischen 6-50 Zeichen verwenden'),
 				(new Zend_Validate_Alnum())->setMessage('Bitte nur Buchstaben und Ziffern verwenden'),
-				(new Zend_Validate_Identical())->setToken($passwortId)->setMessage('Die Passwörter stimmen nicht überein')
+				(new Zend_Validate_Identical())->setToken($passwortId)->setMessage('Die Passwörter stimmen nicht überein'),
 			))
 		->setAttribs(
 			array(

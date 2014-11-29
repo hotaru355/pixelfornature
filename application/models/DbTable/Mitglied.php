@@ -45,17 +45,18 @@ class Application_Model_DbTable_Mitglied extends Zend_Db_Table_Abstract {
 		return $result->toArray();
 	}
 
-	// public function sucheId($id, $columns = null) {
-	// 	$columns = ($columns == null) ? $this->nonSensitiveColums : $columns;
-	// 	$result = $this->find($id);
-	// 	$mitglied = null;
-	// 	if (0 < count($result)) {
-	// 		$row = $result->current();
-	// 		$mitglied = new Application_Model_Mitglied();
-	// 		$mitglied->setFromRow($row);
-	// 	}
-	// 	return $mitglied;
-	// }
+	public function findByCondition($valuesByField, $columns = null) {
+		$select = $this
+			->select()
+			->from($this, ($columns == null) ? $this->nonSensitiveColums : $columns);
+
+		foreach ($valuesByField as $field => $value) {
+			$select->where($field . ' = ?', $value);
+		}
+
+		$result = $this->fetchRow($select);
+		return $result ? $result->toArray() : $result;
+	}
 
 	public function suchen($feldUndWert) {
 		$select = $this->select()->columns($columns);

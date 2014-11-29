@@ -1,0 +1,102 @@
+<li>
+    <div id="menuLanding" class="container-fluid slidingHorizontal">
+        <div id="" class="row">
+            <div class="col-sm-12 col-md-4 col-lg-3">
+                <h5>Die Kampagne
+                    <hr />
+                </h5>
+
+                <h2>Bisher gespendete Pixel</h2>
+                <div class="pixelCount">
+                    <?php echo number_format($this->project['pixelsTotal'], 0, ',', '.'); ?>&nbsp;px&sup2;
+                </div>
+                <hr />
+
+                <h2>Die letzten Pixelspender</h2>
+                <ul>
+                    <?php
+                    $donorWithCityFormat = '<li><p>%s %s aus %s</p></li>';
+                    $donorWithoutCityFormat = '<li><p>%s %s</p></li>';
+                    foreach ($this->project['lastDonors'] as $donor) {
+                        if (isset($donor['ort'])) {
+                            echo sprintf($donorWithCityFormat, $donor['vorname'], $donor['nachname'], $donor['ort']);
+                        } else {
+                            echo sprintf($donorWithoutCityFormat, $donor['vorname'], $donor['nachname']);
+                        }
+                    } ?>
+                </ul>
+                <hr />
+
+                <h2>Pixel für Natur</h2>
+                <p>Du kannst jetzt auch digitale Fläche spenden, ganz
+                umsonst und mit großer Wirkung für die Natur! Das Prinzip
+                ist ganz einfach: Du suchst dir nach Belieben ein Bild aus
+                und verwendest es bei Facebook als Titelbild.</p>
+                <button type="button" class="btn btn-default">Mehr erfahren</button>
+            </div>
+            <div class="col-sm-12 col-md-4 col-lg-6">
+                <h5>Aktuelles Projekt
+                    <hr class="mainColumn" />
+                </h5>
+
+                <h1><?php echo $this->project['name']; ?></h1>
+                <?php echo $this->project['beschreibung']; ?>
+                <button type="button" class="btn btn-default">Jetzt spenden</button>
+            </div>
+            <div class="col-sm-12 col-md-4 col-lg-3">
+                <h5>Der Verein
+                    <hr />
+                </h5>
+
+                <h2><strong>Über Naturefund</strong></h2>
+                <p>Wir setzen uns für den Naturschutz ein. Wir kaufen Land für Natur, um Lebensraum für die Artenvielfalt zu bewahren. Auch im Klimaschutz sind wir aktiv, wobei wir vor allem Wälder schützen und Bäume pflanzen.<p>
+                <button type="button" class="btn btn-default">Mehr erfahren</button>
+                <hr />
+
+                <h2>Mein Naturefund Account</h2>
+                <?php 
+                if ($this->isLoggedin) { ?>
+                <h2><strong>Hallo <?php echo $this->user['vorname'] ?></strong>, schön dich zu sehen!</h2>
+                <div class="float-container">
+                    <button id="memberAccount" type="button" class="btn btn-default">Mein Account</button>
+                    <button id="logoutMember" type="button" class="btn btn-default">Abmelden</button>
+                </div>
+                <?php } else {?>
+                <p>Um deine Pixel zu sammeln, melde dich einfach mit deinem persönlichen Naturefund-Account an:</p>
+                <form id="loginMember" class="" role="form">
+                    <div id="combiLogin" class="combi-input-container">
+                        <?php
+                        $this->loginForm->email->class .= ' combi-input-email-45';
+                        echo $this->loginForm->email->renderViewHelper();
+                        $this->loginForm->passwort->class .= ' combi-input-password-45';
+                        echo $this->loginForm->passwort->renderViewHelper();
+                        ?>
+                        <button type="submit" class="btn btn-default combi-input-submit">&gt;</button>
+                    </div>
+                    <div id="loginFailed" class="form-group"></div>
+                </form>
+                <a class="signupNow">Noch nicht registriert? Jetzt mitmachen!</a><br />
+                <a class="lostPassword">Passwort vergessen?</a>
+                <?php } ?>
+                <hr />
+
+                <h2>Newsletter</h2>
+                <p>Möchtest du immer auf dem neusten Stand bleiben? Dann
+                abboniere jetzt den Naturefund-Newsletter:</p>
+                <form id="orderNewsletter" class="" role="form"> 
+                    <div id="newsletterGroup" class="form-group combi-input-container">
+                        <input type="text" class="form-control combi-input-email-90" placeholder="E-Mail">
+                        <button type="submit" class="btn btn-default combi-input-submit">&gt;</button>
+                    </div>
+                </form>
+
+                <div id="socials-container" class="form-inline">
+                    <a class="btn btn-social btn-facebook" href="https://www.facebook.com/naturefund"></a>
+                    <a class="btn btn-social btn-gplus" href="https://plus.google.com/+NaturefundDe/posts"></a>
+                    <a class="btn btn-social btn-twitter" href="https://twitter.com/naturefund"></a>
+                    <a class="btn btn-social btn-youtube" href="http://www.youtube.com/user/Naturefund"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</li>

@@ -1,0 +1,27 @@
+<li>
+    <div id="menuNewMember" class="container-fluid slidingHorizontal">
+        <div id="" class="row">
+            <div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+                <form id="signupNewMember" role="form">
+                    <h2>Einen neuen Naturefund Account erstellen</h2>
+                    <div id="vornameSignupGroup" class="form-group">
+                        <?php echo $this->newMemberForm->vorname->renderViewHelper() ?>
+                    </div>
+                    <div id="nachnameSignupGroup" class="form-group">
+                        <?php echo $this->newMemberForm->nachname->renderViewHelper() ?>
+                    </div>
+                    <div id="emailSignupGroup" class="form-group">
+                        <?php echo $this->newMemberForm->email->renderViewHelper() ?>
+                    </div>
+                    <div id="passwortSignupGroup" class="form-group">
+                        <?php echo $this->newMemberForm->passwort->renderViewHelper() ?>
+                    </div>
+                    <div id="passwortWiederholtSignupGroup" class="form-group">
+                        <?php echo $this->newMemberForm->passwortWiederholt->renderViewHelper() ?>
+                    </div>
+                    <button type="submit" class="btn btn-default btn-block">Registrieren</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</li>

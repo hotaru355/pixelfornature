@@ -11,8 +11,8 @@ $this->headStyle()->appendStyle(sprintf("
     }", 
     $this->dimensions["facebook"]["cover"]["width"], 
     $this->dimensions["facebook"]["cover"]["height"]));
-$this->headStyle()->appendStyle(sprintf("
-    div#bg0 {
+    $this->headStyle()->appendStyle(sprintf(
+    "div#bg0 {
         background-image: url('%s');
     }", 
     $this->imagePath));
@@ -24,6 +24,11 @@ $this->headScript()
     ->appendFile("/js/vorschau.js");
 
 ?>
+
+<div id="bgWrapper">
+    <div id="bg0" class="bg"></div>
+</div>
+
 
 <div id="overlay" class="fullScreen transparentLight">
     <div class="container-fluid">

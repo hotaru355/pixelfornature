@@ -6315,8 +6315,12 @@ a {
 a:visited {
   color: #d9d9d9;
 }
+hr {
+  margin-top: 10px;
+}
 .btn {
   border: 0;
+  margin-bottom: 10px;
 }
 .btn-default {
   color: #91af2d;
@@ -6406,6 +6410,19 @@ fieldset[disabled] .btn-default.active {
 .btn-youtube:active {
   background-image: url('/images/Youtube_active.png');
 }
+button#memberAccount {
+  display: inline;
+  float: left;
+  width: 45%;
+  min-width: 120px;
+  margin-right: 10%;
+}
+button#logoutMember {
+  display: inline;
+  float: left;
+  width: 45%;
+  min-width: 120px;
+}
 .form-control.is-error {
   border-color: #a94442;
 }
@@ -6447,22 +6464,21 @@ fieldset[disabled] .btn-default.active {
   border-bottom-left-radius: 0;
 }
 .combi-input-email-45 {
-  width: 45%;
+  width: 44%;
   float: left;
   border-bottom-right-radius: 0;
   border-top-right-radius: 0;
 }
 .combi-input-email-90 {
-  width: 90%;
+  width: 89%;
   float: left;
   border-bottom-right-radius: 0;
   border-top-right-radius: 0;
 }
 .combi-input-password-45 {
-  width: 45%;
+  width: 44%;
   float: left;
-  border-bottom-right-radius: 0;
-  border-top-right-radius: 0;
+  border-radius: 0;
 }
 .combi-input-submit {
   width: 10%;
@@ -6470,8 +6486,29 @@ fieldset[disabled] .btn-default.active {
   border-bottom-left-radius: 0;
   height: 40px;
 }
+.combi-input-container {
+  margin-bottom: 15px;
+}
 label.is-error {
   color: #a94442;
+}
+form#updateMember {
+  margin-bottom: 20px;
+}
+h1 {
+  margin-top: 28px;
+  margin-bottom: 15px;
+}
+h2 {
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+@media (max-width: 991px) {
+  h5 {
+    margin-top: 20px;
+    margin-left: -10px;
+    font-style: italic;
+  }
 }
 div.pixelCount {
   color: #91af2d;
@@ -6483,9 +6520,31 @@ div.pixelCount {
   border: 4px solid;
   border-radius: 5px;
   border-color: #91af2d;
+  margin-bottom: 20px;
 }
 hr.mainColumn {
-  height: 4px;
-  background-color: #91af2d;
-  border: 0;
+  border-top: 4px solid #91af2d;
+}
+.float-container {
+  overflow: hidden;
+}
+div#socials-container {
+  margin-top: 50px;
+}
+@media (min-width: 1200px) {
+  .col-lg-1,
+  .col-lg-2,
+  .col-lg-3,
+  .col-lg-4,
+  .col-lg-5,
+  .col-lg-6,
+  .col-lg-7,
+  .col-lg-8,
+  .col-lg-9,
+  .col-lg-10,
+  .col-lg-11,
+  .col-lg-12 {
+    padding-left: 25px;
+    padding-right: 25px;
+  }
 }

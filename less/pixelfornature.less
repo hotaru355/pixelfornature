@@ -7,6 +7,7 @@
 @import "scaffolding.less";
 @import "buttons.less";
 @import "forms.less";
+@import "type.less";
 @import "vendor-prefixes.less";
 
 div.pixelCount {
@@ -19,10 +20,35 @@ div.pixelCount {
     border: 4px solid;
     border-radius: 5px;
     border-color: @color-green-dark;
+    margin-bottom: 20px;
 }
 
 hr.mainColumn {
-	height: 4px;
-	background-color: @color-green-dark;
-	border: 0;
+  border-top: 4px solid @color-green-dark;
+}
+
+.float-container {
+    overflow: hidden;
+}
+
+div#socials-container {
+    margin-top: 50px;
+}
+
+@media(min-width: @screen-lg-min){
+    .col-lg-1,
+    .col-lg-2,
+    .col-lg-3,
+    .col-lg-4,
+    .col-lg-5,
+    .col-lg-6,
+    .col-lg-7,
+    .col-lg-8,
+    .col-lg-9,
+    .col-lg-10,
+    .col-lg-11,
+    .col-lg-12 {
+        padding-left: 25px;
+        padding-right: 25px;
+    }
 }

@@ -16,6 +16,25 @@ $this->headScript()
 ?>
 
 
+<?php // Hauptmenue ?>
+<?php
+    echo $this->partial('menu.phtml', array(
+        'user' => $this->session->user,
+        'project' => $this->session->project,
+        'isLoggedin' => $this->isLoggedin,
+        'loginForm' => $this->loginForm,
+        'newMemberForm' => $this->newMemberForm,
+        'resetPasswordForm' => $this->resetPasswordForm,
+        'updateMemberForm' => $this->updateMemberForm));
+?>
+
+<?php // Container fuer Hintergrundbilder ?>
+<div id="bgWrapper">
+    <div id="bg0" class="bg"></div>
+    <div id="bg1" class="bg"></div>
+</div>
+
+<?php // Hilfefenster ?>
 <div class="absoluteWrapper" >
     <div id="helpBox" class="container transparentLight">
         <div class="row">

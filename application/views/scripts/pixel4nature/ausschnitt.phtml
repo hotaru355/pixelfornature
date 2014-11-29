@@ -51,6 +51,24 @@ $htmlEntities = new Zend_Filter_HtmlEntities();
 ?>
 
 
+<?php // Hauptmenue ?>
+<?php
+    echo $this->partial('menu.phtml', array(
+        'user' => $this->session->user,
+        'project' => $this->session->project,
+        'isLoggedin' => $this->isLoggedin,
+        'loginForm' => $this->loginForm,
+        'newMemberForm' => $this->newMemberForm,
+        'resetPasswordForm' => $this->resetPasswordForm,
+        'updateMemberForm' => $this->updateMemberForm));
+?>
+
+<?php // Container fuer Hintergrundbild ?>
+<div id="bgWrapper">
+    <div id="bg0" class="bg blur"></div>
+</div>
+
+<?php // Hilfefenster ?>
 <div class="absoluteWrapper" >
     <div id="helpBox" class="container transparentLight">
         <div class="row">

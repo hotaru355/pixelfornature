@@ -37,10 +37,12 @@ class Pixel4natureController extends Zend_Controller_Action {
 			$updateMemberForm->populate((array) $this->session->user);
 			$this->view->assign("updateMemberForm", $updateMemberForm);
 		} else {
-			$loginForm = new Application_Form_Login();
+			$loginForm = new Application_Form_NewMember("Login");
 			$this->view->assign("loginForm", $loginForm);
 			$newMemberForm = new Application_Form_NewMember("Signup");
 			$this->view->assign("newMemberForm", $newMemberForm);
+			$resetPasswordForm = new Application_Form_NewMember("ResetPassword");
+			$this->view->assign("resetPasswordForm", $resetPasswordForm);
 		}
 
 		$this->dimensions = $this->getInvokeArg('bootstrap')->getOption('m2spende')['dimensions'];
@@ -157,7 +159,7 @@ class Pixel4natureController extends Zend_Controller_Action {
 				$result = array(
 					"errorCode" => $ex->getCode(),
 					"errorMsg" => $ex->getMessage(),
-					"linkUrl" => null
+					"linkUrl" => null,
 				);
 			} catch (\Exception $ex) {
 				// When validation fails or other local issues
@@ -165,7 +167,7 @@ class Pixel4natureController extends Zend_Controller_Action {
 				$result = array(
 					"errorCode" => $ex->getCode(),
 					"errorMsg" => $ex->getMessage(),
-					"linkUrl" => null
+					"linkUrl" => null,
 				);
 			}
 

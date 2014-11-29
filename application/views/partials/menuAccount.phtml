@@ -1,0 +1,90 @@
+<li>
+    <div id="menuAccount" class="container-fluid slidingHorizontal">
+        <div id="" class="row">
+            <div class="col-sm-12 col-md-4 col-lg-3">
+                <h5>Deine Naturefund-Erfolge
+                    <hr />
+                </h5>
+
+                <h2>Deine bisher gespendeten Pixel</h2>
+                <div class="pixelCount">
+                    <?php echo number_format($this->user['pixelsTotal'], 0, ',', '.') ?>&nbsp;px&sup2;
+                </div>
+                <hr />
+            </div>
+            <div class="col-sm-12 col-md-4 col-lg-6">
+                <h5>Deine Aktivitäten
+                    <hr class="mainColumn" />
+                </h5>
+                <h1><strong>Hallo <?php echo $this->user['vorname'] ?></strong>, das hast du bereits mit Naturefund erreicht:</h1>
+                <ul>
+                    <?php 
+                    $signupFormat = '<li><p>Du bist am <strong>%s</strong> Weltretter bei Naturefund geworden.</p></li>';
+                    $spendeFormat = '<li><p>Am <strong>%s</strong> hast du <strong>%s px&sup2;</strong> für %s gespendet.</p></li>';
+                    date_default_timezone_set('Europe/Berlin');  
+                    setlocale(LC_ALL, "de_DE", "de_DE@euro", "deu", "deu_deu", "german");
+                    
+                    foreach ($this->user['timeline'] as $entry) {
+                        $dateFormatted = strftime('%d. %B %Y', strtotime($entry['datum_erstellt']));
+                        if ($entry['type'] == 'signup') {
+                            echo sprintf($signupFormat, $dateFormatted);
+                        }
+                        if ($entry['type'] == 'pixelspende') {
+                            echo sprintf($spendeFormat, $dateFormatted, number_format($entry['pixel_gespendet'], 0, ',', '.'), $entry['timeline_name']);
+                        }
+                    }
+                    ?>
+                </ul>
+            </div>
+            <div class="col-sm-12 col-md-4 col-lg-3">
+                <h5>Konto Einstellungen
+                    <hr />
+                </h5>
+                <form id="updateMember" class="" role="form">
+                    <h2>Ihre persönlichen Angaben</h2>
+                    <div id="combiNames" class="combi-input-container">
+                        <?php 
+                        $this->updateMemberForm->vorname->class .= ' combi-input-50L';
+                        echo $this->updateMemberForm->vorname->renderViewHelper();
+                        $this->updateMemberForm->nachname->class .= ' combi-input-50R';
+                        echo $this->updateMemberForm->nachname->renderViewHelper();
+                        ?>
+                    </div>
+                    <div id="strasseUpdateGroup" class="form-group">
+                        <?php echo $this->updateMemberForm->strasse->renderViewHelper() ?>
+                    </div>
+                    <div id="combiPlzOrt" class="combi-input-container">
+                        <?php 
+                        $this->updateMemberForm->plz->class .= ' combi-input-50L';
+                        echo $this->updateMemberForm->plz->renderViewHelper();
+                        $this->updateMemberForm->ort->class .= ' combi-input-50R';
+                        echo $this->updateMemberForm->ort->renderViewHelper();
+                        ?>
+                    </div>
+                    <div id="telefonUpdateGroup" class="form-group">
+                        <?php echo $this->updateMemberForm->telefon->renderViewHelper() ?>
+                    </div>
+
+                    <h2>Ihre Zugangsdaten</h2>
+                    <div id="emailUpdateGroup" class="form-group">
+                        <?php echo $this->updateMemberForm->email->renderViewHelper() ?>
+                    </div>
+                    <div id="combiPassword" class="combi-input-container">
+                        <?php
+                        $this->updateMemberForm->passwort->class .= ' combi-input-50L';
+                        echo $this->updateMemberForm->passwort->renderViewHelper();
+                        $this->updateMemberForm->passwortWiederholt->class .= ' combi-input-50R';
+                        echo $this->updateMemberForm->passwortWiederholt->renderViewHelper();
+                        ?>
+                    </div>
+                    <div class="float-container">
+                        <button type="submit" class="btn btn-default pull-right">Aktualisieren</button>
+                    </div>
+                </form>
+                <div class="float-container">
+                    <a id="deleteAccount" class="pull-right">Möchten Sie Ihr Konto löschen?</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</li>
