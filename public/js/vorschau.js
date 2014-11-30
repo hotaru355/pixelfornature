@@ -24,7 +24,7 @@
 
 	// Uebermittelt asynchron den Bildausschnitt und die Facebookzugangsdaten an
 	// den Server und verarbeitet die Antwort
-	function uploadAsync(popup) {
+	function uploadAsync() {
 		$.ajax({
 			url : 'hochladen',
 			type : 'GET',
@@ -32,33 +32,34 @@
 			global : true,
 			beforeSend : function() {
 				$('button#upload').attr('disabled', 'disabled');
-				$('div#successMsg').hide();
-				$('div#facebookError').hide();
-				$('div#commError').hide();
+				$('div#successMsg').addClass('hidden');
+				$('div#facebookError').addClass('hidden');
+				$('div#commError').addClass('hidden');
 			}
 		}).always(function() {
 			$('button#upload').removeAttr('disabled');
 		}).done(function(responseJson) {
 			if (responseJson.linkUrl) {
-				//popup.location.href = responseJson.linkUrl;
+				$('a#uploadLink').attr('href', responseJson.linkUrl);
+				$('a#uploadLink').html(responseJson.linkUrl);
+				$('div#successMsg').removeClass('hidden');
 				alert(responseJson.linkUrl);
 				window.location.href = 'danke';
 			} else {
 				$('span#errorCode').html(responseJson.errorCode);
-				$('div#facebookError').show();
+				$('div#facebookError').removeClass('hidden');
 			}
 		}).fail(function(responseJson) {
-			$('div#commError').show();
+			$('div#commError').removeClass('hidden');
 		});
 	}
 
 	$(function() {
 		$('button#upload').click(function() {
-			//var popup = window.open('', '_blank', 'fullscreen=yes,height=600,width=900,scrollbars=yes');
 			FB.getLoginStatus(function(response) {
 				if (response.status === 'connected') {
 					console.log('Already logged in. Going straight to goal.');
-					uploadAsync(popup);
+					uploadAsync();
 				} else if (response.status === 'not_authorized') {
 					// The person is logged into Facebook, but not your app.
 					// if (!isset($permissions['data'][0]['user_photos'])
@@ -67,7 +68,7 @@
 					FB.login(function(response) {
 						if (response.status === 'connected') {
 							console.log('Just logged in. Going to goal now.');
-							uploadAsync(popup);
+							uploadAsync();
 						} else if (response.status === 'not_authorized') {
 							// The person is logged into Facebook, but not your app.
 						} else {

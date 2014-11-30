@@ -6495,6 +6495,108 @@ label.is-error {
 form#updateMember {
   margin-bottom: 20px;
 }
+/**********
+ * Menus and Overlays
+ **********/
+.transparentLight {
+  color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(255, 255, 255, 0.9);
+}
+.transparentDark {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+.fullscreenOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
+  z-index: 100;
+}
+/*button.close {
+	margin-top: 10px;
+	margin-bottom: 20px;
+}
+*/
+div#menu {
+  top: -100%;
+  -webkit-transition: top 1s;
+  -o-transition: top 1s;
+  transition: top 1s;
+}
+div#helpBox {
+  margin-top: 50px;
+  display: none;
+  border: 0;
+  border-radius: 25px;
+}
+div#helpContent {
+  padding: 0 50px 50px 50px;
+}
+div#helpBox h1,
+div#helpBox h2,
+div#helpBox p {
+  text-align: center;
+}
+div#helpBox img {
+  margin: 10px auto 10px auto;
+}
+div.close-container {
+  height: 5%;
+}
+div#sliding-frame {
+  position: relative;
+  width: 100%;
+  height: 95%;
+  overflow-x: hidden;
+}
+div.sliding-menu {
+  position: absolute;
+  left: -100%;
+  width: 100%;
+  -webkit-transition: left 1s;
+  -o-transition: left 1s;
+  transition: left 1s;
+}
+div#menuLanding {
+  left: 0;
+}
+div#menuThankyou {
+  left: 0;
+}
+div#sliding-frame-right {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+}
+div#sliding-runway-left {
+  position: absolute;
+  left: -50%;
+  width: 200%;
+}
+div#sliding-runway-right {
+  position: absolute;
+  width: 200%;
+}
+.slidingHorizontal {
+  position: relative;
+  left: 0;
+  width: 50%;
+  padding-left: 3% !important;
+  padding-right: 3% !important;
+  -webkit-transition: left 1s;
+  -o-transition: left 1s;
+  transition: left 1s;
+}
+.noTransition {
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+  -o-transition: none !important;
+  -ms-transition: none !important;
+  transition: none !important;
+}
 h1 {
   margin-top: 28px;
   margin-bottom: 15px;

@@ -45,14 +45,14 @@ class MitgliedController extends Zend_Controller_Action {
 			$session = new Zend_Session_Namespace('pixelfornature');
 			$session->loadMenu = true;
 
-			// create signup interaction
-			$interactionMapper = new Application_Model_DbTable_Interaktion();
-			$interactionMapper->createSignup($id, $session->project['id']);
-
 			// login new member
 			Zend_Loader::loadFile("AuthenticationService.php");
 			$authService = new AuthenticationService();
 			$authService->loginUser($formData['email'], $formData['passwort']);
+
+			// create signup interaction
+			$interactionMapper = new Application_Model_DbTable_Interaktion();
+			$interactionMapper->createSignup($id, $session->project['id']);
 		}
 		$this->_helper->json(array(
 			"id" => $id,

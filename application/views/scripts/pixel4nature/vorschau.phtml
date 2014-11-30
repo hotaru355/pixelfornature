@@ -58,11 +58,11 @@ $this->headScript()
         </div>
 
         <div class="row">
-            <div class="col-sm-4 col-sm-offset-2">
+            <div class="col-sm-5 col-sm-offset-1 col-md-4 col-md-offset-2">
                 <button id="upload" type="button" class="btn btn-primary center-block">Mit Facebook verbinden</button>
                 <p class="text-center">Du kannst dich im nächsten Schritt mit deinem Facebook-Account anmelden und das Bild automatisch hochladen lassen. Das war‘s schon!</p>
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-5 col-md-4">
                 <a id="download" href="<?php echo $this->generatedPath; ?>" download="PixelForNature.png"
                 class="btn btn-default center-block" role="button">Downloaden</a>
                 <p class="text-center">Oder du kannst das Bild auf deinen Computer downloaden und manuell bei Facebook hochladen.</p>
@@ -70,10 +70,13 @@ $this->headScript()
         </div>
         <div class="row">
             <div class="col-sm-8 col-sm-offset-2">
-                <div id="commError" class="alert alert-danger initiallyHidden" role="alert">
+                <div id="successMsg" class="alert alert-success hidden" role="alert">
+                    <p><strong>Vielen Dank!</strong><br />Klicke einfach auf den Link um dein Foto als Coverfoto zu setzen:<br/><a id="uploadLink"></a></p>
+                </div>
+                <div id="commError" class="alert alert-danger hidden" role="alert">
                     <p><span class="glyphicon glyphicon-warning-sign"></span>&nbsp;<strong>Kommikationsfehler:</strong><br />Leider lief bei der Kommunikation mit dem Naturefund-Server etwas schief und das Bild konnte nicht hochgeladen werden.</p>
                 </div>
-                <div id="facebookError" class="alert alert-danger initiallyHidden" role="alert">
+                <div id="facebookError" class="alert alert-danger hidden" role="alert">
                     <p><span class="glyphicon glyphicon-warning-sign"></span>&nbsp;<strong>Fehler</strong>&nbsp;(<span id="errorCode"></span>):<br />Leider lief bei der Kommunikation mit dem Facebook-Server etwas schief und das Bild konnte nicht hochgeladen werden. Vielleicht probierst du es einfach später noch einmal.</p>
                 </div>
             </div>

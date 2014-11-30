@@ -18,33 +18,56 @@
 // };
 
 (function() {
-	var menuNewMember, menuLanding, menuResetPassword, menuAccount;
+	var menuNewMember, menuLanding, menuResetPassword, menuAccount, slidingFrame, secondaryMenu;
 
 	function transitionMenu(menuDiv) {
-		placeMenu(menuDiv, '0');
-		$('div#slidingContainer').append(menuDiv);
-		$('div#slidingContainer')[0].offsetHeight;
-		$('div#slidingContainer').children().each(function(index, child) {
-			$(this).css('left', '-50%');
-		})
+		secondaryMenu = menuDiv;
+		// remove scroll bar from frame
+		slidingFrame.css({
+			'overflow-y': 'hidden'
+		});
+		// place new menu div to the right of the screen 
+		placeMenu(menuDiv, '100%');
+		// slide the first menu page over
+		slidingFrame.children().first().css({
+			left: '-100%'
+		});
+		// slide the new menu page over compensating scrolling on the first page
+		menuDiv.css({
+			top: slidingFrame.scrollTop(),
+			left: '0'
+		});
+
+		menuDiv.one($.support.transition.end, function() {
+			// remove scrolling compensation
+			menuDiv.css({
+				top: '0'
+			});
+			// clear frame scrolling index
+			slidingFrame.scrollTop(0);
+			// reflow to avoid flashing scroll bar
+			slidingFrame[0].offsetHeight;
+			// re-add scroll bar to frame
+			slidingFrame.css({
+				'overflow-y': 'auto'
+			});
+		});
 	}
 
 	function placeMenu(menuDiv, left) {
-		menuDiv.addClass('noTransition'); // Disable transitions
+		// Disable transitions
+		menuDiv.addClass('noTransition');
 		menuDiv.css('left', left);
-		menuDiv[0].offsetHeight; // Trigger a reflow, flushing the CSS changes
-		menuDiv.removeClass('noTransition'); // Re-enable transitions
+		// Trigger a reflow, flushing the CSS changes
+		menuDiv[0].offsetHeight;
+		// Re-enable transitions
+		menuDiv.removeClass('noTransition');
 	}
 
 	function resetMenu() {
-		if ($('div#slidingContainer').children().length > 1) {
-			$('div#slidingContainer').children().each(function(index, child) {
-				if (index === 0) {
-					placeMenu($(this), '0');
-				} else {
-					$(this).remove();
-				}
-			})
+		placeMenu($('div#sliding-frame :first-child'), '0');
+		if (secondaryMenu) {
+			placeMenu(secondaryMenu, '-100%');
 		}
 	}
 
@@ -75,20 +98,18 @@
 	}
 
 	$(function() {
+		slidingFrame = $('div#sliding-frame');
+		menuLanding = $('div#menuLanding');
 		menuNewMember = $('div#menuNewMember');
 		menuResetPassword = $('div#menuResetPassword');
 		menuAccount = $('div#menuAccount');
 
 		$('area#infoCtrl').click(function() {
 			resetMenu();
-			$('div#menu').animate({
-				top: 0
-			});
+			$('div#menu').css('top', '0');
 		});
 		$('button#closeMenu').click(function() {
-			$('div#menu').animate({
-				top: '-100%'
-			});
+			$('div#menu').css('top', '-100%');
 		});
 
 		$('area#flashCtrl').click(function() {

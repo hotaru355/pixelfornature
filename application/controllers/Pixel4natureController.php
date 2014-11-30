@@ -30,7 +30,6 @@ class Pixel4natureController extends Zend_Controller_Action {
 
 		if ($auth->hasIdentity()) {
 			if (!isset($this->session->user)) {
-				// load user!
 				throw new Exception("No session user", 1);
 			}
 			$updateMemberForm = new Application_Form_NewMember("Update");
@@ -51,10 +50,8 @@ class Pixel4natureController extends Zend_Controller_Action {
 		$this->galeryFilesRel = array_map(function ($file) {
 			return str_replace(realpath(APPLICATION_PATH . "/../public/"), "", $file);
 		}, $this->galeryFilesAbs);
-		$this->dimensions['squarePixels'] = number_format(
-			$this->dimensions["facebook"]["cover"]["width"] * $this->dimensions["facebook"]["cover"]["height"],
-			0, ",", ".");
-		$this->view->assign("squarePixels", $this->dimensions['squarePixels']);
+		$this->dimensions['squarePixels'] = $this->dimensions["facebook"]["cover"]["width"] * $this->dimensions["facebook"]["cover"]["height"];
+		$this->view->assign("squarePixels", number_format($this->dimensions['squarePixels'], 0, ",", "."));
 
 		// var_dump($_SESSION['pixelfornature']['user']);
 	}
@@ -143,16 +140,12 @@ class Pixel4natureController extends Zend_Controller_Action {
 			try {
 				$facebookService = new FacebookService();
 				$link = $facebookService->uploadPhoto($this->session->image['generatedAbs']);
+
 				$result = array(
 					"errorCode" => null,
 					"errorMsg" => null,
 					"linkUrl" => $link,
 				);
-				$auth = Zend_Auth::getInstance();
-				if ($auth->hasIdentity()) {
-					$interactionMapper = new Application_Model_DbTable_Interaktion();
-					$interactionMapper->createDonation($this->session->user['id'], $this->session->project['id'], $this->dimensions['squarePixels']);
-				}
 			} catch (Facebook\FacebookRequestException $ex) {
 				// When Facebook returns an error
 				$this->log->err("Facebook Error: {$ex->getCode()}\n{$ex->getMessage()}");
@@ -179,48 +172,18 @@ class Pixel4natureController extends Zend_Controller_Action {
 	public function dankeAction() {
 		if (isset($this->session->donatedPixels)) {
 			$this->view->assign("imagePath", $this->session->image['pathRel']);
+
+			$auth = Zend_Auth::getInstance();
+			if ($auth->hasIdentity()) {
+				// save donation interaction
+				$interactionMapper = new Application_Model_DbTable_Interaktion();
+				$interactionMapper->createDonation($this->session->user['id'], $this->session->project['id'], $this->session->donatedPixels);
+				$this->session->user['pixelsTotal'] = $interactionMapper->getPixelsTotalByMember($this->session->user['id']);
+				$this->session->donatedPixels = null;
+			}
 		} else {
 			// Es wurde nichts gespendet. Zurueck zur Auswahl.
 			$this->_helper->redirector->gotoUrl('/');
 		}
 	}
-
-// private function _userToArray($userObj) {
-	//         $arrayObj = array(
-	//             'vorname' => $this->getVorname(),
-	//             'name' => $this->getName(),
-	//             'email' => $this->getEmail(),
-	//             'passwort_hash' => $this->getPasswortHash(),
-	//         );
-
-//         if (null !== $this->getAnrede()) {
-	//             $arrayObj['anrede'] = $this->getAnrede();
-	//         }
-	//         if (null !== $this->getStrasse()) {
-	//             $arrayObj['strasse'] = $this->getStrasse();
-	//         }
-	//         if (null !== $this->getPlz()) {
-	//             $arrayObj['plz'] = $this->getPlz();
-	//         }
-	//         if (null !== $this->getOrt()) {
-	//             $arrayObj['ort'] = $this->getOrt();
-	//         }
-	//         if (null !== $this->getLand()) {
-	//             $arrayObj['land'] = $this->getLand();
-	//         }
-	//         if (null !== $this->getVerifizierungHash()) {
-	//             $arrayObj['verifizierung_hash'] = $this->getVerifizierungHash();
-	//         }
-	//         if (null !== $this->getStatus()) {
-	//             $arrayObj['status'] = $this->getStatus();
-	//         }
-	//         if (null !== $this->getDatumGeandert()) {
-	//             $arrayObj['datum_geaendert'] = $this->getDatumGeandert();
-	//         }
-	//         if (null !== $this->getDatumErstellt()) {
-	//             $arrayObj['datum_erstellt'] = $this->getDatumErstellt();
-	//         }
-
-//         return $arrayObj;
-	//     }
 }

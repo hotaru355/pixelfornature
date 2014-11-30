@@ -83,97 +83,6 @@ div.bg {
 	box-shadow: 0px 0px 10px 4px #0f0f0f;
 }
 
-/**********
- * Menus and Overlays
- **********/
-
-.transparentLight {
-    color: rgba(0, 0, 0, 0.6);
-    background-color: rgba(255,255,255,0.9);
-}
-
-.transparentDark {
-    background-color:rgba(0, 0, 0, 0.8);
-}
-
-.fullscreenOverlay{
-	position: absolute;
-	top: 0;
-	left: 0;
-    height: 100%;
-    width: 100%;
-    overflow-y: auto;
-    z-index: 100;
-}
-
-button.close {
-	float: right;
-}
-
-button.close {
-	margin-top: 10px;
-	margin-bottom: 20px;
-}
-
-div#menu{
-	top: -100%;
-}
-
-
-
-div#helpBox {
-	margin-top: 50px;
-	display: none;
-    border: 0;
-    border-radius: 25px;
-}
-
-div#helpContent {
-	padding: 0 50px 50px 50px;
-}
-
-div#helpBox h1,
-div#helpBox h2,
-div#helpBox p {
-	text-align: center;
-}
-
-div#helpBox img {
-	margin: 10px auto 10px auto;
-}
-
-div#slidingFrame {
-	position: relative;
-	width: 100%;
-	overflow:hidden;
-}
-
-div#slidingContainer {
-	position: relative;
-	width: 200%;
-}
-
-.slidingHorizontal {
-	position: relative;
-	left: 0;
-	width: 50%;
-	float: left;
-	padding-left: 3% !important;
-	padding-right: 3% !important;
-	-moz-transition: left 1s; 
-	-webkit-transition: left 1s;  
-	-ms-transition: left 1s;  
-	-o-transition: left 1s;  
-	transition: left 1s;  
-}
-
-.noTransition {
-	-webkit-transition: none !important;
-	-moz-transition: none !important;
-	-o-transition: none !important;
-	-ms-transition: none !important;
-	transition: none !important;
-}
 
 
 /**********
@@ -333,7 +242,9 @@ a#download {
 	margin: 20px auto;
 }
 
-
+a.btn {
+	text-decoration: none;
+}
 
 
 

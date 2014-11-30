@@ -14,6 +14,7 @@ class AuthenticationService {
 			$session = new Zend_Session_Namespace('pixelfornature');
 			$interaktionMapper = new Application_Model_DbTable_Interaktion();
 
+			// retrieve user
 			$user = $adapter->getResultRowObject(array(
 				'id',
 				'vorname',
@@ -23,10 +24,20 @@ class AuthenticationService {
 				'ort',
 				'email',
 				'telefon'));
+
+			// save user data to session
 			$session->user = (array) $user;
 			$session->user['timeline'] = $interaktionMapper->getTimeline($user->id);
 			$session->user['pixelsTotal'] = $interaktionMapper->getPixelsTotalByMember($user->id);
 			$session->loadMenu = true;
+
+			// save donation interaction, if it happened when user was not logged in
+			if ($session->donatedPixels) {
+				$interactionMapper = new Application_Model_DbTable_Interaktion();
+				$interactionMapper->createDonation($session->user['id'], $session->project['id'], $session->donatedPixels);
+				$session->user['pixelsTotal'] = $interaktionMapper->getPixelsTotalByMember($session->user['id']);
+				$session->donatedPixels = null;
+			}
 			$isValid = true;
 		}
 		return $isValid;
@@ -34,8 +45,7 @@ class AuthenticationService {
 
 	public function logoutUser() {
 		Zend_Auth::getInstance()->clearIdentity();
-		$session = new Zend_Session_Namespace('pixelfornature');
-		unset($session->user);
+		Zend_Session::namespaceUnset('pixelfornature');
 		return true;
 	}
 
