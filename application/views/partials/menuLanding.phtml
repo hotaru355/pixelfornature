@@ -13,25 +13,23 @@
                 <hr />
 
                 <h2>Die letzten Pixelspender</h2>
-                <ul>
+                <ul class="last-donors non-decorated">
                     <?php
-                    $donorWithCityFormat = '<li><p>%s %s aus %s</p></li>';
-                    $donorWithoutCityFormat = '<li><p>%s %s</p></li>';
-                    foreach ($this->project['lastDonors'] as $donor) {
-                        if (isset($donor['ort'])) {
-                            echo sprintf($donorWithCityFormat, $donor['vorname'], $donor['nachname'], $donor['ort']);
-                        } else {
-                            echo sprintf($donorWithoutCityFormat, $donor['vorname'], $donor['nachname']);
-                        }
-                    } ?>
+                    foreach ($this->project['lastDonors'] as $donor) { 
+                        $fbId = isset($donor['facebook_id']) ? $donor['facebook_id'] : '164667883559271'?>
+                    <li>
+                        <img class='fb-image' src="<?php echo "https://graph.facebook.com/{$fbId}/picture"; ?>" />
+                        <p><?php echo $donor['vorname']?>&nbsp;<?php echo $donor['nachname'];
+                            if (isset($donor['ort'])) { 
+                                echo " aus {$donor['ort']}";
+                            } ?></p>
+                    </li>
+                    <?php } ?>
                 </ul>
                 <hr />
 
                 <h2>Pixel für Natur</h2>
-                <p>Du kannst jetzt auch digitale Fläche spenden, ganz
-                umsonst und mit großer Wirkung für die Natur! Das Prinzip
-                ist ganz einfach: Du suchst dir nach Belieben ein Bild aus
-                und verwendest es bei Facebook als Titelbild.</p>
+                <p>Du kannst jetzt auch digitale Fläche spenden, ganz umsonst und mit großer Wirkung für die Natur! Das Prinzip ist ganz einfach: Du suchst dir nach Belieben ein Bild aus und verwendest es bei Facebook als Titelbild.</p>
                 <button type="button" class="btn btn-default">Mehr erfahren</button>
             </div>
             <div class="col-sm-12 col-md-4 col-lg-6">
@@ -40,6 +38,7 @@
                 </h5>
 
                 <h1><?php echo $this->project['name']; ?></h1>
+                <img src="<?php echo $this->project['bild_url']; ?>" class="img-responsive"/>
                 <?php echo $this->project['beschreibung']; ?>
                 <button type="button" class="btn btn-default">Jetzt spenden</button>
             </div>

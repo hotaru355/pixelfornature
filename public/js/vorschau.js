@@ -56,6 +56,9 @@
 
 	$(function() {
 		$('button#upload').click(function() {
+			//DEBUG
+			// uploadAsync();
+
 			FB.getLoginStatus(function(response) {
 				if (response.status === 'connected') {
 					console.log('Already logged in. Going straight to goal.');
@@ -79,6 +82,7 @@
 				}
 			});
 		});
+
 		$('button#closeOverlay').click(function() {
 			$('div#overlay').css('top', '-100%');
 			setTimeout(function() {

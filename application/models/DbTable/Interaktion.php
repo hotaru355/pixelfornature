@@ -78,13 +78,9 @@ class Application_Model_DbTable_Interaktion extends Zend_Db_Table_Abstract {
 		return $this->insert($data);
 	}
 
-	public function createDonation($memberId, $projectId, $pixels) {
-		$data = array(
-			'mitglied_id' => $memberId,
-			'projekt_id' => $projectId,
-			'pixel_gespendet' => $pixels,
-			'type' => 'pixelspende');
-		return $this->insert($data);
+	public function createDonation($donation) {
+		$donation["type"] = "pixelspende";
+		return $this->insert($donation);
 	}
 
 	public function suchen($feldUndWert) {

@@ -25,19 +25,28 @@ class AuthenticationService {
 				'email',
 				'telefon'));
 
+			if ($session->pendingData) {
+				// save facebook id to user
+				$mitgliedMapper = new Application_Model_DbTable_Mitglied();
+				$mitgliedMapper->save(array(
+					"id" => $user->id,
+					"facebook_id" => $session->pendingData->fbId,
+				));
+
+				// save pending donations created when user was not logged in
+				foreach ($session->pendingData->donations as $donation) {
+					$donation['mitglied_id'] = $user->id;
+					$interaktionMapper->createDonation($donation);
+				}
+				$session->pendingData = null;
+			}
+
 			// save user data to session
 			$session->user = (array) $user;
 			$session->user['timeline'] = $interaktionMapper->getTimeline($user->id);
 			$session->user['pixelsTotal'] = $interaktionMapper->getPixelsTotalByMember($user->id);
 			$session->loadMenu = true;
 
-			// save donation interaction, if it happened when user was not logged in
-			if ($session->donatedPixels) {
-				$interactionMapper = new Application_Model_DbTable_Interaktion();
-				$interactionMapper->createDonation($session->user['id'], $session->project['id'], $session->donatedPixels);
-				$session->user['pixelsTotal'] = $interaktionMapper->getPixelsTotalByMember($session->user['id']);
-				$session->donatedPixels = null;
-			}
 			$isValid = true;
 		}
 		return $isValid;

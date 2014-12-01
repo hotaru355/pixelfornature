@@ -9,4 +9,8 @@ if ($auth->hasIdentity()) {
     echo 'Willkommen bei Naturefund';
 }
 ?>
+Zend_Loader::loadFile("FacebookService.php");
+
+$facebookService = new FacebookService();
+$facebookService->getProfilePicture('4');
 </div>

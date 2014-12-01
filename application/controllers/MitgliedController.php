@@ -158,7 +158,8 @@ class MitgliedController extends Zend_Controller_Action {
 
 			// delete member
 			$mitgliedMapper = new Application_Model_DbTable_Mitglied();
-			$mitgliedMapper->delete($id);
+			$mitgliedMapper->delete(array(
+				'id = ?' => $id));
 			$success = true;
 		}
 

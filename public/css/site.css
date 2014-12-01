@@ -6612,6 +6612,66 @@ h2 {
     font-style: italic;
   }
 }
+/* member's activities list*/
+ul.non-decorated {
+  list-style-type: none;
+  padding: 0;
+}
+/* list items */
+ul.member-activities li {
+  /* so that pseudoelements are positioned relatively to their "li"s*/
+  position: relative;
+  /* This overrides previously specified margin-bottom */
+  margin-bottom: 0;
+  padding-bottom: 2.5em;
+  padding-left: 5em;
+}
+/* bullets */
+ul.member-activities li:after {
+  content: url('/images/Facebook_normal.png');
+  position: absolute;
+  left: 0px;
+  /*adjust manually*/
+  top: 0px;
+}
+/* lines */
+ul.member-activities li:before {
+  content: "";
+  position: absolute;
+  left: 23px;
+  /* adjust manually */
+  border-left: 2px solid #91af2d;
+  height: 100%;
+  width: 1px;
+}
+/* first li's line */
+ul.member-activities li:first-child:before {
+  /* moves the line down so that it disappears under the bullet. Adjust manually */
+  top: 6px;
+}
+/* last li's line */
+ul.member-activities li:last-child:before {
+  /* shorten the line so it goes only up to the bullet. Is equal to first-child:before's top */
+  height: 0px;
+}
+ul.last-donors li {
+  position: relative;
+  height: 48px;
+  line-height: 48px;
+  margin-bottom: 10px;
+}
+ul.last-donors img {
+  border-radius: 24px;
+  border: solid white 2px;
+  width: 48px;
+  height: 48px;
+}
+ul.last-donors p {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: normal;
+  margin: 0 0 0 1em;
+}
 div.pixelCount {
   color: #91af2d;
   text-align: center;
