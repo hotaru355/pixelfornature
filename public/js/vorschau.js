@@ -85,9 +85,9 @@
 
 		$('button#closeOverlay').click(function() {
 			$('div#overlay').css('top', '-100%');
-			setTimeout(function() {
+			$('div#overlay').one($.support.transition.end, function() {
 				window.location.href = '/'
-			}, 1000);
+			});
 		})
 
 	});

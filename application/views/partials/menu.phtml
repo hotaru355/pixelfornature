@@ -19,7 +19,7 @@
             'loginForm' => $this->loginForm)); 
         if (!$this->isLoggedin) {
             echo $this->partial('menuNewMember.phtml', array('newMemberForm' => $this->newMemberForm));
-            echo $this->partial('menuResetPassword.phtml', array('resetPasswordForm' => $this->resetPasswordForm));
+            echo $this->partial('menuResetPassword.phtml', array('requestResetForm' => $this->requestResetForm));
         } else {
             echo $this->partial('menuAccount.phtml', array(
                 'user' => $this->user,

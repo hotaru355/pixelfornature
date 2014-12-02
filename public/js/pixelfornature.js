@@ -120,6 +120,13 @@
 			$('div#helpBox').toggle();
 		});
 
+		$('button#closeReset').click(function() {
+			$('div#overlayReset').css('top', '-100%');
+			$('div#overlayReset').one($.support.transition.end, function() {
+				window.location.href = '/'
+			});
+		})
+
 
 		$('a.signupNow').click(function() {
 			transitionMenu(menuNewMember);
@@ -270,16 +277,52 @@
 			return false;
 		});
 
+		$('form#requestReset').submit(function(event) {
+			event.preventDefault();
+			var signupBtn = $('form#requestReset :submit');
+			$.ajax({
+				url: 'auth/request-reset',
+				type: 'POST',
+				dataType: 'json',
+				global: true,
+				data: {
+					email: $('input#emailRequestReset').val(),
+				},
+				beforeSend: function() {
+					signupBtn.attr('disabled', 'disabled');
+					clearErrorLabels('requestReset')
+				}
+			}).always(function() {
+				signupBtn.removeAttr('disabled');
+			}).done(function(responseJson) {
+				if (responseJson.error) {
+					mapErrorToLabel(responseJson.error, 'RequestReset');
+				} else {
+					alert('Eine E-Mail zum Zurücksetzen deines Passworts wurde an dich gesand!');
+				}
+			}).fail(function(responseJson) {
+				$('div#commError').show();
+			});
+			return false;
+		});
+
 		$('form#resetPassword').submit(function(event) {
+			var combiNameById = {
+				passwort: 'Password',
+				passwortWiederholt: 'Password'
+			};
 			event.preventDefault();
 			var signupBtn = $('form#resetPassword :submit');
 			$.ajax({
-				url: 'auth/passwort-zuruecksetzen',
+				url: 'aendern',
 				type: 'POST',
 				dataType: 'json',
 				global: true,
 				data: {
 					email: $('input#emailResetPassword').val(),
+					passwort: $('input#passwortResetPassword').val(),
+					passwortWiederholt: $('input#passwortWiederholtResetPassword').val(),
+					verifizierungHash: $('input#verifizierungHashResetPassword').val(),
 				},
 				beforeSend: function() {
 					signupBtn.attr('disabled', 'disabled');
@@ -289,9 +332,10 @@
 				signupBtn.removeAttr('disabled');
 			}).done(function(responseJson) {
 				if (responseJson.error) {
-					mapErrorToLabel(responseJson.error, 'ResetPassword');
+					mapErrorToLabel(responseJson.error, 'ResetPassword', combiNameById);
 				} else {
-					alert('Eine E-Mail zum Zurücksetzen deines Passworts wurde an dich gesand!');
+					alert('Dein Passwort wurde geändert!');
+					document.location.href = "/";
 				}
 			}).fail(function(responseJson) {
 				$('div#commError').show();

@@ -37,6 +37,11 @@
 	// Placeholder
 	.placeholder();
 
+	&[disabled],
+	&[readonly],
+	fieldset[disabled] & {
+		color: @color-grey-50;
+	}
 }
 
 

@@ -6315,6 +6315,12 @@ a {
 a:visited {
   color: #d9d9d9;
 }
+a.btn:visited {
+  color: #91af2d;
+}
+a.btn:visited:hover {
+  color: #cdd296;
+}
 hr {
   margin-top: 10px;
 }
@@ -6452,6 +6458,11 @@ button#logoutMember {
   color: #808080;
   font-style: italic;
 }
+.form-control[disabled],
+.form-control[readonly],
+fieldset[disabled] .form-control {
+  color: #808080;
+}
 .combi-input-50L {
   width: 50%;
   float: left;
@@ -6525,6 +6536,11 @@ div#menu {
   -o-transition: top 1s;
   transition: top 1s;
 }
+div#overlayReset {
+  -webkit-transition: top 1s;
+  -o-transition: top 1s;
+  transition: top 1s;
+}
 div#helpBox {
   margin-top: 50px;
   display: none;
@@ -6565,30 +6581,9 @@ div#menuLanding {
 div#menuThankyou {
   left: 0;
 }
-div#sliding-frame-right {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  overflow-x: hidden;
-}
-div#sliding-runway-left {
-  position: absolute;
-  left: -50%;
-  width: 200%;
-}
-div#sliding-runway-right {
-  position: absolute;
-  width: 200%;
-}
 .slidingHorizontal {
-  position: relative;
-  left: 0;
-  width: 50%;
   padding-left: 3% !important;
   padding-right: 3% !important;
-  -webkit-transition: left 1s;
-  -o-transition: left 1s;
-  transition: left 1s;
 }
 .noTransition {
   -webkit-transition: none !important;

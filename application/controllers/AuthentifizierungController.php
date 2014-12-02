@@ -28,7 +28,6 @@ class AuthentifizierungController extends Zend_Controller_Action {
 			"success" => $success,
 			"error" => ($loginForm->getMessages() ? $loginForm->getMessages() : ""),
 		));
-
 	}
 
 	public function logoutAction() {
@@ -43,7 +42,7 @@ class AuthentifizierungController extends Zend_Controller_Action {
 		));
 	}
 
-	public function passwortZuruecksetzenAction() {
+	public function requestResetAction() {
 		$this->isAjaxPost();
 
 		$resetPasswordForm = new Application_Form_NewMember('ResetPassword', 'exists');
@@ -72,30 +71,6 @@ class AuthentifizierungController extends Zend_Controller_Action {
 			"success" => $success,
 			"error" => ($resetPasswordForm->getMessages() ? $resetPasswordForm->getMessages() : ""),
 		));
-	}
-
-	public function passwortBestaetigenAction() {
-		$this->_helper->layout->disableLayout();
-		$this->_helper->viewRenderer->setNoRender();
-
-		$email = $this->getRequest()->getParam('email');
-		$hash = $this->getRequest()->getParam('hash');
-
-		echo $hash;
-		if ($email && $hash) {
-			$mitgliedMapper = new Application_Model_DbTable_Mitglied();
-			$member = $mitgliedMapper->findByCondition(array('email' => $email, 'verifizierung_hash' => $hash));
-
-			var_dump($member);
-			return;
-			if (!$member) {
-				$this->_helper->redirector->gotoUrl('/');
-			} else {
-				$this->_helper->viewRenderer->setNoRender(false);
-			}
-		} else {
-			$this->_helper->redirector->gotoUrl('/');
-		}
 	}
 
 	private function sendVerificationEmail($member) {

@@ -45,8 +45,8 @@ class Pixel4natureController extends Zend_Controller_Action {
 			$this->view->assign("loginForm", $loginForm);
 			$newMemberForm = new Application_Form_NewMember("Signup");
 			$this->view->assign("newMemberForm", $newMemberForm);
-			$resetPasswordForm = new Application_Form_NewMember("ResetPassword");
-			$this->view->assign("resetPasswordForm", $resetPasswordForm);
+			$requestResetForm = new Application_Form_NewMember("RequestReset");
+			$this->view->assign("requestResetForm", $requestResetForm);
 		}
 
 		// get variables

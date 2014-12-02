@@ -63,23 +63,55 @@ class MitgliedController extends Zend_Controller_Action {
 	public function aendernAction() {
 		$this->isAjaxPost();
 
-		$auth = Zend_Auth::getInstance();
-		if (!$auth->hasIdentity()) {
-			throw new Exception("Not logged in", 1);
-		}
-
-		$session = new Zend_Session_Namespace('pixelfornature');
-		if (!isset($session->user['id'])) {
-			throw new Exception("Session user not found", 1);
-		}
-		$id = $session->user['id'];
-
-		$updateMemberForm = new Application_Form_NewMember('Update', 'notExists', array('field' => 'id', 'value' => $id));
 		$formData = $this->getRequest()->getPost();
+		$session = new Zend_Session_Namespace('pixelfornature');
+		$auth = Zend_Auth::getInstance();
+		$mitgliedMapper = new Application_Model_DbTable_Mitglied();
 		$success = false;
+		$isValid = false;
+		$id = null;
+		$errors = array();
 
-		if ($updateMemberForm->isValidPartial($formData)) {
+		if ($auth->hasIdentity()) {
+			// logged in users need to have a session and a valid form
+			if (!isset($session->user['id'])) {
+				$errors = array_merge($errors, array(
+					"passwort" => (object) array(// show in the password error label
+						"noSession" => "Session user not found")));
+			} else {
+				// validate form
+				$id = $session->user['id'];
+				$updateMemberForm = new Application_Form_NewMember('Update', 'notExists', array('field' => 'id', 'value' => $id));
+				$isValid = $updateMemberForm->isValidPartial($formData);
+				$errors = array_merge($errors, $updateMemberForm->getMessages());
+			}
+		} else {
+			// not logged in users need to have a hash and can only change the password
+			$formData = $this->ensureExists($formData, array('email', 'passwort', 'passwortWiederholt', 'verifizierungHash'));
 
+			// validate form
+			$updateMemberForm = new Application_Form_NewMember('Reset', 'exists');
+			$isValid = $updateMemberForm->isValidPartial($formData);
+			$errors = array_merge($errors, $updateMemberForm->getMessages());
+
+			// match email and hash
+			$user = $mitgliedMapper->findByCondition(array(
+				'email' => $formData['email'],
+				'verifizierung_hash' => $formData['verifizierungHash']));
+			if (!$user) {
+				$isValid = false;
+				$errors = array_merge($errors, array(
+					"passwort" => (object) array(// show in the password error label
+						"incorrect_hash" => "Deine Anfragedaten sind nicht mehr gültig. Bitte klick erneut auf 'Passwort vergessen' und lass dir eine neue E-Mail schicken.")));
+			} else {
+				$id = $user['id'];
+				$formData = array(
+					"passwort" => $formData["passwort"],
+					"verifizierung_hash" => "");
+			}
+		}
+
+		if ($isValid) {
 			// save changes to user
 			$formData['id'] = $id;
 			$formData['datum_geaendert'] = date('Y-m-d H:i:s');
@@ -91,21 +123,20 @@ class MitgliedController extends Zend_Controller_Action {
 				unset($formData['passwort']);
 				unset($formData['passwortWiederholt']);
 			}
-			$mitgliedMapper = new Application_Model_DbTable_Mitglied();
 			$mitgliedMapper->save($formData);
-
-			// update session user
 			unset($formData['passwort_hash']);
-			$user = array_merge($session->user, $formData);
-			// $user = $mitgliedMapper->findById($id);
-			$session->user = $user;
 
+			if ($auth->hasIdentity()) {
+				// update session user
+				$session->user = array_merge($session->user, $formData);
+			}
 			$success = true;
 		}
+
 		$this->_helper->json(array(
 			"id" => $id,
 			"success" => $success,
-			"error" => ($updateMemberForm->getMessages() ? $updateMemberForm->getMessages() : ""),
+			"error" => ($errors ? ((object) $errors) : ""),
 		));
 	}
 
@@ -113,24 +144,23 @@ class MitgliedController extends Zend_Controller_Action {
 		$email = $this->getRequest()->getParam('email');
 		$hash = $this->getRequest()->getParam('hash');
 		$errors = array();
+		$resetPasswordForm = new Application_Form_NewMember('ResetPassword');
+		$resetPasswordForm->getElement('email')->setValue($email)->setAttrib("disabled", "disabled");
+		$this->view->assign("resetPasswordForm", $resetPasswordForm);
+		$this->view->assign("hash", $hash);
 
-		echo $hash;
 		if ($email && $hash) {
 			$mitgliedMapper = new Application_Model_DbTable_Mitglied();
-			$member = $mitgliedMapper->findByCondition(array('email' => $email));
-
+			$member = $mitgliedMapper->findByCondition(array(
+				'email' => $email,
+				'verifizierung_hash' => $hash));
 			if (!$member) {
-				$errors['invalidEmail'] = 'E-Mail nicht gefunden';
-			} else {
-				$resetPasswordForm = new Application_Form_NewMember('ResetPassword');
-				$resetPasswordForm->getElement('email')->setValue($member['email']);
-				// var_dump($resetPasswordForm);
-				$this->view->assign('resetPasswordForm', $resetPasswordForm);
-				$this->view->assign('email', $member['email']);
+				$errors['invalidData'] = 'Ungültige Daten';
 			}
 		} else {
-			$errors['invalidLink'] = 'fehlt info';
+			$errors['missingData'] = 'Fehlende Daten';
 		}
+		$this->view->assign("errors", $errors);
 	}
 
 	public function loeschenAction() {
@@ -188,6 +218,15 @@ class MitgliedController extends Zend_Controller_Action {
 		}
 		$this->_helper->viewRenderer->setNoRender();
 		$this->_helper->layout->disableLayout();
+	}
+
+	private function ensureExists($form, $fields) {
+		foreach ($fields as $field) {
+			if (!isset($form[$field])) {
+				$form[$field] = "";
+			}
+		}
+		return $form;
 	}
 
 }
