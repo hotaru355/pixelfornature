@@ -21,34 +21,24 @@
 	var menuNewMember, menuLanding, menuResetPassword, menuAccount, slidingFrame, secondaryMenu;
 
 	function transitionMenu(menuDiv) {
+		var slidingMenus = $('div.sliding-menu');
 		secondaryMenu = menuDiv;
-		// remove scroll bar from frame
-		slidingFrame.css({
+		// remove scroll bar from all menus during transition
+		slidingMenus.css({
 			'overflow-y': 'hidden'
 		});
 		// place new menu div to the right of the screen 
 		placeMenu(menuDiv, '100%');
-		// slide the first menu page over
+		// slide the menu pages over
 		slidingFrame.children().first().css({
 			left: '-100%'
 		});
-		// slide the new menu page over compensating scrolling on the first page
 		menuDiv.css({
-			top: slidingFrame.scrollTop(),
 			left: '0'
 		});
-
+		// re-add scroll bar to menu once transition complete
 		menuDiv.one($.support.transition.end, function() {
-			// remove scrolling compensation
-			menuDiv.css({
-				top: '0'
-			});
-			// clear frame scrolling index
-			slidingFrame.scrollTop(0);
-			// reflow to avoid flashing scroll bar
-			slidingFrame[0].offsetHeight;
-			// re-add scroll bar to frame
-			slidingFrame.css({
+			slidingMenus.css({
 				'overflow-y': 'auto'
 			});
 		});
