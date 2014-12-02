@@ -57,7 +57,7 @@ $this->headScript()
         <?php
         if (!$this->isLoggedin) {
             echo $this->partial('menuNewMember.phtml', array('newMemberForm' => $this->newMemberForm));
-            echo $this->partial('menuResetPassword.phtml', array('resetPasswordForm' => $this->resetPasswordForm));
+            echo $this->partial('menuResetPassword.phtml', array('requestResetForm' => $this->requestResetsForm));
         } ?>
     </div>
 </div>

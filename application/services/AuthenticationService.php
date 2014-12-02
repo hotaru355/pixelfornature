@@ -17,6 +17,7 @@ class AuthenticationService {
 			// retrieve user
 			$user = $adapter->getResultRowObject(array(
 				'id',
+				'facebook_id',
 				'vorname',
 				'nachname',
 				'strasse',

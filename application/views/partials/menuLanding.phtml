@@ -20,7 +20,7 @@
                     <li>
                         <img class='fb-image' src="<?php echo "https://graph.facebook.com/{$fbId}/picture"; ?>" />
                         <p><?php echo $donor['vorname']?>&nbsp;<?php echo $donor['nachname'];
-                            if (isset($donor['ort'])) { 
+                            if ($donor['ort']) { 
                                 echo " aus {$donor['ort']}";
                             } ?></p>
                     </li>

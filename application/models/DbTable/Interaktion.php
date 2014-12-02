@@ -59,7 +59,7 @@ class Application_Model_DbTable_Interaktion extends Zend_Db_Table_Abstract {
 		$select = $this
 			->select()
 			->from(array('i' => 'interaktionen'), array())
-			->join(array('m' => 'mitglieder'), 'i.mitglied_id = m.id', array('vorname', 'nachname', 'ort'))
+			->join(array('m' => 'mitglieder'), 'i.mitglied_id = m.id', array('facebook_id', 'vorname', 'nachname', 'ort'))
 			->where('i.projekt_id = ?', $projectId)
 			->where('i.type = ?', 'pixelspende')
 			->order('i.datum_erstellt DESC')
