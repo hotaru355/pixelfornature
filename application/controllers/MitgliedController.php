@@ -13,12 +13,34 @@ class MitgliedController extends Zend_Controller_Action {
 	 * response time reasonable (target 0.1 and 0.5 seconds for a hashing).
 	 */
 	const ALGORITHMIC_COST = 15;
+	private $hasIdentity;
+	private $session;
 
 	public function init() {
 		$ajaxContext = $this->_helper->getHelper('AjaxContext');
+		$ajaxContext->addActionContext('index', 'json')->initContext();
 		$ajaxContext->addActionContext('hinzufuegen', 'json')->initContext();
 		$ajaxContext->addActionContext('aendern', 'json')->initContext();
 		$ajaxContext->addActionContext('loeschen', 'json')->initContext();
+
+		// auth
+		$this->hasIdentity = Zend_Auth::getInstance()->hasIdentity();
+
+		// session
+		$this->session = new Zend_Session_Namespace('pixelfornature');
+	}
+
+	public function indexAction() {
+		$this->isAjaxGet();
+		$user = null;
+
+		if ($this->hasIdentity) {
+			$user = $this->session->user;
+		}
+		$this->_helper->json(array(
+			"user" => $user,
+			"error" => "",
+		));
 	}
 
 	public function hinzufuegenAction() {
@@ -41,13 +63,9 @@ class MitgliedController extends Zend_Controller_Action {
 			$mitgliedMapper = new Application_Model_DbTable_Mitglied();
 			$id = $mitgliedMapper->save($mitglied);
 
-			// session
-			$session = new Zend_Session_Namespace('pixelfornature');
-			$session->loadMenu = true;
-
 			// create signup interaction
 			$interactionMapper = new Application_Model_DbTable_Interaktion();
-			$interactionMapper->createSignup($id, $session->project['id']);
+			$interactionMapper->createSignup($id, Zend_Registry::get('project')['id']);
 
 			// login new member
 			Zend_Loader::loadFile("AuthenticationService.php");
@@ -64,23 +82,21 @@ class MitgliedController extends Zend_Controller_Action {
 		$this->isAjaxPost();
 
 		$formData = $this->getRequest()->getPost();
-		$session = new Zend_Session_Namespace('pixelfornature');
-		$auth = Zend_Auth::getInstance();
 		$mitgliedMapper = new Application_Model_DbTable_Mitglied();
 		$success = false;
 		$isValid = false;
 		$id = null;
 		$errors = array();
 
-		if ($auth->hasIdentity()) {
+		if ($this->hasIdentity) {
 			// logged in users need to have a session and a valid form
-			if (!isset($session->user['id'])) {
+			if (!isset($this->session->user['id'])) {
 				$errors = array_merge($errors, array(
 					"passwort" => (object) array(// show in the password error label
 						"noSession" => "Session user not found")));
 			} else {
 				// validate form
-				$id = $session->user['id'];
+				$id = $this->session->user['id'];
 				$updateMemberForm = new Application_Form_NewMember('Update', 'notExists', array('field' => 'id', 'value' => $id));
 				$isValid = $updateMemberForm->isValidPartial($formData);
 				$errors = array_merge($errors, $updateMemberForm->getMessages());
@@ -126,9 +142,9 @@ class MitgliedController extends Zend_Controller_Action {
 			$mitgliedMapper->save($formData);
 			unset($formData['passwort_hash']);
 
-			if ($auth->hasIdentity()) {
+			if ($this->hasIdentity) {
 				// update session user
-				$session->user = array_merge($session->user, $formData);
+				$this->session->user = array_merge($this->session->user, $formData);
 			}
 			$success = true;
 		}
@@ -169,16 +185,14 @@ class MitgliedController extends Zend_Controller_Action {
 		$errors = array();
 		$success = false;
 
-		$auth = Zend_Auth::getInstance();
-		if (!$auth->hasIdentity()) {
+		if (!$this->hasIdentity) {
 			$errors['not_logged_in'] = "No user is logged in";
 		}
 
-		$session = new Zend_Session_Namespace('pixelfornature');
-		if (!isset($session->user['id'])) {
+		if (!isset($this->session->user['id'])) {
 			$errors['no_session_user'] = "No session user found";
 		}
-		$id = $session->user['id'];
+		$id = $this->session->user['id'];
 
 		if (!$errors) {
 			// logout member
@@ -214,6 +228,14 @@ class MitgliedController extends Zend_Controller_Action {
 
 	private function isAjaxPost() {
 		if (!$this->_request->isXmlHttpRequest() || !$this->getRequest()->isPost()) {
+			throw new Exception("Not an xml request", 1);
+		}
+		$this->_helper->viewRenderer->setNoRender();
+		$this->_helper->layout->disableLayout();
+	}
+
+	private function isAjaxGet() {
+		if (!$this->_request->isXmlHttpRequest() || !$this->getRequest()->isGet()) {
 			throw new Exception("Not an xml request", 1);
 		}
 		$this->_helper->viewRenderer->setNoRender();

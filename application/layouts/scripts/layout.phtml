@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?php echo $this->headMeta(); ?>
 
+    <link rel="prefetch" href="/images/projekt.jpg" />
     <link rel="stylesheet" href="/css/pixelfornature.css">
     <?php echo $this->headLink(); ?>
     <?php echo $this->headStyle() ?>
@@ -18,14 +19,6 @@
     <!-- Bootstrap -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <script src="/js/pixelfornature.js"></script>
-    <?php
-    if (isset($this->session) && $this->session->loadMenu) {
-        $this->session->loadMenu = false;
-        $this->headScript()->appendScript(
-            "$(function() {
-                $('div#menu').css({top: 0});
-            })");
-    } ?>
     <?php echo $this->headScript(); ?>
 </head>
 

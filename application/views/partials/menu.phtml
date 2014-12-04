@@ -1,7 +1,3 @@
-<?php // versteckte "Lagerstaette" fuer Menueseiten die per JS plaziert werden ?>
-<ul id="menuPages" class="hidden">
-</ul>
-
 <?php // Container fuer das Hauptmenue ?>
 <div id="menu" class="transparentDark fullscreenOverlay">
     <div class="close-container">
@@ -10,20 +6,17 @@
             <span class="sr-only">Close</span>
         </button>
     </div>
-    <div id="sliding-frame">
+    <div class="sliding-frame">
         <?php
         echo $this->partial('menuLanding.phtml', array(
             'user' => $this->user,
-            'project' => $this->project,
             'isLoggedin' => $this->isLoggedin,
             'loginForm' => $this->loginForm)); 
-        if (!$this->isLoggedin) {
-            echo $this->partial('menuNewMember.phtml', array('newMemberForm' => $this->newMemberForm));
-            echo $this->partial('menuResetPassword.phtml', array('requestResetForm' => $this->requestResetForm));
-        } else {
-            echo $this->partial('menuAccount.phtml', array(
-                'user' => $this->user,
-                'updateMemberForm' => $this->updateMemberForm));
-        } ?>
+        echo $this->partial('menuNewMember.phtml', array('newMemberForm' => $this->newMemberForm));
+        echo $this->partial('menuResetPassword.phtml', array('requestResetForm' => $this->requestResetForm));
+        echo $this->partial('menuAccount.phtml', array(
+            'user' => $this->user,
+            'updateMemberForm' => $this->updateMemberForm));
+        ?>
     </div>
 </div>

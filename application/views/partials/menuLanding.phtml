@@ -1,4 +1,5 @@
-<div id="menuLanding" class="sliding-menu">
+<?php $project = Zend_Registry::get('project'); ?>
+<div id="menuLanding" class="sliding-menu slided-center">
     <div class="container-fluid">
         <div id="" class="row">
             <div class="col-sm-12 col-md-4 col-lg-3">
@@ -8,14 +9,14 @@
 
                 <h2>Bisher gespendete Pixel</h2>
                 <div class="pixelCount">
-                    <?php echo number_format($this->project['pixelsTotal'], 0, ',', '.'); ?>&nbsp;px&sup2;
+                    <?php echo $project['pixelsTotalFormatted']; ?>&nbsp;px&sup2;
                 </div>
                 <hr />
 
                 <h2>Die letzten Pixelspender</h2>
                 <ul class="last-donors non-decorated">
                     <?php
-                    foreach ($this->project['lastDonors'] as $donor) { 
+                    foreach ($project['lastDonors'] as $donor) { 
                         $fbId = isset($donor['facebook_id']) ? $donor['facebook_id'] : '164667883559271'?>
                     <li>
                         <img class='fb-image' src="<?php echo "https://graph.facebook.com/{$fbId}/picture"; ?>" />
@@ -37,9 +38,9 @@
                     <hr class="mainColumn" />
                 </h5>
 
-                <h1><?php echo $this->project['name']; ?></h1>
-                <img src="<?php echo $this->project['bild_url']; ?>" class="img-responsive"/>
-                <?php echo $this->project['beschreibung']; ?>
+                <h1><?php echo $project['name']; ?></h1>
+                <img src="<?php echo $project['bild_url']; ?>" class="img-responsive"/>
+                <?php echo $project['beschreibung']; ?>
                 <button type="button" class="btn btn-default">Jetzt spenden</button>
             </div>
             <div class="col-sm-12 col-md-4 col-lg-3">
@@ -50,33 +51,35 @@
                 <h2><strong>Über Naturefund</strong></h2>
                 <p>Wir setzen uns für den Naturschutz ein. Wir kaufen Land für Natur, um Lebensraum für die Artenvielfalt zu bewahren. Auch im Klimaschutz sind wir aktiv, wobei wir vor allem Wälder schützen und Bäume pflanzen.<p>
                 <button type="button" class="btn btn-default">Mehr erfahren</button>
-                <hr />
+                <hr class="no-margin-bottom"/>
 
-                <h2>Mein Naturefund Account</h2>
-                <?php 
-                if ($this->isLoggedin) { ?>
-                <h2><strong>Hallo <?php echo $this->user['vorname'] ?></strong>, schön dich zu sehen!</h2>
-                <div class="float-container">
-                    <button id="memberAccount" type="button" class="btn btn-default">Mein Account</button>
-                    <button id="logoutMember" type="button" class="btn btn-default">Abmelden</button>
-                </div>
-                <?php } else {?>
-                <p>Um deine Pixel zu sammeln, melde dich einfach mit deinem persönlichen Naturefund-Account an:</p>
-                <form id="loginMember" class="" role="form">
-                    <div id="combiLogin" class="combi-input-container">
-                        <?php
-                        $this->loginForm->email->class .= ' combi-input-email-45';
-                        echo $this->loginForm->email->renderViewHelper();
-                        $this->loginForm->passwort->class .= ' combi-input-password-45';
-                        echo $this->loginForm->passwort->renderViewHelper();
-                        ?>
-                        <button type="submit" class="btn btn-default combi-input-submit">&gt;</button>
+                <div class="flipcard">
+                    <div id="menuLoggedOut" class="<?php echo (!$this->isLoggedin ? 'flipcard-front' : 'flipcard-back'); ?>">
+                        <h2>Mein Naturefund Account</h2>
+                        <p>Um deine Pixel zu sammeln, melde dich einfach mit deinem persönlichen Naturefund-Account an:</p>
+                        <form id="loginMember" class="" role="form">
+                            <div id="combiLogin" class="combi-input-container">
+                                <?php
+                                $this->loginForm->email->class .= ' combi-input-email-45';
+                                echo $this->loginForm->email->renderViewHelper();
+                                $this->loginForm->passwort->class .= ' combi-input-password-45';
+                                echo $this->loginForm->passwort->renderViewHelper();
+                                ?>
+                                <button type="submit" class="btn btn-default combi-input-submit">&gt;</button>
+                            </div>
+                            <div id="loginFailed" class="form-group"></div>
+                        </form>
+                        <a class="signupNow">Noch nicht registriert? Jetzt mitmachen!</a><br />
+                        <a class="lostPassword">Passwort vergessen?</a>
                     </div>
-                    <div id="loginFailed" class="form-group"></div>
-                </form>
-                <a class="signupNow">Noch nicht registriert? Jetzt mitmachen!</a><br />
-                <a class="lostPassword">Passwort vergessen?</a>
-                <?php } ?>
+                    <div id="menuLoggedIn" class="<?php echo ($this->isLoggedin ? 'flipcard-front' : 'flipcard-back'); ?>">
+                        <h2><strong>Hallo <?php echo $this->user['vorname'] ?></strong>, schön dich zu sehen!</h2>
+                        <div class="clearfix">
+                            <button id="memberAccount" type="button" class="btn btn-default">Mein Account</button>
+                            <button id="logoutMember" type="button" class="btn btn-default">Abmelden</button>
+                        </div>
+                    </div>
+                </div>
                 <hr />
 
                 <h2>Newsletter</h2>

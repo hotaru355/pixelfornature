@@ -46,7 +46,6 @@ class AuthenticationService {
 			$session->user = (array) $user;
 			$session->user['timeline'] = $interaktionMapper->getTimeline($user->id);
 			$session->user['pixelsTotal'] = $interaktionMapper->getPixelsTotalByMember($user->id);
-			$session->loadMenu = true;
 
 			$isValid = true;
 		}

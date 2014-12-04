@@ -5,9 +5,6 @@ $this->headTitle()
 
 // JavaScript
 $this->headScript()
-    ->appendFile("/js/purl/purl.js");
-
-$this->headScript()
     ->appendScript(
         "var imageUrls = {$this->galeryFilesJs};
         var selected = {$this->imageIndex};");
@@ -20,7 +17,6 @@ $this->headScript()
 <?php
     echo $this->partial('menu.phtml', array(
         'user' => $this->session->user,
-        'project' => $this->session->project,
         'isLoggedin' => $this->isLoggedin,
         'loginForm' => $this->loginForm,
         'newMemberForm' => $this->newMemberForm,
@@ -29,6 +25,10 @@ $this->headScript()
 ?>
 
 <?php // Container fuer Hintergrundbilder ?>
+<div class="hidden">
+    <img src="/images/galerie/naturefund11.jpg">
+</div>
+
 <div id="bgWrapper">
     <div id="bg0" class="bg"></div>
     <div id="bg1" class="bg"></div>

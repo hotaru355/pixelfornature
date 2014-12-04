@@ -32,6 +32,13 @@ class Application_Model_DbTable_Interaktion extends Zend_Db_Table_Abstract {
 			->setIntegrityCheck(false);
 
 		$result = $this->fetchAll($select);
+		// TODO: do this project wide the zend way
+		date_default_timezone_set('Europe/Berlin');
+		setlocale(LC_ALL, "de_DE", "de_DE@euro", "deu", "deu_deu", "german");
+
+		foreach ($result as $row) {
+			$row['datum_erstellt'] = strftime('%d. %B %Y', strtotime($row['datum_erstellt']));
+		}
 		return $result->toArray();
 	}
 

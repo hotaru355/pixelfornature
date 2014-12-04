@@ -36,7 +36,8 @@ div#socials-container {
     margin-top: 50px;
 }
 
-@media(min-width: @screen-lg-min){
+@media(min-width: @screen-lg-min) {
+    // column gutter for large screens
     .col-lg-1,
     .col-lg-2,
     .col-lg-3,
@@ -52,4 +53,29 @@ div#socials-container {
         padding-left: 25px;
         padding-right: 25px;
     }
+    // padding for large screens
+    .container-fluid {
+        padding-left: 10%;
+        padding-right: 10%
+    }
+}
+
+@media (min-width: @screen-md-min) and (max-width: @screen-md-max) {
+    // padding for medium screens
+    .container-fluid {
+        padding-left: 5%;
+        padding-right: 5%
+    }
+}
+
+@media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
+    // padding for medium screens
+    .container-fluid {
+        padding-left: 10%;
+        padding-right: 10%
+    }
+}
+
+.no-margin-bottom {
+    margin-bottom: 0;
 }

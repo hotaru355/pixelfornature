@@ -55,7 +55,6 @@ $htmlEntities = new Zend_Filter_HtmlEntities();
 <?php
     echo $this->partial('menu.phtml', array(
         'user' => $this->session->user,
-        'project' => $this->session->project,
         'isLoggedin' => $this->isLoggedin,
         'loginForm' => $this->loginForm,
         'newMemberForm' => $this->newMemberForm,

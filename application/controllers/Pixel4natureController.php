@@ -3,9 +3,6 @@ class Pixel4natureController extends Zend_Controller_Action {
 	private $session;
 	private $log;
 	private $dimensions;
-	private $galeryPath;
-	private $galeryFilesAbs;
-	private $galeryFilesRel;
 	private $hasIdentity;
 
 	public function init() {
@@ -14,18 +11,17 @@ class Pixel4natureController extends Zend_Controller_Action {
 		$ajaxContext = $this->_helper->getHelper('AjaxContext');
 		$ajaxContext->addActionContext('hochladen', 'json')->initContext();
 
-		// get session and init project
+		// get session
 		$this->session = new Zend_Session_Namespace('pixelfornature');
-		if (!isset($this->session->project)) {
-			$projectMapper = new Application_Model_DbTable_Projekt();
-			$this->session->project = $projectMapper->getCurrent();
-		}
 		$this->view->assign("session", $this->session);
 
 		// load project pixel count and donors on every request!
+		$project = Zend_Registry::get('project');
 		$interaktionMapper = new Application_Model_DbTable_Interaktion();
-		$this->session->project['pixelsTotal'] = $interaktionMapper->getPixelsTotalByProject($this->session->project['id']);
-		$this->session->project['lastDonors'] = $interaktionMapper->getLastDonors($this->session->project['id']);
+		$project['pixelsTotal'] = $interaktionMapper->getPixelsTotalByProject($project['id']);
+		$project['pixelsTotalFormatted'] = number_format($project['pixelsTotal'], 0, ',', '.');
+		$project['lastDonors'] = $interaktionMapper->getLastDonors($project['id']);
+		Zend_Registry::set('project', $project);
 
 		// assign auth
 		$auth = Zend_Auth::getInstance();
@@ -33,46 +29,32 @@ class Pixel4natureController extends Zend_Controller_Action {
 		$this->view->assign("isLoggedin", $this->hasIdentity);
 
 		// assign view forms
+		$updateMemberForm = new Application_Form_NewMember("Update");
+		$this->view->assign("updateMemberForm", $updateMemberForm);
+		$loginForm = new Application_Form_NewMember("Login");
+		$this->view->assign("loginForm", $loginForm);
+		$newMemberForm = new Application_Form_NewMember("Signup");
+		$this->view->assign("newMemberForm", $newMemberForm);
+		$requestResetForm = new Application_Form_NewMember("RequestReset");
+		$this->view->assign("requestResetForm", $requestResetForm);
+
 		if ($this->hasIdentity) {
 			if (!isset($this->session->user)) {
 				throw new Exception("No session user", 1);
 			}
-			$updateMemberForm = new Application_Form_NewMember("Update");
 			$updateMemberForm->populate((array) $this->session->user);
-			$this->view->assign("updateMemberForm", $updateMemberForm);
-		} else {
-			$loginForm = new Application_Form_NewMember("Login");
-			$this->view->assign("loginForm", $loginForm);
-			$newMemberForm = new Application_Form_NewMember("Signup");
-			$this->view->assign("newMemberForm", $newMemberForm);
-			$requestResetForm = new Application_Form_NewMember("RequestReset");
-			$this->view->assign("requestResetForm", $requestResetForm);
 		}
-
-		// get variables
-		$this->dimensions = $this->getInvokeArg('bootstrap')->getOption('m2spende')['dimensions'];
-		$this->dimensions['squarePixels'] = $this->dimensions["facebook"]["cover"]["width"] * $this->dimensions["facebook"]["cover"]["height"];
-		// this would be faster when hard-coded ...
-		$this->galeryPath = realpath(APPLICATION_PATH . "/../public/images/galerie");
-		$this->galeryFilesAbs = glob($this->galeryPath . "/*");
-		$this->galeryFilesRel = array_map(function ($file) {
-			return str_replace(realpath(APPLICATION_PATH . "/../public/"), "", $file);
-		}, $this->galeryFilesAbs);
 
 		//DEBUG
 		// Zend_Session::namespaceUnset('pixelfornature');
 		// var_dump($_SESSION['pixelfornature']);
-		// var_dump($_SESSION['pixelfornature']['pendingData']);
+		// var_dump($_SESSION['pixelfornature']['user']);
+		// var_dump(Zend_Registry::get('dimensions'));
 	}
 
 	public function auswahlAction() {
-		$galeryFilesJs = array_map(function ($file) {
-			return "'{$file}'";
-		}, $this->galeryFilesRel);
-		$galeryFilesJs = "[" . implode(",", $galeryFilesJs) . "]";
-
 		$this->view->assign("step", 1);
-		$this->view->assign("galeryFilesJs", $galeryFilesJs);
+		$this->view->assign("galeryFilesJs", Zend_Registry::get('galery')['arrayJs']);
 		if (isset($this->session->image) && isset($this->session->image['index'])) {
 			$this->view->assign("imageIndex", $this->session->image['index']);
 		} else {
@@ -85,12 +67,13 @@ class Pixel4natureController extends Zend_Controller_Action {
 			$this->session->image = array();
 		}
 		$dirtyIndex = intval($this->getParam("image"));
-		if (isset($this->galeryFilesAbs[$dirtyIndex])) {
+		$galery = Zend_Registry::get('galery');
+		if (isset($galery['filesAbs'][$dirtyIndex])) {
 			$this->session->image['index'] = $dirtyIndex;
-			$this->session->image['pathRel'] = $this->galeryFilesRel[$dirtyIndex];
-			$this->session->image['pathAbs'] = $this->galeryFilesAbs[$dirtyIndex];
+			$this->session->image['pathRel'] = $galery['filesRel'][$dirtyIndex];
+			$this->session->image['pathAbs'] = $galery['filesAbs'][$dirtyIndex];
 			$this->view->assign("step", 2);
-			$this->view->assign("dimensions", $this->dimensions);
+			$this->view->assign("dimensions", Zend_Registry::get('dimensions'));
 			$this->view->assign("imagePath", $this->session->image['pathRel']);
 		} else {
 			$this->_helper->redirector->gotoUrl('/');
@@ -112,18 +95,19 @@ class Pixel4natureController extends Zend_Controller_Action {
 			Zend_Loader::loadFile("ImageService.php");
 			try {
 				// Generiere Bild
+				$dimensions = Zend_Registry::get('dimensions');
 				$imageService = new ImageService();
 				$outputPath = $imageService->generateCoverPhotoCL(
 					$this->session->image['pathAbs'],
-					$this->dimensions["original"],
-					$this->dimensions["facebook"]["cover"],
+					$dimensions["original"],
+					$dimensions["facebook"]["cover"],
 					$imageProps);
 
 				$this->session->image['generatedAbs'] = $outputPath;
 				$this->session->image['generatedRel'] = str_replace(realpath(APPLICATION_PATH . "/../public/"), "", $outputPath);
 
 				$this->view->assign("step", 3);
-				$this->view->assign("dimensions", $this->dimensions);
+				$this->view->assign("dimensions", $dimensions);
 				$this->view->assign("imagePath", $this->session->image['pathRel']);
 				$this->view->assign("generatedPath", $this->session->image['generatedRel']);
 			} catch (\Exception $ex) {
@@ -167,8 +151,8 @@ class Pixel4natureController extends Zend_Controller_Action {
 					$interaktionMapper = new Application_Model_DbTable_Interaktion();
 					$interaktionMapper->createDonation(array(
 						"mitglied_id" => $this->session->user['id'],
-						"projekt_id" => $this->session->project['id'],
-						"pixel_gespendet" => $this->dimensions['squarePixels']));
+						"projekt_id" => Zend_Registry::get('project')['id'],
+						"pixel_gespendet" => Zend_Registry::get('dimensions')['squarePixels']));
 
 					// reload pixel count and timeline into session
 					$this->session->user['pixelsTotal'] = $interaktionMapper->getPixelsTotalByMember($this->session->user['id']);
@@ -184,8 +168,8 @@ class Pixel4natureController extends Zend_Controller_Action {
 
 					// save donation interaction in pending data
 					array_push($this->session->pendingData->donations, array(
-						"projekt_id" => $this->session->project["id"],
-						"pixel_gespendet" => $this->dimensions["squarePixels"],
+						"projekt_id" => Zend_Registry::get('project')["id"],
+						"pixel_gespendet" => Zend_Registry::get('dimensions')["squarePixels"],
 						"datum_erstellt" => date('Y-m-d H:i:s'),
 					));
 				}
@@ -218,7 +202,7 @@ class Pixel4natureController extends Zend_Controller_Action {
 	}
 
 	public function dankeAction() {
-		$this->view->assign("squarePixels", number_format($this->dimensions['squarePixels'], 0, ",", "."));
+		$this->view->assign("squarePixels", number_format(Zend_Registry::get('dimensions')['squarePixels'], 0, ",", "."));
 		$this->view->assign("imagePath", $this->session->image['pathRel']);
 		// Es wurde nichts gespendet. Zurueck zur Auswahl.
 		// $this->_helper->redirector->gotoUrl('/');

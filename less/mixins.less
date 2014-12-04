@@ -23,3 +23,17 @@
 	border-top-left-radius: 0;
 	border-bottom-left-radius: 0;
 }
+
+.tab-focus() {
+  // Default
+  outline: thin dotted @color-green-dark;
+  // WebKit
+  outline: 5px auto @color-green-dark;
+  outline-offset: -2px;
+}
+
+.transform-style(@style) {
+    transform-style: @style;
+    -moz-transform-style: @style;
+    -webkit-transform-style: @style;
+}

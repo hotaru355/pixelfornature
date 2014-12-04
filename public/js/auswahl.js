@@ -1,29 +1,35 @@
 
 
 (function() {
-	function preload(images, cb) {
-		var imageCount = 0;
-		images.forEach(function(image) {
-			imageObj = new Image();
-			imageObj.onload = function() {
-				imageCount++;
-				if (imageCount === images.length) {
-					cb()
-				}
-			}
-			imageObj.src = image;
-		})
-	}
-	var appCache = window.applicationCache;
+	function preloadPictures(pictureUrls, onAllLoaded, onError, onAbort) {
+	    var loaded = 0;
 
-	appCache.addEventListener('cached', function() {
-		alert('cached')
-	}, false);
-	appCache.addEventListener('updateready', function() {
-		alert('updated')
-	}, false);
+	    return pictureUrls.map(function (url, idx) {
+	    	var img = new Image();
+            img.onload = function () {                               
+                if (++loaded == pictureUrls.length && onAllLoaded) {
+                    onAllLoaded();
+                }
+            };
+            if (onError) {
+            	img.onerror = onError();
+            }
+            if (onAbort) {
+            	img.onabort = onAbort();
+            }
+            img.src = url;
+            return img;
+	    })
+	};
+	// var imageObjs = preloadPictures(imageUrls, function(){
+	// 		alert('done')
+	// 	});
 
-
+	// (function preload(arrayOfImages) {
+	//     $(arrayOfImages).each(function () {
+	//         $('<img />').attr('src',this).appendTo('body').css('display','none');
+	//     })
+	// })(imageUrls);
 
 	$(function() {
 		// preload(imageUrls, function(){

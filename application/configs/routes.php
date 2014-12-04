@@ -55,6 +55,15 @@ $validiereWoerterRoute = new Zend_Controller_Router_Route(
 );
 $router->addRoute('validiereWoerter', $validiereWoerterRoute);
 
+$getMemberRoute = new Zend_Controller_Router_Route(
+	'mitglieder',
+	array(
+		'controller' => 'mitglied',
+		'action' => 'index',
+	)
+);
+$router->addRoute('mitglieder', $getMemberRoute);
+
 $newMemberRoute = new Zend_Controller_Router_Route(
 	'mitglieder/neu',
 	array(

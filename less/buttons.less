@@ -7,8 +7,17 @@
 // --------------------------------------------------
 
 .btn {
-  	border: 0;
+ 	border: 0;
 	margin-bottom: 10px;
+
+  &,
+  &:active,
+  &.active {
+    &:focus,
+    &.focus {
+      .tab-focus();
+    }
+  }
 }
 
 .btn-default {

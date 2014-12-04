@@ -1,64 +1,71 @@
-// imageHandler = {
-// 	paramName : 'image',
-// 	image : '',
-
-// 	init : function(config) {
-// 		if (config !== undefined && config.paramName !== undefined) {
-// 			this.paramName = config.paramName;
-// 		}
-// 		this.image = ($.url().param(this.paramName));
-// 	},
-
-// 	setBackgroundImage : function(newPath) {
-// 		if (newPath !== undefined) {
-// 			this.imagePath = newPath;
-// 		}
-// 		$('html').css('backgroundImage', 'url(' + this.image + ')');
-// 	},
-// };
-
 (function() {
 	var menuNewMember, menuLanding, menuResetPassword, menuAccount, slidingFrame, secondaryMenu;
 
-	function transitionMenu(menuDiv) {
-		var slidingMenus = $('div.sliding-menu');
-		secondaryMenu = menuDiv;
+	function transitionMenu(menuDiv, isRight, onTransitionEnd) {
+		var slidingMenus = $('.sliding-menu');
+		var start = isRight ? 'slided-left': 'slided-right';
+		var end = isRight ? 'slided-right' : 'slided-left';
+
 		// remove scroll bar from all menus during transition
 		slidingMenus.css({
 			'overflow-y': 'hidden'
 		});
-		// place new menu div to the right of the screen 
-		placeMenu(menuDiv, '100%');
+		// place new menu div to the right/left of the screen 
+		menuDiv.removeClass(end +' slided').addClass(start);
+		// Trigger a reflow, flushing the CSS changes
+		menuDiv[0].offsetHeight;
+
 		// slide the menu pages over
-		slidingFrame.children().first().css({
-			left: '-100%'
-		});
-		menuDiv.css({
-			left: '0'
-		});
+		$('.sliding-menu.slided-center')
+			.removeClass('slided-center')
+			.addClass(end + ' slided');
+		menuDiv
+			.removeClass(start)
+			.addClass('slided-center slided');
+
 		// re-add scroll bar to menu once transition complete
 		menuDiv.one($.support.transition.end, function() {
 			slidingMenus.css({
 				'overflow-y': 'auto'
 			});
+			if (onTransitionEnd) {
+				onTransitionEnd();
+			}
 		});
 	}
 
-	function placeMenu(menuDiv, left) {
-		// Disable transitions
-		menuDiv.addClass('noTransition');
-		menuDiv.css('left', left);
-		// Trigger a reflow, flushing the CSS changes
-		menuDiv[0].offsetHeight;
-		// Re-enable transitions
-		menuDiv.removeClass('noTransition');
+	function resetMenu() {
+		$('.sliding-menu:not(#menuLanding)')
+			.removeClass('slided-center slided-right slided')
+			.addClass('slided-left');
+		$('.sliding-menu#menuLanding')
+			.removeClass('slided-left slided-right slided')
+			.addClass('slided-center');
 	}
 
-	function resetMenu() {
-		placeMenu($('div#sliding-frame :first-child'), '0');
-		if (secondaryMenu) {
-			placeMenu(secondaryMenu, '-100%');
-		}
+	function flipCard() {
+	    var card = $('.flipcard');
+	    var front = $('.flipcard-front');
+	    var back = $('.flipcard-back');
+	    var visible, invisible;
+
+	    if (card.hasClass('flipped-180')) {
+	    	visible = back;
+	    	invisible = front;
+	    } else {
+	    	visible = front;
+	    	invisible = back;
+	    }
+
+		card.one($.support.transition.end, function() {
+    		visible.css({position: 'absolute'});
+    		invisible.css({position: 'relative'});
+	  		card.height('auto');
+		})
+
+	    card.height(visible.height());
+        card.height(invisible.height());
+    	card.toggleClass('flipped-180');
 	}
 
 	function mapErrorToLabel(errors, idPostfix, combiNameById) {
@@ -85,6 +92,63 @@
 		$('form#' + formId + ' div.form-group label').remove();
 		$('form#' + formId + ' div.combi-input-container input').removeClass('is-error');
 		$('form#' + formId + ' div.combi-input-container label').remove();
+	}
+
+	function fillUserData() {
+		$.ajax({
+			url: 'mitglieder',
+			type: 'GET',
+			dataType: 'json',
+			global: true,
+			beforeSend: function() {
+			}
+		}).always(function() {
+		}).done(function(responseJson) {
+			if (responseJson.error) {
+			} else {
+				var user = responseJson.user;
+				$('input#vornameUpdate').val(user.vorname);
+				$('input#nachnameUpdate').val(user.nachname);
+				$('input#strasseUpdate').val(user.strasse);
+				$('input#plzUpdate').val(user.plz);
+				$('input#ortUpdate').val(user.ort);
+				$('input#telefonUpdate').val(user.telefon);
+				$('input#emailUpdate').val(user.email);
+				$('span#userPixelsTotal').html(user.pixelsTotal);
+				fillTimeline(user.timeline, user.vorname);
+			}
+		}).fail(function(responseJson) {
+			$('div#commError').show();
+		});
+	}
+
+	function fillTimeline(timelineEntries, firstname) {
+		var timeline = $('ul#timeline');
+		var donationTemplate = $('ul#timeline li.donation');
+		$('#timelineUsername').html(firstname);
+		timelineEntries.forEach(function(entry) {
+			if (entry.type == 'signup') {
+				var clone = $('ul#timeline li.signup').clone();
+				clone.find('.dateSignup').html(entry.datum_erstellt);
+				timeline.append(clone);
+				clone.removeClass('hidden');
+			} else if (entry.type == 'pixelspende') {
+				var clone = donationTemplate.clone();
+				clone.find('.dateDonated').html(entry.datum_erstellt);
+				clone.find('.pixelsDonated').html(entry.pixel_gespendet);
+				clone.find('.projectDonated').html(entry.timeline_name);
+				timeline.append(clone);
+				clone.removeClass('hidden');
+			}
+			
+		})
+	}
+
+	function clearUserData() {
+		$('form#updateMember').find('input').val('');
+		$('#userPixelsTotal').html('');
+		$('#timelineUsername').html('');
+		$('ul#timeline li:not(.hidden)').remove();
 	}
 
 	$(function() {
@@ -155,7 +219,13 @@
 				if (responseJson.error) {
 					mapErrorToLabel(responseJson.error, 'Signup');
 				} else {
-					location.reload();
+					transitionMenu($('.sliding-frame').children('.sliding-menu:first-child'), true,
+						function() {
+							// $('input#emailLogin').val('');
+							// $('input#passwortLogin').val('');
+							fillUserData();
+							flipCard();
+						});
 				}
 			}).fail(function(responseJson) {
 				$('div#commError').show();
@@ -189,7 +259,10 @@
 				if (responseJson.error) {
 					mapErrorToLabel(responseJson.error, 'Login', combiNameById);
 				} else if (responseJson.success) {
-					location.reload();
+					flipCard();
+					// $('input#emailLogin').val('');
+					// $('input#passwortLogin').val('');
+					fillUserData();
 				} else {
 					$('div#combiLogin input').addClass('is-error');
 					$('div#combiLogin').append('<label class="control-label is-error" for="passwortLogin">Die Anmeldung schlug leider fehl</label>');
@@ -213,7 +286,8 @@
 			}).always(function() {
 				logoutBtn.removeAttr('disabled');
 			}).done(function(responseJson) {
-				location.reload();
+				clearUserData();
+				flipCard();
 			}).fail(function(responseJson) {});
 		});
 
@@ -353,6 +427,5 @@
 				}).fail(function(responseJson) {});
 			}
 		});
-
 	})
 })();

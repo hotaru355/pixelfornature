@@ -1,4 +1,4 @@
-<div id="menuAccount" class="sliding-menu">
+<div id="menuAccount" class="sliding-menu slided-left">
     <div class="container-fluid">
         <div id="" class="row">
             <div class="col-sm-12 col-md-4 col-lg-3">
@@ -8,7 +8,10 @@
 
                 <h2>Deine bisher gespendeten Pixel</h2>
                 <div class="pixelCount">
-                    <?php echo number_format($this->user['pixelsTotal'], 0, ',', '.') ?>&nbsp;px&sup2;
+                    <span id="userPixelsTotal"><?php
+                    if ($this->user) {
+                        echo number_format($this->user['pixelsTotal'], 0, ',', '.');
+                    } ?></span>&nbsp;px&sup2;
                 </div>
                 <hr />
             </div>
@@ -16,21 +19,35 @@
                 <h5>Deine Aktivitäten
                     <hr class="mainColumn" />
                 </h5>
-                <h1><strong>Hallo <?php echo $this->user['vorname'] ?></strong>, das hast du bereits mit Naturefund erreicht:</h1>
-                <ul class="member-activities non-decorated">
+                <h1><strong id="timelineUsername">Hallo <?php echo $this->user['vorname'] ?></strong>, das hast du bereits mit Naturefund erreicht:</h1>
+                <ul id="timeline" class="member-activities non-decorated">
                     <?php 
-                    $signupFormat = '<li><p>Du bist am <strong>%s</strong> Weltretter bei Naturefund geworden.</p></li>';
-                    $spendeFormat = '<li><p>Am <strong>%s</strong> hast du <strong>%s px&sup2;</strong> für %s gespendet.</p></li>';
-                    date_default_timezone_set('Europe/Berlin');  
-                    setlocale(LC_ALL, "de_DE", "de_DE@euro", "deu", "deu_deu", "german");
-                    
-                    foreach ($this->user['timeline'] as $entry) {
-                        $dateFormatted = strftime('%d. %B %Y', strtotime($entry['datum_erstellt']));
-                        if ($entry['type'] == 'signup') {
-                            echo sprintf($signupFormat, $dateFormatted);
+                    if (!$this->user) {
+                        $this->user = array(
+                            'timeline' => array());
+                    }
+                    // add one empty entry at the beginning to create a hidden template that JS can use in an ajax call
+                    $hiddenTemplate = array(0 => array());
+                    $this->user['timeline'] = array_merge($hiddenTemplate, $this->user['timeline']);
+
+                    foreach ($this->user['timeline'] as $index => $entry) {
+                        $hidden = ($index != 0) ? '' : 'hidden';
+                        $dateFormatted = !$hidden ? $entry['datum_erstellt'] : '';
+                        if ($hidden || $entry['type'] == 'signup') {
+                    ?>
+                    <li class="signup <?php echo $hidden; ?>">
+                        <p>Du bist am <strong class="dateSignup"><?php echo $dateFormatted; ?></strong> Weltretter bei Naturefund geworden.</p>
+                    </li>
+                    <?php
                         }
-                        if ($entry['type'] == 'pixelspende') {
-                            echo sprintf($spendeFormat, $dateFormatted, number_format($entry['pixel_gespendet'], 0, ',', '.'), $entry['timeline_name']);
+                        if ($hidden || $entry['type'] == 'pixelspende') {
+                            $pixelsFormatted = !$hidden ? number_format($entry['pixel_gespendet'], 0, ',', '.') : '';
+                            $projectName = !$hidden ? $entry['timeline_name'] : '';
+                    ?>
+                    <li class="donation <?php echo $hidden; ?>">
+                        <p>Am <strong class="dateDonated"><?php echo $dateFormatted; ?></strong> hast du <strong><span class="pixelsDonated"><?php echo $pixelsFormatted; ?></span> px&sup2;</strong> für <span class="projectDonated"><?php echo $projectName; ?></span> gespendet.</p>
+                    </li>
+                        <?php
                         }
                     }
                     ?>
