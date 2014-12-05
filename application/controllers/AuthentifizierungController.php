@@ -15,6 +15,7 @@ class AuthentifizierungController extends Zend_Controller_Action {
 		$loginForm = new Application_Form_NewMember('Login');
 		$formData = $this->getRequest()->getPost();
 		$success = false;
+		$errors = array();
 
 		if ($loginForm->isValidPartial($formData)) {
 			$values = $loginForm->getValues();
@@ -22,11 +23,17 @@ class AuthentifizierungController extends Zend_Controller_Action {
 			Zend_Loader::loadFile("AuthenticationService.php");
 			$authService = new AuthenticationService();
 			$success = $authService->loginUser($values['email'], $values['passwort']);
+			if (!$success) {
+				$errors = (object) array(
+					'general' => (object) array(
+						'invalidCredentials' => "Die Anmeldung schlug leider fehl"));
+			}
 		}
+		$errors = $errors ? $errors : $loginForm->getMessages();
 
 		$this->_helper->json(array(
 			"success" => $success,
-			"error" => ($loginForm->getMessages() ? $loginForm->getMessages() : ""),
+			"error" => ($errors ? $errors : ""),
 		));
 	}
 

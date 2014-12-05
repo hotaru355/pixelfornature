@@ -57,7 +57,7 @@
                     <div id="menuLoggedOut" class="<?php echo (!$this->isLoggedin ? 'flipcard-front' : 'flipcard-back'); ?>">
                         <h2>Mein Naturefund Account</h2>
                         <p>Um deine Pixel zu sammeln, melde dich einfach mit deinem persönlichen Naturefund-Account an:</p>
-                        <form id="loginMember" class="" role="form">
+                        <form id="loginMember" class="combiForm" role="form">
                             <div id="combiLogin" class="combi-input-container">
                                 <?php
                                 $this->loginForm->email->class .= ' combi-input-email-45';
@@ -67,7 +67,6 @@
                                 ?>
                                 <button type="submit" class="btn btn-default combi-input-submit">&gt;</button>
                             </div>
-                            <div id="loginFailed" class="form-group"></div>
                         </form>
                         <a class="signupNow">Noch nicht registriert? Jetzt mitmachen!</a><br />
                         <a class="lostPassword">Passwort vergessen?</a>

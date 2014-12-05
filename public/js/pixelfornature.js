@@ -47,6 +47,7 @@
 	    var card = $('.flipcard');
 	    var front = $('.flipcard-front');
 	    var back = $('.flipcard-back');
+	    // visible/invisible *before* flipping, e.g. we flip to invisible
 	    var visible, invisible;
 
 	    if (card.hasClass('flipped-180')) {
@@ -57,6 +58,7 @@
 	    	invisible = back;
 	    }
 
+	    // switch absolute/relative position of cards on transition end
 		card.one($.support.transition.end, function() {
     		visible.css({position: 'absolute'});
     		invisible.css({position: 'relative'});
@@ -65,12 +67,17 @@
 
 	    card.height(visible.height());
         card.height(invisible.height());
+        // this is important, as otherwise hitting <enter> twice will behave incorrectly. 
+    	invisible.find('button,a').focus();
     	card.toggleClass('flipped-180');
 	}
 
 	function mapErrorToLabel(errors, idPostfix, combiNameById) {
 		$.map(errors, function(error, id) {
 			var idName = id + idPostfix;
+			if (id == 'general') {
+				$('input#emailLogin,input#passwortLogin').addClass('is-error');
+			}
 			if (combiNameById && combiNameById[id]) {
 				var formGroup = $('div#combi' + combiNameById[id]);
 				$('input#' + idName).addClass('is-error');
@@ -87,11 +94,11 @@
 		});
 	}
 
-	function clearErrorLabels(formId) {
-		$('form#' + formId + ' div.form-group').removeClass('has-error');
-		$('form#' + formId + ' div.form-group label').remove();
-		$('form#' + formId + ' div.combi-input-container input').removeClass('is-error');
-		$('form#' + formId + ' div.combi-input-container label').remove();
+	function clearErrorLabels(form) {
+		form.find('div.form-group').removeClass('has-error');
+		form.find('div.form-group label').remove();
+		form.find('div.combi-input-container input').removeClass('is-error');
+		form.find('div.combi-input-container label').remove();
 	}
 
 	function fillUserData() {
@@ -114,7 +121,7 @@
 				$('input#ortUpdate').val(user.ort);
 				$('input#telefonUpdate').val(user.telefon);
 				$('input#emailUpdate').val(user.email);
-				$('span#userPixelsTotal').html(user.pixelsTotal);
+				$('span#userPixelsTotal').html(parseInt(user.pixelsTotal).toLocaleString('de'));
 				fillTimeline(user.timeline, user.vorname);
 			}
 		}).fail(function(responseJson) {
@@ -135,7 +142,7 @@
 			} else if (entry.type == 'pixelspende') {
 				var clone = donationTemplate.clone();
 				clone.find('.dateDonated').html(entry.datum_erstellt);
-				clone.find('.pixelsDonated').html(entry.pixel_gespendet);
+				clone.find('.pixelsDonated').html(parseInt(entry.pixel_gespendet).toLocaleString('de'));
 				clone.find('.projectDonated').html(entry.timeline_name);
 				timeline.append(clone);
 				clone.removeClass('hidden');
@@ -145,6 +152,8 @@
 	}
 
 	function clearUserData() {
+		$('input#emailLogin').val('');
+		$('input#passwortLogin').val('');
 		$('form#updateMember').find('input').val('');
 		$('#userPixelsTotal').html('');
 		$('#timelineUsername').html('');
@@ -194,9 +203,10 @@
 			transitionMenu(menuAccount);
 		});
 
-		$('form#signupNewMember').submit(function(event) {
+		var signupForm = $('form#signupNewMember');
+		signupForm.submit(function(event) {
 			event.preventDefault();
-			var signupBtn = $('form#signupNewMember :submit');
+			var signupBtn = signupForm.find(':submit');
 			$.ajax({
 				url: 'mitglieder/neu',
 				type: 'POST',
@@ -211,7 +221,7 @@
 				},
 				beforeSend: function() {
 					signupBtn.attr('disabled', 'disabled');
-					clearErrorLabels('signupNewMember')
+					clearErrorLabels(signupForm)
 				}
 			}).always(function() {
 				signupBtn.removeAttr('disabled');
@@ -221,8 +231,6 @@
 				} else {
 					transitionMenu($('.sliding-frame').children('.sliding-menu:first-child'), true,
 						function() {
-							// $('input#emailLogin').val('');
-							// $('input#passwortLogin').val('');
 							fillUserData();
 							flipCard();
 						});
@@ -233,45 +241,58 @@
 			return false;
 		});
 
-		$('form#loginMember').submit(function(event) {
-			var combiNameById = {
-				email: 'Login',
-				passwort: 'Login'
+		function ajaxLogin(loginForm, onDone, onFail) {
+			return function(event) {
+				event.preventDefault();
+				var loginBtn = loginForm.find(':submit');
+				$.ajax({
+					url: 'auth/login',
+					type: 'POST',
+					dataType: 'json',
+					global: true,
+					data: {
+						email: $('input#emailLogin').val(),
+						passwort: $('input#passwortLogin').val(),
+					},
+					beforeSend: function() {
+						loginBtn.attr('disabled', 'disabled');
+						clearErrorLabels(loginForm);
+					}
+				}).always(function() {
+					loginBtn.removeAttr('disabled');
+				}).done(onDone)
+				.fail(onFail);
+				return false;
 			}
-			event.preventDefault();
-			var loginBtn = $('form#loginMember :submit');
-			$.ajax({
-				url: 'auth/login',
-				type: 'POST',
-				dataType: 'json',
-				global: true,
-				data: {
-					email: $('input#emailLogin').val(),
-					passwort: $('input#passwortLogin').val(),
-				},
-				beforeSend: function() {
-					loginBtn.attr('disabled', 'disabled');
-					clearErrorLabels('loginMember');
+		};
+
+		var loginFormLanding = $('form#loginMember.combiForm');
+		loginFormLanding.submit(ajaxLogin(loginFormLanding,
+			function(responseJson) {
+				var combiNameById = {
+					email: 'Login',
+					passwort: 'Login',
+					general: 'Login'
 				}
-			}).always(function() {
-				loginBtn.removeAttr('disabled');
-			}).done(function(responseJson) {
 				if (responseJson.error) {
 					mapErrorToLabel(responseJson.error, 'Login', combiNameById);
 				} else if (responseJson.success) {
 					flipCard();
-					// $('input#emailLogin').val('');
-					// $('input#passwortLogin').val('');
 					fillUserData();
-				} else {
-					$('div#combiLogin input').addClass('is-error');
-					$('div#combiLogin').append('<label class="control-label is-error" for="passwortLogin">Die Anmeldung schlug leider fehl</label>');
 				}
-			}).fail(function(responseJson) {
-				$('div#commError').show();
-			});
-			return false;
-		});
+			}
+		));
+
+		var loginFormDanke = $('form#loginMember.groupForm');
+		loginFormDanke.submit(ajaxLogin(loginFormDanke,
+			function(responseJson) {
+				if (responseJson.error) {
+					mapErrorToLabel(responseJson.error, 'Login');
+				} else if (responseJson.success) {
+					flipCard();
+				}
+			}
+		));
 
 		var logoutBtn = $('button#logoutMember');
 		logoutBtn.click(function() {
@@ -291,7 +312,8 @@
 			}).fail(function(responseJson) {});
 		});
 
-		$('form#updateMember').submit(function(event) {
+		var updateForm = $('form#updateMember');
+		updateForm.submit(function(event) {
 			var combiNameById = {
 				vorname: 'Names',
 				nachname: 'Names',
@@ -300,7 +322,7 @@
 				passwort: 'Password',
 				passwortWiederholt: 'Password'
 			};
-			var updateCredentialBtn = $('form#updateUser :submit');
+			var updateCredentialBtn = updateForm.find(':submit');
 			var data = {
 				vorname: $('input#vornameUpdate').val(),
 				nachname: $('input#nachnameUpdate').val(),
@@ -327,7 +349,7 @@
 				data: data,
 				beforeSend: function() {
 					updateCredentialBtn.attr('disabled', 'disabled');
-					clearErrorLabels('updateMember')
+					clearErrorLabels(updateForm)
 				}
 			}).always(function() {
 				updateCredentialBtn.removeAttr('disabled');
@@ -341,9 +363,10 @@
 			return false;
 		});
 
-		$('form#requestReset').submit(function(event) {
+		var requestResetForm = $('form#requestReset');
+		requestResetForm.submit(function(event) {
 			event.preventDefault();
-			var signupBtn = $('form#requestReset :submit');
+			var signupBtn = requestResetForm.find(':submit');
 			$.ajax({
 				url: 'auth/request-reset',
 				type: 'POST',
@@ -354,7 +377,7 @@
 				},
 				beforeSend: function() {
 					signupBtn.attr('disabled', 'disabled');
-					clearErrorLabels('requestReset')
+					clearErrorLabels(requestResetForm);
 				}
 			}).always(function() {
 				signupBtn.removeAttr('disabled');
@@ -363,6 +386,7 @@
 					mapErrorToLabel(responseJson.error, 'RequestReset');
 				} else {
 					alert('Eine E-Mail zum Zurücksetzen deines Passworts wurde an dich gesand!');
+					transitionMenu($('.sliding-frame').children('.sliding-menu:first-child'), true);
 				}
 			}).fail(function(responseJson) {
 				$('div#commError').show();
@@ -370,13 +394,14 @@
 			return false;
 		});
 
-		$('form#resetPassword').submit(function(event) {
+		var resetPasswordForm = $('form#resetPassword');
+		resetPasswordForm.submit(function(event) {
 			var combiNameById = {
 				passwort: 'Password',
 				passwortWiederholt: 'Password'
 			};
 			event.preventDefault();
-			var signupBtn = $('form#resetPassword :submit');
+			var signupBtn = resetPasswordForm.find(':submit');
 			$.ajax({
 				url: 'aendern',
 				type: 'POST',
@@ -390,7 +415,7 @@
 				},
 				beforeSend: function() {
 					signupBtn.attr('disabled', 'disabled');
-					clearErrorLabels('resetPassword')
+					clearErrorLabels(resetPasswordForm);
 				}
 			}).always(function() {
 				signupBtn.removeAttr('disabled');
@@ -422,7 +447,12 @@
 					deleteAccountBtn.removeAttr('disabled');
 				}).done(function(responseJson) {
 					if (responseJson.success) {
-						location.reload();
+						transitionMenu($('#menuLanding.sliding-menu'), true,
+							function() {
+								clearUserData();
+								flipCard();
+							}
+						);
 					}
 				}).fail(function(responseJson) {});
 			}

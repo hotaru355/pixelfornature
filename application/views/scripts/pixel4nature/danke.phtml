@@ -34,22 +34,26 @@ $this->headScript()
                         </div>
                         <h2>gespendet.</h2>
                         <hr />
-                        <?php if (!$this->isLoggedin) {?>
-                        <p>Um deine Pixel zu sammeln, melde dich einfach mit deinem persönlichen Naturefund-Account an:</p>
-                        <div id="emailLoginGroup" class="form-group">
-                            <?php echo $this->loginForm->email->renderViewHelper(); ?>
+                        <div class="flipcard">
+                            <div id="" class="<?php echo (!$this->isLoggedin ? 'flipcard-front' : 'flipcard-back'); ?>">
+                                <p>Um deine Pixel zu sammeln, melde dich einfach mit deinem persönlichen Naturefund-Account an:</p>
+                                <form id="loginMember" class="groupForm" role="form">
+                                    <div id="emailLoginGroup" class="form-group">
+                                        <?php echo $this->loginForm->email->renderViewHelper(); ?>
+                                    </div>
+                                    <div id="passwortLoginGroup" class="form-group">
+                                        <?php echo $this->loginForm->passwort->renderViewHelper(); ?>
+                                    </div>
+                                    <button type="submit" class="btn btn-default btn-block">Anmelden</button>
+                                </form>
+                                <a class="signupNow">Noch nicht registriert? Jetzt mitmachen!</a><br />
+                                <a class="lostPassword">Passwort vergessen?</a>
+                            </div>
+                            <div class="<?php echo ($this->isLoggedin ? 'flipcard-front' : 'flipcard-back'); ?>">
+                                <p>Deine Pixel wurden erfolgreich auf deinem Konto verbucht!</p>
+                                <a id="ok" href="/" class="btn btn-default" type="button">Noch ein Bild?</a>
+                            </div>
                         </div>
-                        <div id="passwortLoginGroup" class="form-group">
-                            <?php echo $this->loginForm->passwort->renderViewHelper(); ?>
-                        </div>
-                        <button id="loginMember" class="btn btn-default btn-block">Anmelden</button>
-                        <div id="loginFailed" class="form-group">
-                        </div>
-                        <a class="signupNow">Noch nicht registriert? Jetzt mitmachen!</a><br />
-                        <a class="lostPassword">Passwort vergessen?</a>
-                        <?php } else { ?>
-                        <a id="ok" href="/" class="btn btn-default" type="button">OK!</a>
-                        <?php } ?>
                     </div>
                 </div>
             </div>
