@@ -1,0 +1,59 @@
+/**********
+ * Ausschnitt
+ **********/
+
+div#clipping {
+	position: relative;
+	margin: 20px auto 20px auto;
+	overflow: hidden;
+	-moz-background-clip: padding; /* Firefox 3.6 */
+	-webkit-background-clip: padding; /* Safari 4? Chrome 6? */
+	background-clip: padding-box; /* Firefox 4, Safari 5, Opera 10, IE 9 */
+}
+
+div#clippingLabel {
+	position: absolute;
+	top: 63px;
+	left: 0px;
+	background: rgba(0, 0, 0, 0.6);
+}
+
+div#labelUserName {
+	padding-right: 0px;
+}
+
+.labelText {
+	position: relative;
+	float: left;
+	padding: 10px 10px 10px 10px;
+	font-family: "Verdana", "Sans-serif";
+	font-style: normal;
+	font-size: 24px;
+	color: #f0f0f0;
+	opacity: 0.8;
+	text-align: left;
+	text-decoration: none;
+}
+
+label#nameLabel {
+	float: none;
+	display: block;
+	text-align: center;
+}
+
+div#logo {
+	position: relative;
+	float: right;
+	top: 0;
+	margin: 10px;
+}
+
+img#profilePhotoOverlay {
+	position: absolute;
+	top: 120px;
+	left: 23px;
+}
+
+.blur {
+	.blur(3px);
+}

@@ -2,7 +2,7 @@
 	var menuNewMember, menuLanding, menuResetPassword, menuAccount, slidingFrame, secondaryMenu;
 
 	function transitionMenu(menuDiv, isRight, onTransitionEnd) {
-		var slidingMenus = $('.sliding-menu');
+		var slidingMenus = $('#menu .sliding-card');
 		var start = isRight ? 'slided-left': 'slided-right';
 		var end = isRight ? 'slided-right' : 'slided-left';
 
@@ -16,7 +16,7 @@
 		menuDiv[0].offsetHeight;
 
 		// slide the menu pages over
-		$('.sliding-menu.slided-center')
+		$('#menu .sliding-card.slided-center')
 			.removeClass('slided-center')
 			.addClass(end + ' slided');
 		menuDiv
@@ -35,10 +35,10 @@
 	}
 
 	function resetMenu() {
-		$('.sliding-menu:not(#menuLanding)')
+		$('#menu .sliding-card:not(#menuLanding)')
 			.removeClass('slided-center slided-right slided')
 			.addClass('slided-left');
-		$('.sliding-menu#menuLanding')
+		$('#menu .sliding-card#menuLanding')
 			.removeClass('slided-left slided-right slided')
 			.addClass('slided-center');
 	}
@@ -77,6 +77,7 @@
 			var idName = id + idPostfix;
 			if (id == 'general') {
 				$('input#emailLogin,input#passwortLogin').addClass('is-error');
+				idName = 'passwort' + idPostfix; // add general errors to password form-group
 			}
 			if (combiNameById && combiNameById[id]) {
 				var formGroup = $('div#combi' + combiNameById[id]);
@@ -121,6 +122,7 @@
 				$('input#ortUpdate').val(user.ort);
 				$('input#telefonUpdate').val(user.telefon);
 				$('input#emailUpdate').val(user.email);
+				$('.username').html(user.vorname);
 				$('span#userPixelsTotal').html(parseInt(user.pixelsTotal).toLocaleString('de'));
 				fillTimeline(user.timeline, user.vorname);
 			}
@@ -132,7 +134,6 @@
 	function fillTimeline(timelineEntries, firstname) {
 		var timeline = $('ul#timeline');
 		var donationTemplate = $('ul#timeline li.donation');
-		$('#timelineUsername').html(firstname);
 		timelineEntries.forEach(function(entry) {
 			if (entry.type == 'signup') {
 				var clone = $('ul#timeline li.signup').clone();
@@ -160,6 +161,23 @@
 		$('ul#timeline li:not(.hidden)').remove();
 	}
 
+	function dropDownMenu(pushUp) {
+		var menu = $('div#menu');
+		if (pushUp) {
+			menu.one($.support.transition.end, function() {
+				// due to FF bug, have to add/remove scroll bar from parent *after* the transition
+				// https://bugzilla.mozilla.org/show_bug.cgi?id=625289
+				$('html').css('overflow', 'auto');
+			});
+			menu.css('top', '-100%');
+		} else {
+			menu.one($.support.transition.end, function() {
+				$('html').css('overflow', 'hidden');
+			});
+			menu.css('top', '0');
+		}
+
+	}
 	$(function() {
 		slidingFrame = $('div#sliding-frame');
 		menuLanding = $('div#menuLanding');
@@ -169,10 +187,10 @@
 
 		$('area#infoCtrl').click(function() {
 			resetMenu();
-			$('div#menu').css('top', '0');
+			dropDownMenu()
 		});
 		$('button#closeMenu').click(function() {
-			$('div#menu').css('top', '-100%');
+			dropDownMenu(true);
 		});
 
 		$('area#flashCtrl').click(function() {
@@ -229,7 +247,7 @@
 				if (responseJson.error) {
 					mapErrorToLabel(responseJson.error, 'Signup');
 				} else {
-					transitionMenu($('.sliding-frame').children('.sliding-menu:first-child'), true,
+					transitionMenu($('#menu .sliding-card:first-child'), true,
 						function() {
 							fillUserData();
 							flipCard();
@@ -386,7 +404,7 @@
 					mapErrorToLabel(responseJson.error, 'RequestReset');
 				} else {
 					alert('Eine E-Mail zum Zurücksetzen deines Passworts wurde an dich gesand!');
-					transitionMenu($('.sliding-frame').children('.sliding-menu:first-child'), true);
+					transitionMenu($('#menu .sliding-card:first-child'), true);
 				}
 			}).fail(function(responseJson) {
 				$('div#commError').show();
@@ -447,7 +465,7 @@
 					deleteAccountBtn.removeAttr('disabled');
 				}).done(function(responseJson) {
 					if (responseJson.success) {
-						transitionMenu($('#menuLanding.sliding-menu'), true,
+						transitionMenu($('#menuLanding'), true,
 							function() {
 								clearUserData();
 								flipCard();

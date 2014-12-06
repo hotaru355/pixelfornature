@@ -3,6 +3,12 @@
 $this->headTitle()
     ->append("Wähle Dein Bild!");
 
+$bgStyles = '';
+foreach ($this->galeryFilesRel as $index => $galeryUrl) {
+    $bgStyles .= "#bg-{$index} { background-image: url('{$galeryUrl}'); } ";
+}
+$this->headStyle()->appendStyle($bgStyles);
+
 // JavaScript
 $this->headScript()
     ->appendScript(
@@ -14,24 +20,19 @@ $this->headScript()
 
 
 <?php // Hauptmenue ?>
-<?php
-    echo $this->partial('menu.phtml', array(
+<?php echo $this->partial('menu.phtml', array(
         'user' => $this->session->user,
         'isLoggedin' => $this->isLoggedin,
         'loginForm' => $this->loginForm,
         'newMemberForm' => $this->newMemberForm,
         'requestResetForm' => $this->requestResetForm,
-        'updateMemberForm' => $this->updateMemberForm));
-?>
+        'updateMemberForm' => $this->updateMemberForm)); ?>
 
-<?php // Container fuer Hintergrundbilder ?>
-<div class="hidden">
-    <img src="/images/galerie/naturefund11.jpg">
-</div>
-
-<div id="bgWrapper">
-    <div id="bg0" class="bg"></div>
-    <div id="bg1" class="bg"></div>
+<?php // Hintergrundbilder ?>
+<div id="bg-frame" class="sliding-frame">
+    <?php foreach ($this->galeryFilesRel as $index => $galeryUrl) { ?>
+        <div id="bg-<?php echo $index; ?>" class="sliding-card slided-<?php echo ($index == $this->imageIndex) ? 'center' : 'left'?>"></div>
+    <?php } ?>
 </div>
 
 <?php // Hilfefenster ?>
@@ -67,8 +68,12 @@ $this->headScript()
     </div>
 </div>
 
-<form id="auswahl" action="ausschnitt" method="POST">
-    <input type="hidden" id="image" name="image" value="" />
-</form>
+<div id="content">
+    <form id="auswahl" action="ausschnitt" method="POST">
+        <input type="hidden" id="image" name="image" value="" />
+    </form>
+</div>
 
-<div id="content"></div>
+<?php // Kontrollelement ?>
+<?php echo $this->partial('cameraControl.phtml', array(
+        'imageSelectable' => true)) ?>

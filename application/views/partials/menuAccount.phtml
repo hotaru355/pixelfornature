@@ -1,4 +1,4 @@
-<div id="menuAccount" class="sliding-menu slided-left">
+<div id="menuAccount" class="sliding-card slided-left">
     <div class="container-fluid">
         <div id="" class="row">
             <div class="col-sm-12 col-md-4 col-lg-3">
@@ -19,7 +19,7 @@
                 <h5>Deine Aktivitäten
                     <hr class="mainColumn" />
                 </h5>
-                <h1><strong id="timelineUsername">Hallo <?php echo $this->user['vorname'] ?></strong>, das hast du bereits mit Naturefund erreicht:</h1>
+                <h1><strong>Hallo <span class="username"><?php echo $this->user['vorname'] ?></span></strong>, das hast du bereits mit Naturefund erreicht:</h1>
                 <ul id="timeline" class="member-activities non-decorated">
                     <?php 
                     if (!$this->user) {

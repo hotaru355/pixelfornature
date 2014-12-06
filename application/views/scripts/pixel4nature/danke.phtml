@@ -4,7 +4,7 @@ $this->headTitle()
     ->append("Danke!");
 
 $this->headStyle()->appendStyle(
-    "div#bg0 {
+    "#bg {
         background-image: url('{$this->imagePath}');
     }");
 
@@ -12,10 +12,10 @@ $this->headScript()
     ->appendFile("/js/danke.js");
 ?>
 
-<div id="bgWrapper">
-    <div id="bg0" class="bg"></div>
-</div>
+<?php // Hintergrundbild ?>
+<div id="bg" class=""></div>
 
+<?php // Hauptmenue ?>
 <div id="menu" class="transparentDark fullscreenOverlay">
     <div class="close-container">
         <button id="closeMenu" type="button" class="close">
@@ -24,7 +24,7 @@ $this->headScript()
         </button>
     </div>
     <div class="sliding-frame">
-        <div id="menuThankyou" class="sliding-menu slided-center">
+        <div id="menuThankyou" class="sliding-card slided-center">
             <div class="container">
                 <div class="row">
                     <div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
@@ -66,8 +66,7 @@ $this->headScript()
     </div>
 </div>
 
+<div id="content"></div>
 
-
-
-<div id="content">
-</div>
+<?php // Kontrollelement ?>
+<?php echo $this->partial('cameraControl.phtml') ?>

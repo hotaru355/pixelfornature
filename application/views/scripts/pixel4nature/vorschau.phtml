@@ -12,7 +12,7 @@ $this->headStyle()->appendStyle(sprintf("
     $this->dimensions["facebook"]["cover"]["width"], 
     $this->dimensions["facebook"]["cover"]["height"]));
     $this->headStyle()->appendStyle(sprintf(
-    "div#bg0 {
+    "#bg {
         background-image: url('%s');
     }", 
     $this->imagePath));
@@ -25,11 +25,10 @@ $this->headScript()
 
 ?>
 
-<div id="bgWrapper">
-    <div id="bg0" class="bg"></div>
-</div>
+<?php // Hintergrundbild ?>
+<div id="bg" class=""></div>
 
-
+<?php // Hilfefenster ?>
 <div id="overlay" class="fullScreen transparentLight">
     <div class="container-fluid">
         <div class="row">
@@ -85,3 +84,6 @@ $this->headScript()
 </div>
 
 <div id="content"></div>
+
+<?php // Kontrollelement ?>
+<?php echo $this->partial('cameraControl.phtml') ?>

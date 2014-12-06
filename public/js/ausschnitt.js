@@ -16,16 +16,6 @@
 		};
 	}
 
-	function transformOnParams() {
-		var x = $.url().param('x');
-		var y = $.url().param('y');
-		var scale = $.url().param('scale');
-		if (x && y && scale) {
-			$('#slider').slider('value', scale);
-			$('img#clippingImage').panzoom('setMatrix', [scale, 0, 0, scale, x, y]);
-		}
-	}
-
 	function fadeOutCallback() {
 		setTimeout(function() {
 			$("#illegalNameMsg:visible").removeAttr("style").fadeOut();
@@ -91,8 +81,7 @@
 				//console.log(pzObj.getMatrix());
 			},
 		});
-		transformOnParams();
-
+		
 		/**
 		 * schreibt die Koordinaten und die Skalierung des Ausschnitts
 		 * in die HTML-Form

@@ -26,3 +26,27 @@
 		font-style: @style
 	}
 }
+
+.transform-style(@style) {
+    transform-style: @style;
+    -moz-transform-style: @style;
+    -webkit-transform-style: @style;
+}
+
+.background-size(@size) {
+	background-size: @size;
+	-webkit-background-size: @size;
+	-moz-background-size: @size;
+	-o-background-size: @size;
+}
+
+.blur(@blur) {
+	@nounit: unit(@blur);
+	-webkit-filter: blur(@blur);
+	-moz-filter: blur(@blur);
+	-o-filter: blur(@blur);
+	-ms-filter: blur(@blur);
+	filter: blur(@blur);
+	filter: url("data:image/svg+xml;utf9,<svg%20version='1.1'%20xmlns='http://www.w3.org/2000/svg'><filter%20id='blur'><feGaussianBlur%20stdDeviation='@{nounit}'%20/></filter></svg>#blur");
+	filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius='@{nounit}'); 
+}

@@ -31,66 +31,72 @@
 	//     })
 	// })(imageUrls);
 
+	const first = 0;
+	const last = imageUrls.length - 1;
+
+	function transitionBg(isRight, onTransitionEnd) {
+		var start, end;
+		var index = parseInt($('#bg-frame .sliding-card.slided-center').attr('id').substr(3));
+
+		if (isRight) {
+	        index = (index < last) ? index + 1 : first;
+			start = 'slided-left';
+			end = 'slided-right';
+		} else {
+	        index = (index > first) ? index - 1 : last;
+			start = 'slided-right';
+			end = 'slided-left';
+		}
+
+		var bgDiv = $('#bg-' + index);
+		// place new background div to the right/left of the screen 
+		bgDiv.removeClass(end +' slided').addClass(start);
+		// Trigger a reflow, flushing the CSS changes
+		bgDiv[0].offsetHeight;
+
+		// slide the cards over
+		$('#bg-frame .sliding-card.slided-center').removeClass('slided-center').addClass(end + ' slided');
+		bgDiv.removeClass(start).addClass('slided-center slided');
+
+		if (onTransitionEnd) {
+			bgDiv.one($.support.transition.end, onTransitionEnd);
+		}
+	}
+
+
 	$(function() {
 		// preload(imageUrls, function(){
 		// 	alert('done')
 		// })
 
-	    const first = 0;
-	    const last = imageUrls.length - 1;
 
-	    var visibleBg = 0;
-
-	    // init bg divs
-	    $('div#bg' + visibleBg).css({
-	        'background-image': 'url("' + imageUrls[selected] + '")',
-	        'z-index': -1
-	    });
-	    $('div#bg1').css({
-	        'z-index': -1
-	    });
-
-	    // init menu
-	    $('div#slidingContainer').append($('div#menuLanding'));
 
 	    // camera controller
 	    $('area#backCtrl').mouseenter(function() {
 			$('div#controllerDiv').css('background-position', '0 0');
 		}).mousedown(function() {
 			$('div#controllerDiv').css('background-position', '-203px 0');
-
-	        $('div#bg' + visibleBg).css('z-index', -1);
-
-	        var prevVisibleBg = visibleBg;
-	        visibleBg = (visibleBg === 0) ? 1 : 0;
-	        selected = (selected > first) ? selected-1 : last;
-	        $('div#bg' + visibleBg).css({
-	            left: 0,
-	            'z-index': -2,
-	            'background-image': 'url("' + imageUrls[selected] + '")'
-	        });
-	        $('div#bg' + prevVisibleBg).animate({left: '100%'});
+			transitionBg(true);
 		}).mouseup(function() {
 			$('div#controllerDiv').css('background-position', '0 0');
 		}).mouseleave(function() {
 			$('div#controllerDiv').css('background-position', '-203px -406px');
 		});
 	    
-	    $('area#forwardCtrl').click(function() {
-	        $('div#bg' + visibleBg).css('z-index', -2);
+	    $('area#forwardCtrl').mouseenter(function() {
+			$('div#controllerDiv').css('background-position', '-203px -406px');
+		}).mousedown(function() {
+			$('div#controllerDiv').css('background-position', '-203px -406px');
 
-	        visibleBg = (visibleBg === 0) ? 1 : 0;
-	        selected = (selected < last) ? selected+1 : first;
-	        $('div#bg' + visibleBg).css({
-	            left: '100%',
-	            'z-index': -1,
-	            'background-image': 'url("' + imageUrls[selected] + '")'
-	        });
-	        $('div#bg' + visibleBg).animate({left: 0});
-	    });
+			transitionBg(false);
+		}).mouseup(function() {
+			$('div#controllerDiv').css('background-position', '-203px -406px');
+		}).mouseleave(function() {
+			$('div#controllerDiv').css('background-position', '-203px -406px');
+		});
 
 	    $('area#selectCtrl').click(function() {
-			$('input#image').val(selected);
+			$('input#image').val($('#bg-frame .sliding-card.slided-center').attr('id').substr(3));
 		    $('form#auswahl').submit();
 		}).mouseenter(function() {
 			$('div#controllerDiv').css('background-position', '0 -203px');
@@ -99,7 +105,6 @@
 		}).mouseleave(function() {
 			$('div#controllerDiv').css('background-position', '-203px -406px');
 		});
-
 
 	});
 })();

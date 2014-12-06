@@ -53,8 +53,8 @@ class Pixel4natureController extends Zend_Controller_Action {
 	}
 
 	public function auswahlAction() {
-		$this->view->assign("step", 1);
 		$this->view->assign("galeryFilesJs", Zend_Registry::get('galery')['arrayJs']);
+		$this->view->assign("galeryFilesRel", Zend_Registry::get('galery')['filesRel']);
 		if (isset($this->session->image) && isset($this->session->image['index'])) {
 			$this->view->assign("imageIndex", $this->session->image['index']);
 		} else {
@@ -63,16 +63,18 @@ class Pixel4natureController extends Zend_Controller_Action {
 	}
 
 	public function ausschnittAction() {
+		// create image object in session
 		if (!isset($this->session->image)) {
 			$this->session->image = array();
 		}
+
 		$dirtyIndex = intval($this->getParam("image"));
 		$galery = Zend_Registry::get('galery');
 		if (isset($galery['filesAbs'][$dirtyIndex])) {
+			// save image properties in session
 			$this->session->image['index'] = $dirtyIndex;
 			$this->session->image['pathRel'] = $galery['filesRel'][$dirtyIndex];
 			$this->session->image['pathAbs'] = $galery['filesAbs'][$dirtyIndex];
-			$this->view->assign("step", 2);
 			$this->view->assign("dimensions", Zend_Registry::get('dimensions'));
 			$this->view->assign("imagePath", $this->session->image['pathRel']);
 		} else {
@@ -106,7 +108,6 @@ class Pixel4natureController extends Zend_Controller_Action {
 				$this->session->image['generatedAbs'] = $outputPath;
 				$this->session->image['generatedRel'] = str_replace(realpath(APPLICATION_PATH . "/../public/"), "", $outputPath);
 
-				$this->view->assign("step", 3);
 				$this->view->assign("dimensions", $dimensions);
 				$this->view->assign("imagePath", $this->session->image['pathRel']);
 				$this->view->assign("generatedPath", $this->session->image['generatedRel']);

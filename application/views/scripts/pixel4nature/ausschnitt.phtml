@@ -9,15 +9,13 @@ $this->headStyle()->appendStyle(
         height: {$this->dimensions["facebook"]["cover"]["height"]}px;
     }
 
-    div#bg0 {
+    div#bg {
         background-image: url('{$this->imagePath}');
     }");
 
 // JavaScript
 $this->headScript()
     ->appendFile("/js/jquery/jquery.panzoom-1.7.0.js");
-$this->headScript()
-    ->appendFile("/js/purl/purl.js");
 $this->headScript()
     ->appendFile("/js/circleSlider/circleSlider.js");
 $this->headScript()
@@ -34,38 +32,30 @@ $this->headScript()
 		height : %d,
 		minScale : %f,
 		maxScale : 1,
-	};
-
-    var imagePath = '%s'",
+	};",
     $this->dimensions ["original"] ["width"], 
     $this->dimensions ["original"] ["height"], 
     $this->dimensions ["original"] ["width"] / $this->dimensions ["original"] ["height"], 
     $this->dimensions ["facebook"] ["cover"] ["width"],
     $this->dimensions ["facebook"] ["cover"] ["height"], 
-    $this->dimensions ["facebook"] ["cover"] ["width"] / $this->dimensions ["original"] ["width"],
-    $this->imagePath));
+    $this->dimensions ["facebook"] ["cover"] ["width"] / $this->dimensions ["original"] ["width"]));
 $this->headScript()
     ->appendFile("/js/ausschnitt.js");
 
-$htmlEntities = new Zend_Filter_HtmlEntities();
 ?>
 
 
 <?php // Hauptmenue ?>
-<?php
-    echo $this->partial('menu.phtml', array(
+<?php echo $this->partial('menu.phtml', array(
         'user' => $this->session->user,
         'isLoggedin' => $this->isLoggedin,
         'loginForm' => $this->loginForm,
         'newMemberForm' => $this->newMemberForm,
         'requestResetForm' => $this->requestResetForm,
-        'updateMemberForm' => $this->updateMemberForm));
-?>
+        'updateMemberForm' => $this->updateMemberForm)); ?>
 
-<?php // Container fuer Hintergrundbild ?>
-<div id="bgWrapper">
-    <div id="bg0" class="bg blur"></div>
-</div>
+<?php // Hintergrundbild ?>
+<div id="bg" class="blur"></div>
 
 <?php // Hilfefenster ?>
 <div class="absoluteWrapper" >
@@ -137,7 +127,7 @@ $htmlEntities = new Zend_Filter_HtmlEntities();
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div id="clipping" class="shadowed center-block">
-                <img id="clippingImage" src="<?php echo $htmlEntities->filter($this->imagePath); ?>" />
+                <img id="clippingImage" src="<?php echo $this->imagePath; ?>" />
                 <form id="ausschnitt" action="vorschau" method="POST">
                     <input type="text" id="name" name="name" maxlength="25" placeholder="Dein Name"/>
                     <input type="hidden" id="x" name="x" value="0" />
@@ -157,4 +147,10 @@ $htmlEntities = new Zend_Filter_HtmlEntities();
             </div>
         </div>
     </div>
+</div>
+
+<?php // Kontrollelement ?>
+<?php echo $this->partial('cameraControl.phtml') ?>
+<div id="rotationSliderContainer" class="">
+    <div id="rotationSlider"></div>
 </div>
