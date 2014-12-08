@@ -42,16 +42,17 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
 		$doctypeHelper->doctype('HTML5');
 
 		// Titel der Seite
-		$view->headTitle('Pixel for nature')
-		     ->setSeparator(' - ');
+		$view->headTitle('Pixel for nature')->setSeparator(' - ');
 
 		// Globale CSS Datei(en)
-		$view->headLink()
-		     ->prependStylesheet('/css/site.css');
+		$view->headLink()->prependStylesheet('/css/site.css');
 
-		// Globale JS Datei(en)
-		//        $view->headScript()
-		//            ->prependFile('/js/jquery/jquery.min.js');
+		// JQuery
+		$view->headScript()->appendFile('/js/jquery/jquery.1.11.1.min.js');
+		// Bootstrap
+		$view->headScript()->appendFile('/js/bootstrap/bootstrap.min.js');
+		// Custom scripts
+		$view->headScript()->appendFile('/js/pixelfornature.js');
 	}
 
 	protected function _initLogger() {

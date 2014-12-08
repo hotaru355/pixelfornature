@@ -109,30 +109,39 @@ div.close-container {
 }
 
 .flipcard {
-	.perspective(800);
-	.transform-style(preserve-3d);
-    .transition(1.0s);
-	&.flipped-90 {
-		.rotateY(-90deg);
-	}
-	&.flipped-180 {
-		.rotateY(-180deg);
-	}
+    position:relative;
+    height: auto;
+    min-height: 0px;
+    .transition(min-height 1s ease-out 0s);
+
 	.flipcard-front,
 	.flipcard-back {
-		.backface-visibility(hidden);
-    	display: inline-block;
     	top: 0;
     	left: 0;
     	width: 100%;
+		.perspective(800);
+		.transform-style(preserve-3d);
+	    .transition(transform 1s ease-out 0.5s);
+		.backface-visibility(hidden);
 	}
 	.flipcard-front {
     	position: relative;
+    	display: inline-block;
 		.rotateY(0deg);
+		&.front-flipped {
+			.rotateY(180deg);
+		}
 	}
 	.flipcard-back {
     	position: absolute;
+    	display: none;
 		.rotateY(180deg);
+		// bug: https://bugs.webkit.org/show_bug.cgi?id=54371
+	    -webkit-transform: rotateY(180deg) translateZ(1px);
+		&.back-flipped {
+		    .rotateY(0deg);
+		}
 	}
+	
 }
 

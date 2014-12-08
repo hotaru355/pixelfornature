@@ -10,10 +10,7 @@ foreach ($this->galeryFilesRel as $index => $galeryUrl) {
 $this->headStyle()->appendStyle($bgStyles);
 
 // JavaScript
-$this->headScript()
-    ->appendScript(
-        "var imageUrls = {$this->galeryFilesJs};
-        var selected = {$this->imageIndex};");
+$this->headScript()->appendScript("var imageUrls = {$this->galeryFilesJs};");
 $this->headScript()
     ->appendFile("/js/auswahl.js");
 ?>

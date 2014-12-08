@@ -47,29 +47,32 @@
 	    var card = $('.flipcard');
 	    var front = $('.flipcard-front');
 	    var back = $('.flipcard-back');
-	    // visible/invisible *before* flipping, e.g. we flip to invisible
-	    var visible, invisible;
+	    var tallerHight = Math.max(front.height(), back.height()) + 'px';
+	    var visible = front.hasClass('front-flipped') ? back : front;
+    	var invisible = front.hasClass('front-flipped') ? front : back;
 
-	    if (card.hasClass('flipped-180')) {
-	    	visible = back;
-	    	invisible = front;
-	    } else {
-	    	visible = front;
-	    	invisible = back;
-	    }
+	    card.one($.support.transition.end, function () {
+	        card.css({
+	            'min-height': '0px'
+	        });
+	        visible.css({
+	            display: 'none',
+	        });
+	        invisible.css({
+	            position: 'relative',
+	            display: 'inline-block',
+	        });
+	    })
 
-	    // switch absolute/relative position of cards on transition end
-		card.one($.support.transition.end, function() {
-    		visible.css({position: 'absolute'});
-    		invisible.css({position: 'relative'});
-	  		card.height('auto');
-		})
+        // focus is important, as otherwise hitting <enter> twice will behave incorrectly. 
+	    invisible.css({
+	        position: 'absolute',
+	        display: 'inline-block'
+	    }).find('button,a').focus();
 
-	    card.height(visible.height());
-        card.height(invisible.height());
-        // this is important, as otherwise hitting <enter> twice will behave incorrectly. 
-    	invisible.find('button,a').focus();
-    	card.toggleClass('flipped-180');
+    	card.css('min-height', tallerHight);
+	    front.toggleClass('front-flipped');
+	    back.toggleClass('back-flipped')
 	}
 
 	function mapErrorToLabel(errors, idPostfix, combiNameById) {
@@ -179,6 +182,11 @@
 
 	}
 	$(function() {
+		// DEBUG
+		// $('#test').click(function() {
+		// 	flipCard();
+		// });
+
 		slidingFrame = $('div#sliding-frame');
 		menuLanding = $('div#menuLanding');
 		menuNewMember = $('div#menuNewMember');

@@ -1,19 +1,9 @@
 CACHE MANIFEST
 # 2014-11-14:v1
 
-# Explicitly cached entries
-css/flaeche-fuer-natur.css
-
-# offline.html will be displayed if the user is offline
-FALLBACK:
-#/ /offline.html
-
-# All other resources (e.g. sites) require the user to be online. 
-NETWORK:
-*
-
 # Additional resources to cache
 CACHE:
+css/site.css
 images/galerie/naturefund1.jpg
 images/galerie/naturefund2.jpg
 images/galerie/naturefund3.jpg
@@ -27,3 +17,12 @@ images/galerie/naturefund10.jpg
 images/galerie/naturefund11.jpg
 images/galerie/naturefund12.jpg
 images/galerie/naturefund13.jpg
+
+# All other resources (e.g. sites) require the user to be online. 
+NETWORK:
+*
+# offline.html will be displayed if the user is offline
+FALLBACK:
+#/ /offline.html
+
+
