@@ -112,36 +112,58 @@ div.close-container {
     position:relative;
     height: auto;
     min-height: 0px;
-    .transition(min-height 1s ease-out 0s);
+
+	// the webKit/FF/Opera way: flip the card and leave the faces alone
+	-webkit-perspective: 800px;
+	   -moz-perspective: 800px;
+	     -o-perspective: 800px;
+    -webkit-transform-style: preserve-3d;
+       -moz-transform-style: preserve-3d;
+         -o-transform-style: preserve-3d;
+	-webkit-transition: e("min-height 1s ease-out 0s, -webkit-transform 1s ease-out 0.5s");
+	   -moz-transition: e("min-height 1s ease-out 0s, -moz-transform 1s ease-out 0.5s");
+	     -o-transition: e("min-height 1s ease-out 0s, -o-transform 1s ease-out 0.5s");
+	    -ms-transition: min-height 1s ease-out 0s; // separate height and rotation animations
+	&.card-flipped {
+		-webkit-transform: rotateY(180deg);
+		   -moz-transform: rotateY(180deg);
+		     -o-transform: rotateY(180deg);
+	}
 
 	.flipcard-front,
 	.flipcard-back {
     	top: 0;
     	left: 0;
     	width: 100%;
-		.perspective(800);
-		.transform-style(preserve-3d);
-	    .transition(transform 1s ease-out 0.5s);
 		.backface-visibility(hidden);
+
+    	// the IE way: flip *each* face at the same time
+		-ms-perspective: 800px;
+		-ms-transform-style: flat;
+	    -ms-transition: -ms-transform 1s ease-out 0.5s;
 	}
 	.flipcard-front {
     	position: relative;
     	display: inline-block;
 		.rotateY(0deg);
-		&.front-flipped {
-			.rotateY(180deg);
+
+    	// the IE way
+		&.ms-front-flipped {
+			-ms-transform: rotateY(180deg);
 		}
 	}
 	.flipcard-back {
     	position: absolute;
     	display: none;
 		.rotateY(180deg);
-		// bug: https://bugs.webkit.org/show_bug.cgi?id=54371
+		
+		// webkit bug: https://bugs.webkit.org/show_bug.cgi?id=54371
 	    -webkit-transform: rotateY(180deg) translateZ(1px);
-		&.back-flipped {
-		    .rotateY(0deg);
+
+    	// the IE way
+		&.ms-back-flipped {
+		    -ms-transform: rotateY(0deg);
 		}
 	}
-	
 }
 

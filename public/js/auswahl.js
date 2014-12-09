@@ -31,8 +31,8 @@
 	//     })
 	// })(imageUrls);
 
-	const first = 0;
-	const last = imageUrls.length - 1;
+	var first = 0;
+	var last = imageUrls.length - 1;
 
 	function transitionBg(isRight, onTransitionEnd) {
 		var start, end;

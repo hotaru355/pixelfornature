@@ -11,9 +11,9 @@
 			throw Error('container or slider not found!');
 		}
 
-		const sliderWidth = slider.width();
-		const sliderHeight = slider.height();
-		const radius = container.width() / 2;
+		var sliderWidth = slider.width();
+		var sliderHeight = slider.height();
+		var radius = container.width() / 2;
 		var mdown = false;
 
 		function positionSlider(degree) {

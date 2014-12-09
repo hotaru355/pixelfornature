@@ -48,10 +48,11 @@
 	    var front = $('.flipcard-front');
 	    var back = $('.flipcard-back');
 	    var tallerHight = Math.max(front.height(), back.height()) + 'px';
-	    var visible = front.hasClass('front-flipped') ? back : front;
-    	var invisible = front.hasClass('front-flipped') ? front : back;
-
-	    card.one($.support.transition.end, function () {
+	    var visible = front.hasClass('ms-front-flipped') ? back : front;
+    	var invisible = front.hasClass('ms-front-flipped') ? front : back;
+    	var hasTransitioned = false;
+		var onTransitionEnded = function () {
+			hasTransitioned = true;
 	        card.css({
 	            'min-height': '0px'
 	        });
@@ -62,7 +63,15 @@
 	            position: 'relative',
 	            display: 'inline-block',
 	        });
-	    })
+	    }
+
+	    card.one($.support.transition.end, onTransitionEnded);
+	    // for browsers that do not support transitions, like IE9
+	    setTimeout(function() {
+	    	if (!hasTransitioned) {
+	    		onTransitionEnded.apply();
+	    	}
+	    }, 2000);
 
         // focus is important, as otherwise hitting <enter> twice will behave incorrectly. 
 	    invisible.css({
@@ -71,8 +80,11 @@
 	    }).find('button,a').focus();
 
     	card.css('min-height', tallerHight);
-	    front.toggleClass('front-flipped');
-	    back.toggleClass('back-flipped')
+    	// the IE way: flip each face of the card
+	    front.toggleClass('ms-front-flipped');
+	    back.toggleClass('ms-back-flipped');
+		// the webkit/FF way: flip the card
+    	card.toggleClass('card-flipped');
 	}
 
 	function mapErrorToLabel(errors, idPostfix, combiNameById) {
