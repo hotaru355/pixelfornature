@@ -1,134 +1,119 @@
 //
 // Buttons
 // --------------------------------------------------
-
-
 // Base styles
 // --------------------------------------------------
-
 .btn {
- 	border: 0;
-	margin-bottom: 10px;
-
-  &,
-  &:active,
-  &.active {
-    &:focus,
-    &.focus {
-      .tab-focus();
+    border: 0;
+    margin-bottom: 10px;
+    &, &:active, &.active {
+        &:focus, &.focus {
+            .tab-focus();
+        }
     }
-  }
 }
-
 .btn-default {
-  color: @btn-default-color;
-  background-color: @color-grey-20;
-  #gradient > .vertical(@start-color: @color-white; @end-color: @color-grey-20);
-
-  &:hover,
-  &.hover,
-  .open > .dropdown-toggle& {
-    color: @btn-default-hover-color;
-  }
-  &:active,
-  &.active,
-  .open > .dropdown-toggle& {
-    color: @btn-default-active-color;
-  	#gradient > .vertical(@start-color: @color-grey-20; @end-color: @color-white);
-  }
-  &.disabled,
-  &[disabled],
-  fieldset[disabled] & {
-    &,
-    &:hover,
-    &:focus,
-    &.focus,
-    &:active,
-    &.active {
-	    color: @btn-default-hover-color;
+    color: @btn-default-color;
+    background-color: @color-grey-20;
+    border: 1px solid @color-grey-40;
+    #gradient > .vertical(@start-color: @color-grey-10, @end-color: @color-grey-20);
+    &:hover:not(:active), &.hover:not(.active) {
+        color: @btn-default-color;
+        text-shadow: 0 0 3px @btn-default-color;
     }
-  }
-
-  .badge {
-    color: @btn-default-hover-color;
-  }
+    &:active, &.active {
+        color: @btn-default-color;
+        #gradient > .vertical(@start-color: @color-grey-20, @end-color: @color-grey-10);
+    }
+    &.disabled, &[disabled], fieldset[disabled] & {
+        &, &:hover, &:focus, &.focus, &:active, &.active {
+            color: @btn-default-hover-color;
+        }
+    }
+    .badge {
+        color: @btn-default-hover-color;
+    }
 }
-
-
-
-
+@facebook-dark-blue: #3b5998;
+@facebook-middle-blue: #8b9dc3;
+.btn-fb {
+    color: @color-white;
+    background-color: @facebook-dark-blue;
+    border: 1px solid @color-grey-40;
+    #gradient > .vertical(@start-color: lighten(@facebook-dark-blue, 15%), @end-color: @facebook-dark-blue);
+    &:hover:not(:active), &.hover:not(.active) {
+        color: @color-white;
+        text-shadow: 0 0 3px @color-white;
+    }
+    &:focus, &.focus, &:active, &.active {
+        color: @color-white;
+        #gradient > .vertical(@start-color: @facebook-dark-blue, @end-color: lighten(@facebook-dark-blue, 15%));
+    }
+}
 // PixelForNature
 // --------------------------------------------------
-
 .btn-social {
-	width: 48px;
-	height: 48px;
-	background-color: transparent;
+    width: 48px;
+    height: 48px;
+    background-color: transparent;
 }
-
 .btn-facebook {
-	background-image: url('/images/socials-icon.png');
-	&:hover {
-		background-image: url('/images/socials-icon.png');
-		background-position: -48px 0;
-	}
-	&:active {
-		background-image: url('/images/socials-icon.png');
-		background-position: -96px 0;
-	}
+    background-image: url('/images/socials-icon.png');
+    &:hover {
+        background-image: url('/images/socials-icon.png');
+        background-position: -48px 0;
+    }
+    &:active {
+        background-image: url('/images/socials-icon.png');
+        background-position: -96px 0;
+    }
 }
-
 .btn-gplus {
-	background-image: url('/images/socials-icon.png');
-	background-position: 0 -48px;
-	&:hover {
-		background-image: url('/images/socials-icon.png');
-		background-position: -48px -48px;
-	}
-	&:active {
-		background-image: url('/images/socials-icon.png');
-		background-position: -96px -48px;
-	}
+    background-image: url('/images/socials-icon.png');
+    background-position: 0 -48px;
+    &:hover {
+        background-image: url('/images/socials-icon.png');
+        background-position: -48px -48px;
+    }
+    &:active {
+        background-image: url('/images/socials-icon.png');
+        background-position: -96px -48px;
+    }
 }
-
 .btn-twitter {
-	background-image: url('/images/socials-icon.png');
-	background-position: 0 -96px;
-	&:hover {
-		background-image: url('/images/socials-icon.png');
-		background-position: -48px -96px;
-	}
-	&:active {
-		background-image: url('/images/socials-icon.png');
-		background-position: -96px -96px;
-	}
+    background-image: url('/images/socials-icon.png');
+    background-position: 0 -96px;
+    &:hover {
+        background-image: url('/images/socials-icon.png');
+        background-position: -48px -96px;
+    }
+    &:active {
+        background-image: url('/images/socials-icon.png');
+        background-position: -96px -96px;
+    }
 }
-
 .btn-youtube {
-	background-image: url('/images/socials-icon.png');
-	background-position: 0 -144px;
-	&:hover {
-		background-image: url('/images/socials-icon.png');
-		background-position: -48px -144px;
-	}
-	&:active {
-		background-image: url('/images/socials-icon.png');
-	background-position: -96px -144px;
-	}
+    background-image: url('/images/socials-icon.png');
+    background-position: 0 -144px;
+    &:hover {
+        background-image: url('/images/socials-icon.png');
+        background-position: -48px -144px;
+    }
+    &:active {
+        background-image: url('/images/socials-icon.png');
+        background-position: -96px -144px;
+    }
 }
-
-
 button#memberAccount {
     display: inline;
-	float: left;
-    width:45%;
-    min-width:120px;
-    margin-right:10%;
+    float: left;
+    width: 45%;
+    min-width: 120px;
+    margin-right: 10%;
 }
-
 button#logoutMember {
     display: inline;
-	float: left;
-    width:45%;
-    min-width:120px;
+    float: left;
+    width: 45%;
+    min-width: 120px;
 }

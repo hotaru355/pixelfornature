@@ -1,52 +1,49 @@
 <?php
-// Seitentitel
-$this->headTitle()
-    ->append("Wähle einen Ausschnitt!");
+    // Seitentitel
+    $this->headTitle()
+        ->append("Wähle einen Ausschnitt!");
 
-$this->headStyle()->appendStyle(
-    "div#clipping {
-        width: {$this->dimensions["facebook"]["cover"]["width"]}px;
-        height: {$this->dimensions["facebook"]["cover"]["height"]}px;
-    }
+    $this->headStyle()->appendStyle(
+        "div#clipping {
+            width: {$this->dimensions["facebook"]["cover"]["width"]}px;
+            height: {$this->dimensions["facebook"]["cover"]["height"]}px;
+        }
 
-    div#bg {
-        background-image: url('{$this->imagePath}');
-    }");
+        div#bg {
+            background-image: url('{$this->imagePath}');
+        }");
 
-// JavaScript
-$this->headScript()
-    ->appendFile("/js/jquery/jquery.panzoom-1.7.0.js");
-$this->headScript()
-    ->appendFile("/js/circleSlider/circleSlider.js");
-$this->headScript()
-    ->appendScript(sprintf("
-	var original = {
-		width : %d,
-		height : %d,
-        ratio : %f
-	};
+    // JavaScript
+    $this->headScript()
+        ->appendFile("/js/jquery/jquery.panzoom-1.7.0.js");
+    $this->headScript()
+        ->appendFile("/js/circleSlider/circleSlider.js");
+    $this->headScript()
+        ->appendScript(sprintf("
+    	var original = {
+    		width : %d,
+    		height : %d,
+            ratio : %f
+    	};
 
-	// Bilddimensionen der Facebook Coverfotos
-	var fbCover = {
-		width : %d,
-		height : %d,
-		minScale : %f,
-		maxScale : 1,
-	};",
-    $this->dimensions ["original"] ["width"], 
-    $this->dimensions ["original"] ["height"], 
-    $this->dimensions ["original"] ["width"] / $this->dimensions ["original"] ["height"], 
-    $this->dimensions ["facebook"] ["cover"] ["width"],
-    $this->dimensions ["facebook"] ["cover"] ["height"], 
-    $this->dimensions ["facebook"] ["cover"] ["width"] / $this->dimensions ["original"] ["width"]));
-$this->headScript()
-    ->appendFile("/js/ausschnitt.js");
+    	// Bilddimensionen der Facebook Coverfotos
+    	var fbCover = {
+    		width : %d,
+    		height : %d,
+    		minScale : %f,
+    		maxScale : 1,
+    	};",
+        $this->dimensions ["original"] ["width"], 
+        $this->dimensions ["original"] ["height"], 
+        $this->dimensions ["original"] ["width"] / $this->dimensions ["original"] ["height"], 
+        $this->dimensions ["facebook"] ["cover"] ["width"],
+        $this->dimensions ["facebook"] ["cover"] ["height"], 
+        $this->dimensions ["facebook"] ["cover"] ["width"] / $this->dimensions ["original"] ["width"]));
+    $this->headScript()
+        ->appendFile("/js/ausschnitt.js");
 
-?>
-
-
-<?php // Hauptmenue ?>
-<?php echo $this->partial('menu.phtml', array(
+    // Hauptmenue
+    echo $this->partial('menu.phtml', array(
         'user' => $this->session->user,
         'isLoggedin' => $this->isLoggedin,
         'loginForm' => $this->loginForm,
@@ -54,17 +51,22 @@ $this->headScript()
         'requestResetForm' => $this->requestResetForm,
         'updateMemberForm' => $this->updateMemberForm)); ?>
 
-<?php // Hintergrundbild ?>
+<!-- Hintergrundbild -->
 <div id="bg" class="blur"></div>
 
-<?php // Hilfefenster ?>
+<!-- Hilfefenster -->
 <div class="absoluteWrapper" >
     <div id="helpBox" class="container transparentLight">
         <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <button id="closeHelp" type="button" class="close">
-                    <span aria-hidden="true">&times;</span>
                     <span class="sr-only">Close</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" nviewBox="0 0 20 20">
+                        <g stroke="#000" stroke-width="2" fill="none" stroke-linecap="round">
+                            <path d="M1,19,19,1"></path>
+                            <path d="M1,1,19,19"></path>
+                        </g>
+                    </svg>
                 </button>
             </div>
         </div>
@@ -73,68 +75,147 @@ $this->headScript()
                 <h1>Schritt 2 von 3</h1>
                 <h2>Personalisiere deine Fläche</h2>
             </div>
-            <div class="row">
-                <div class="col-sm-1 col-sm-offset-1">
-                    <img src="/images/hilfe1-1.png"/ class="center-block">
-                    <p>Mit den Pfeiltasten kannst du die Bilder durchstöbern.</p>
-                </div>
-                <div class="col-sm-1">
-                    <div class="center-block">
-                        <span class="glyphicon glyphicon-chevron-right"></span>
-                    </div>
-                </div>
-                <div class="col-sm-1">
-                    <img src="/images/hilfe1-1.png"/ class="center-block">
-                    <p>Mit dem Drehknopf kannst du rein- und rauszoomen.</p>
-                </div>
-                <div class="col-sm-1">
-                    <div class="center-block">
-                        <span class="glyphicon glyphicon-chevron-right"></span>
-                    </div>
-                </div>
-                <div class="col-sm-1">
-                    <img src="/images/hilfe1-1.png"/ class="center-block">
-                    <p>Mit geklickter Maustaste kannst du in der Fläche den Ausschnitt wählen.</p>
-                </div>
-                <div class="col-sm-1">
-                    <div class="center-block">
-                        <span class="glyphicon glyphicon-chevron-right"></span>
-                    </div>
-                </div>
-                <div class="col-sm-1">
-                    <img src="/images/hilfe1-1.png"/ class="center-block">
-                    <p>In dem Textfeld kannst du deinen Namen eintragen.</p>
-                </div>
-                <div class="col-sm-1">
-                    <div class="center-block">
-                        <span class="glyphicon glyphicon-chevron-right"></span>
-                    </div>
-                </div>
-                <div class="col-sm-1">
-                    <img src="/images/hilfe1-2.png" class="center-block" />
-                    <p>Mit dem Auslöser bestätigst du deine Auswahl.</p>
-                </div>
+        </div>
+        <div class="row row-11-cols">
+            <div class="col-sm-2">
+                <svg viewBox="0 0 80 68" version="1.1" xmlns="http://www.w3.org/2000/svg" class="help-icon">
+                    <g stroke="none" fill="none" fill-rule="evenodd">
+                        <path fill="#969696" d="M42,16.999 C45.472,16.999 48.737,18.351 51.192,20.807 C53.647,23.262 55,26.527 55,29.999 C55,33.472 53.647,36.736 51.192,39.192 C48.737,41.647 45.472,42.999 42,42.999 C38.527,42.999 35.263,41.647 32.807,39.192 C27.739,34.123 27.739,25.876 32.807,20.807 C35.263,18.351 38.527,16.999 42,16.999 M42,15.999 C38.417,15.999 34.834,17.366 32.1,20.1 C26.633,25.567 26.633,34.431 32.1,39.899 C34.834,42.632 38.417,43.999 42,43.999 C45.583,43.999 49.166,42.632 51.899,39.899 C57.367,34.431 57.367,25.567 51.899,20.1 C49.166,17.366 45.583,15.999 42,15.999"></path>
+                        <path fill="#969696" d="M19.802,11.336 L27.634,19.168 C22.782,25.58 22.782,34.419 27.634,40.83 L19.802,48.662 C10.674,37.846 10.674,22.152 19.802,11.336 M19.754,9.873 C9.417,21.28 9.417,38.718 19.754,50.125 L28.972,40.906 C23.688,34.607 23.688,25.391 28.972,19.092 L19.754,9.873"></path>
+                        <path fill="#969696" d="M64.198,11.336 C73.326,22.152 73.326,37.846 64.198,48.662 L56.366,40.83 C61.218,34.419 61.218,25.58 56.366,19.168 L64.198,11.336 M64.247,9.873 L55.028,19.092 C60.312,25.391 60.312,34.607 55.028,40.906 L64.247,50.125 C74.583,38.718 74.583,21.28 64.247,9.873"></path>
+                        <path fill="#969696" d="M42,1 C48.86,1 55.447,3.408 60.662,7.801 L52.831,15.633 C49.725,13.29 45.914,12.008 42,12.008 C38.086,12.008 34.275,13.29 31.17,15.633 L23.338,7.801 C28.553,3.408 35.139,1 42,1 M42,0 C34.789,0 27.578,2.584 21.874,7.752 L31.093,16.971 C34.242,14.33 38.122,13.008 42,13.008 C45.879,13.008 49.757,14.329 52.907,16.971 L62.126,7.752 C56.422,2.584 49.211,0 42,0"></path>
+                        <path fill="#969696" d="M52.831,44.365 L60.662,52.197 C55.447,56.59 48.86,58.998 42,58.998 C35.139,58.998 28.553,56.59 23.338,52.197 L31.17,44.365 C34.275,46.708 38.086,47.99 42,47.99 C45.914,47.99 49.725,46.708 52.831,44.365 M52.907,43.027 C49.758,45.669 45.879,46.99 42,46.99 C38.121,46.99 34.243,45.669 31.093,43.027 L21.874,52.246 C27.577,57.414 34.79,59.998 42,59.998 C49.212,59.998 56.422,57.415 62.126,52.246 L52.907,43.027"></path>
+                        <path stroke="#969696" d="M79.5,29.999 C79.5,50.71 62.71,67.499 42,67.499 C21.289,67.499 4.5,50.71 4.5,29.999" stroke-linecap="round"></path>
+                        <path fill="#91AF2D" d="M9,31.042 C9,33.527 6.985,35.542 4.5,35.542 C2.014,35.542 0,33.527 0,31.042 C0,28.556 2.014,26.542 4.5,26.542 C6.985,26.542 9,28.556 9,31.042"></path>
+                    </g>
+                </svg>
+                <p>Mit dem Drehknopf kannst du rein- und rauszoomen.</p>
+            </div>
+            <div class="col-sm-1">
+                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" nviewBox="0 0 20 20" class="tut-arrow">
+                    <g stroke="#969696" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m 5.5,1 9,9 -9,9"></path>
+                    </g>
+                </svg>
+            </div>
+            <div class="col-sm-2">
+                <svg viewBox="0 0 75 56" version="1.1" xmlns="http://www.w3.org/2000/svg" stroke="none" class="help-icon">
+                    <g fill="#969696">
+                        <path d="M1.001,1 L74.001,1 L74.001,55 L1.001,55 L1.001,1 Z M0,56 L75,56 L75,0 L0,0 L0,56 Z"></path>
+                        <path d="M48.793,4 L4,48.793 L4,50.207 L50.208,4 L48.793,4"></path>
+                        <path d="M32.793,4 L4,32.793 L4,34.207 L34.207,4 L32.793,4"></path>
+                        <path d="M40.793,4 L4,40.793 L4,42.207 L42.207,4 L40.793,4"></path>
+                        <path d="M56.793,4 L8.793,52 L10.207,52 L58.207,4 L56.793,4"></path>
+                        <path d="M64.793,4 L16.793,52 L18.207,52 L66.207,4 L64.793,4"></path>
+                        <path d="M24.793,4 L4,24.793 L4,26.207 L26.208,4 L24.793,4"></path>
+                        <path d="M8.793,4 L4,8.793 L4,10.207 L10.207,4 L8.793,4"></path>
+                        <path d="M16.793,4 L4,16.793 L4,18.207 L18.207,4 L16.793,4"></path>
+                        <path d="M55.649,30.558 L71,15.207 L71,13.793 L54.942,29.851 L55.649,30.558"></path>
+                        <path d="M42.207,52 L71,23.207 L71,21.793 L40.793,52 L42.207,52"></path>
+                        <path d="M50.942,25.851 L51.649,26.558 L71,7.207 L71,5.793 L50.942,25.851"></path>
+                        <path d="M50.208,52 L71,31.207 L71,29.793 L48.793,52 L50.208,52"></path>
+                        <path d="M43.109,41.684 L32.793,52 L34.207,52 L43.816,42.391 L43.109,41.684"></path>
+                        <path d="M58.207,52 L71,39.207 L71,37.793 L56.793,52 L58.207,52"></path>
+                        <path d="M39.108,37.684 L24.793,52 L26.208,52 L39.816,38.391 L39.108,37.684"></path>
+                        <path d="M66.207,52 L71,47.207 L71,45.793 L64.793,52 L66.207,52"></path>
+                    </g>
+                    <path fill="#91AF2D" d="M57.5,34.206 L53.315,30.021 L53.314,33.674 L53.314,33.142 L48.566,33.142 L48.566,28.393 L48.033,28.392 L51.684,28.392 L47.499,24.207 L43.314,28.392 L46.968,28.393 L46.435,28.393 L46.435,33.142 L41.686,33.142 L41.686,30.021 L37.501,34.206 L41.686,38.392 L41.686,35.272 L46.435,35.272 L46.435,40.021 L43.315,40.021 L47.5,44.207 L51.686,40.021 L48.566,40.021 L48.566,35.272 L53.314,35.272 L53.315,34.739 L53.315,38.392 L57.5,34.206"></path>
+                </svg>
+                <p>Mit geklickter Maustaste kannst du in der Fläche den Ausschnitt wählen.</p>
+            </div>
+            <div class="col-sm-1">
+                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" nviewBox="0 0 20 20" class="tut-arrow">
+                    <g stroke="#969696" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m 5.5,1 9,9 -9,9"></path>
+                    </g>
+                </svg>
+            </div>
+            <div class="col-sm-2">
+                <svg viewBox="0 0 67 23" version="1.1" xmlns="http://www.w3.org/2000/svg" stroke="none" class="help-icon">
+                    <g fill="#969696">
+                        <path d="M0,0 L67,0 L67,23 L0,23 L0,0 Z M1.001,22 L66.001,22 L66.001,1 L1.001,1 L1.001,22 Z"></path>
+                        <path d="M53.246,4.5 L54.246,4.5 L54.246,18.5 L53.246,18.5 L53.246,4.5 Z"></path>
+                    </g>
+                    <g fill="#91AF2D">
+                        <path d="M11.141,17.089 L6.819,7.757 L6.755,7.757 C6.787,8.014 6.963,9.982 6.963,11.711 L6.963,17.089 L5.538,17.089 L5.538,6.061 L7.555,6.061 L11.925,15.441 L11.989,15.441 C11.958,15.185 11.781,13.424 11.781,11.439 L11.781,6.061 L13.206,6.061 L13.206,17.089 L11.141,17.089"></path>
+                        <path d="M23.204,14.319 L18.963,14.319 L18.115,17.089 L16.578,17.089 L20.163,6.061 L22.084,6.061 L25.654,17.089 L24.053,17.089 L23.204,14.319 L23.204,14.319 Z M19.331,13.087 L22.836,13.087 L21.123,7.437 L21.06,7.437 L19.331,13.087 L19.331,13.087 Z"></path>
+                        <path d="M37.623,17.089 L37.142,11.439 C37.014,9.886 36.966,8.125 36.966,7.773 L36.902,7.773 L34.437,15.92 L32.981,15.92 L30.42,7.773 L30.355,7.773 C30.355,8.142 30.324,10.014 30.211,11.439 L29.779,17.089 L28.338,17.089 L29.25,6.061 L31.299,6.061 L33.716,14.111 L33.781,14.111 L36.118,6.061 L38.182,6.061 L39.095,17.089 L37.623,17.089"></path>
+                        <path d="M44.882,7.277 L44.882,10.878 L48.596,10.878 L48.596,12.095 L44.882,12.095 L44.882,15.872 L49.46,15.872 L49.46,17.089 L43.362,17.089 L43.362,6.061 L49.332,6.061 L49.156,7.277 L44.882,7.277"></path>
+                    </g>
+                </svg>
+                <p>In dem Textfeld kannst du deinen Namen eintragen.</p>
+            </div>
+            <div class="col-sm-1">
+                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" nviewBox="0 0 20 20" class="tut-arrow">
+                    <g stroke="#969696" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m 5.5,1 9,9 -9,9"></path>
+                    </g>
+                </svg>
+            </div>
+            <div class="col-sm-2">
+                <svg viewBox="0 0 80 68" version="1.1" xmlns="http://www.w3.org/2000/svg" stroke="none" class="help-icon">
+                    <path fill="#91AF2D" d="M51.9,39.899 C46.432,45.367 37.568,45.367 32.1,39.899 C26.633,34.432 26.633,25.567 32.1,20.1 C37.568,14.633 46.432,14.633 51.9,20.1 C57.367,25.567 57.367,34.432 51.9,39.899"></path>
+                    <g fill="#969696">
+                        <path d="M19.802,11.336 L27.634,19.168 C22.782,25.58 22.782,34.419 27.634,40.831 L19.802,48.663 C10.675,37.846 10.675,22.153 19.802,11.336 M19.753,9.873 C9.417,21.28 9.417,38.719 19.753,50.126 L28.973,40.906 C23.688,34.608 23.688,25.391 28.973,19.092 L19.753,9.873"></path>
+                        <path d="M64.198,11.337 C73.326,22.153 73.326,37.846 64.198,48.662 L56.366,40.83 C61.218,34.419 61.218,25.58 56.366,19.168 L64.198,11.337 M64.247,9.873 L55.028,19.093 C60.312,25.391 60.312,34.608 55.028,40.906 L64.247,50.126 C74.583,38.719 74.583,21.28 64.247,9.873"></path>
+                        <path d="M42,1.001 C48.86,1.001 55.447,3.408 60.662,7.802 L52.831,15.633 C49.725,13.29 45.914,12.009 42,12.009 C38.086,12.009 34.275,13.29 31.17,15.633 L23.338,7.801 C28.554,3.408 35.14,1.001 42,1.001 M42,0 C34.789,0 27.578,2.584 21.875,7.752 L31.094,16.972 C34.242,14.33 38.122,13.009 42,13.009 C45.879,13.009 49.757,14.33 52.907,16.972 L62.126,7.753 C56.422,2.584 49.211,0 42,0"></path>
+                        <path d="M52.831,44.366 L60.662,52.197 C55.447,56.591 48.86,58.998 42,58.998 C35.14,58.998 28.554,56.591 23.338,52.197 L31.17,44.366 C34.275,46.709 38.086,47.99 42,47.99 C45.914,47.99 49.725,46.709 52.831,44.366 M52.907,43.027 C49.758,45.669 45.879,46.99 42,46.99 C38.121,46.99 34.243,45.669 31.094,43.027 L21.875,52.247 C27.577,57.414 34.789,59.999 42,59.999 C49.212,59.999 56.422,57.415 62.126,52.246 L52.907,43.027"></path>
+                        <path d="M42,68 C22.769,68 6.549,53.622 4.271,34.556 C4.237,34.282 4.433,34.033 4.707,34.001 C4.981,33.958 5.23,34.163 5.263,34.437 C7.482,53.001 23.275,67 42,67 C62.402,67 79,50.402 79,30 C79,29.723 79.224,29.5 79.5,29.5 C79.776,29.5 80,29.723 80,30 C80,50.953 62.953,68 42,68"></path>
+                        <path d="M4.501,26.5 C6.43,26.5 8.001,28.07 8.001,29.999 C8.001,31.929 6.43,33.499 4.501,33.499 C2.571,33.499 1.001,31.929 1.001,29.999 C1.001,28.07 2.571,26.5 4.501,26.5 M4.501,25.499 C2.015,25.499 0.001,27.514 0.001,29.999 C0.001,32.485 2.015,34.499 4.501,34.499 C6.986,34.499 9.001,32.485 9.001,29.999 C9.001,27.514 6.986,25.499 4.501,25.499"></path>
+                    </g>
+                </svg>
+                <p>Mit dem Auslöser bestätigst du deine Auswahl.</p>
             </div>
         </div>
     </div>
 </div>
 
-<div id="logo">
+<!-- <div id="logo">
     <img id="Naturefundlogo" alt="Naturefund-Logo" src="/images/Naturefund Logo.png" />
 </div>
-
+ -->
 <div id="content" class="container">
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div id="clipping" class="shadowed center-block">
                 <img id="clippingImage" src="<?php echo $this->imagePath; ?>" />
+                <svg id="mask-logo" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 190 88">
+                    <defs>
+                        <filter id="filter-1" height="200%" width="200%" y="-50%" x="-50%" filterUnits="objectBoundingBox">
+                            <feOffset in="SourceAlpha" result="shadowOffsetOuter1" dx="0" dy="0" />
+                            <feGaussianBlur stdDeviation="1.5" result="shadowBlurOuter1" in="shadowOffsetOuter1" />
+                            <feColorMatrix  type="matrix" values="0 0 0 0 0.3   0 0 0 0 0.3   0 0 0 0 0.3  0 0 0 0.35 0" result="shadowMatrixOuter1" in="shadowBlurOuter1" />
+                            <feMerge>
+                                <feMergeNode in="shadowMatrixOuter1" />
+                                <feMergeNode in="SourceGraphic" />
+                            </feMerge>
+                        </filter>
+                    </defs>
+                    <g stroke="none" fill="#FFF" fill-rule="evenodd" filter="url(#filter-1)">
+                        <path id="Fill-1" d="M0.4415,40.5c-1.878,4.43,5.402,3.96,7.75,1.63,14.33-14.92,38.04-43.13,83.84-34.27,3.52-0.233,4.69-4.196,0.94-5.362-48.38-11.42-77.5,20.52-92.53,38" />
+                        <path id="Fill-2" d="m114.9,17.48c-0.6666-1.511-1.273-2.332-2.502-3.402-1.501-1.307-3.476,0.9286-1.974,2.235,0.9185,0.7999,1.881,0.9513,2.379,2.08,0.6132,1.388,2.711,0.4752,2.097-0.9126" />
+                        <path id="Fill-3" d="m103.2,7.695c-1.323-1.145-2.41-2.534-4.109-2.005-1.357,0.4248-1.46,2.373-0.8574,3.657,1.309,2.595,4.443,1.473,6.577,3.479,1.605,1.51,3.886-0.8823,2.28-2.392-1.977-1.858-2.408-1.461-3.89-2.739" />
+                        <path id="Fill-4" d="m37.5,42.29-4.682-11.18-0.08142,0c0.1221,0.6048,0.4079,2.907,0.4079,5.228v5.956h-2.463v-13.95h3.439l4.743,11.22h0.08142c-0.1425-0.6863-0.3867-2.705-0.3867-5.228v-5.995h2.463v13.95h-3.521" />
+                        <path id="Fill-5" d="m52.32,39.52c0,0.8066,0.2247,1.11,0.754,1.311l-0.57,1.72c-1.14-0.1009-1.913-0.5047-2.32-1.434-0.7735,1.009-1.974,1.474-3.277,1.474-2.199,0-3.543-1.352-3.543-3.351,0-2.262,1.812-3.533,5.109-3.533h1.324v-0.6056c0-1.353-0.631-1.817-2.138-1.817-0.692,0-1.71,0.1615-2.809,0.545l-0.631-1.776c1.364-0.5055,2.727-0.7477,3.827-0.7477,3.033,0,4.274,1.293,4.274,3.634v4.583zm-2.523-0.122,0-2.14-0.916,0c-2.016,0-2.728,0.6662-2.728,1.838,0,1.05,0.4885,1.615,1.568,1.615,0.854,0,1.566-0.4853,2.076-1.313z" />
+                        <path id="Fill-6" d="m61.64,41.78c-0.7336,0.5442-1.771,0.8075-2.687,0.8075-2.403-0.02019-3.258-1.374-3.258-3.554v-5.592h-1.65v-1.838h1.65v-2.361l2.605-0.3036v2.665h2.627l-0.285,1.838h-2.342v5.592c0,1.05,0.346,1.474,1.14,1.474,0.4283,0,0.815-0.1203,1.282-0.4029l0.9168,1.675" />
+                        <path id="Fill-7" d="m65.65,31.61,0,7.409c0,0.8276,0.162,1.575,1.181,1.575,0.9974,0,1.669-0.5442,2.239-1.332v-7.651h2.606v10.68h-2.26l-0.1416-1.332c-0.7947,1.069-1.996,1.635-3.258,1.635-2.077,0-2.972-1.252-2.972-3.25v-7.733h2.605" />
+                        <path id="Fill-8" d="m74.85,42.29,0-10.68,2.3,0,0.2443,2.019c0.5487-1.454,1.527-2.302,2.767-2.302,0.3867,0,0.7336,0.04037,1.08,0.1413l-0.4478,2.504c-0.3257-0.08159-0.5903-0.122-0.9567-0.122-1.323,0-2.036,1.212-2.381,2.645v5.794h-2.605" />
+                        <path id="Fill-9" d="m84.58,37.75c0.2044,2.019,1.201,2.887,2.646,2.887,0.9168,0,1.69-0.2633,2.606-0.99l1.119,1.555c-1.018,0.8268-2.32,1.393-3.889,1.393-3.46,0-5.19-2.322-5.19-5.633,0-3.189,1.73-5.653,4.844-5.653,2.951,0,4.682,2.019,4.682,5.391,0,0.3432-0.03986,0.7671-0.06021,1.05h-6.759zm-0.02035-1.675,4.255,0c-0.0212-1.838-0.5911-2.927-2.077-2.927-1.242,0-2.035,0.9084-2.178,2.927z" />
+                        <path id="Fill-10" d="m100.8,27.67-0.7328,1.736c-0.692-0.3028-1.282-0.4029-1.832-0.4029-1.141,0-1.487,0.4634-1.487,1.474v1.13h2.566l-0.285,1.857h-2.281v8.823h-2.605v-8.823h-1.689v-1.857h1.689v-1.17c0-1.939,1.283-3.391,3.787-3.391,1.139,0,2.015,0.2414,2.87,0.6249" />
+                        <path id="Fill-11" d="m103.4,31.61,0,7.409c0,0.8276,0.162,1.575,1.18,1.575,0.9982,0,1.67-0.5442,2.24-1.332v-7.651h2.605v10.68h-2.259l-0.1425-1.332c-0.7938,1.069-1.995,1.635-3.258,1.635-2.076,0-2.972-1.252-2.972-3.25v-7.733h2.606" />
+                        <path id="Fill-12" d="m118.8,34.74c0-1.07-0.4062-1.494-1.322-1.494-0.8964,0-1.629,0.6863-2.219,1.494v7.551h-2.605v-10.68h2.259l0.1832,1.332c0.916-1.069,2.117-1.635,3.379-1.635,1.996,0,2.931,1.172,2.931,3.17v7.813h-2.605v-7.551" />
+                        <path id="Fill-13" d="m130.8,32.4,0-5.349,2.605,0.2818,0,14.96-2.3,0-0.162-1.272c-0.6725,0.9488-1.75,1.575-3.074,1.575-2.789,0-4.091-2.241-4.091-5.653,0-3.27,1.628-5.633,4.376-5.633,1.058,0,1.974,0.3835,2.646,1.091zm-4.295,4.542c0,2.745,0.7938,3.695,2.137,3.695,0.8964,0,1.65-0.6064,2.158-1.414v-4.905c-0.4876-0.6662-1.159-1.07-1.974-1.07-1.425,0-2.32,1.13-2.32,3.694z" />
+                    </g>
+                </svg>
+                <svg id="mask-profile" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 160 160">
+                    <path fill="#FFF" fill-rule="evenodd" d="M0,0h160v160h-160v-160zm80,73c-14.5,0-26.2-11-26.2-26,0-14,11.7-26,26.2-26,14,0,26,12,26,26,0,15-12,26-26,26zm34,44h-67.6c-7.9,0-14.4-7-14.4-15,0-16,12.9-29,28.8-29h1.1l4.1,3c8.7,4,19,4,28,0l4-3h1c16,0,29,13,29,29,0,8-6,15-14,15z"/>
+                </svg>
                 <form id="ausschnitt" action="vorschau" method="POST">
                     <input type="text" id="name" name="name" maxlength="25" placeholder="Dein Name"/>
                     <input type="hidden" id="x" name="x" value="0" />
                     <input type="hidden" id="y" name="y" value="0" />
                     <input type="hidden" id="scale" name="scale" value="0" />
                 </form>
-                <img id="profilePhotoOverlay" src="/images/fbHead.png" />
             </div>
         </div>
     </div>
@@ -149,8 +230,6 @@ $this->headScript()
     </div>
 </div>
 
-<?php // Kontrollelement ?>
-<?php echo $this->partial('cameraControl.phtml') ?>
-<div id="rotationSliderContainer" class="">
-    <div id="rotationSlider"></div>
-</div>
+<?php 
+    // Kontrollelement 
+    echo $this->partial('cameraControl.phtml') ?>

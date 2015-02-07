@@ -1,0 +1,23 @@
+{
+	"folders":
+	[
+		{
+			"follow_symlinks": true,
+			"path": "."
+		}
+	],
+    "settings": {
+        "tab_size": 4,
+        "less2css": {
+			"lessBaseDir": "/var/www/pixelfornature/less",
+			"outputDir": "/var/www/pixelfornature/public/css",
+			"outputFile": "site.css",
+			"minify": false,
+			"minName": false,
+			"autoCompile": true,
+			"showErrorWithWindow": true,
+			"main_file": "/var/www/pixelfornature/less/pixelfornature.less",
+			"ignorePrefixedFiles": false
+		}
+	}
+}

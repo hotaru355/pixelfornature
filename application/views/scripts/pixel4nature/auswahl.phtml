@@ -1,23 +1,21 @@
 <?php
-// Seitentitel
-$this->headTitle()
-    ->append("Wähle Dein Bild!");
+    // Seitentitel
+    $this->headTitle()
+        ->append("Wähle Dein Bild!");
 
-$bgStyles = '';
-foreach ($this->galeryFilesRel as $index => $galeryUrl) {
-    $bgStyles .= "#bg-{$index} { background-image: url('{$galeryUrl}'); } ";
-}
-$this->headStyle()->appendStyle($bgStyles);
+    $bgStyles = '';
+    foreach ($this->galeryFilesRel as $index => $galeryUrl) {
+        $bgStyles .= "#bg-{$index} { background-image: url('{$galeryUrl}'); } ";
+    }
+    $this->headStyle()->appendStyle($bgStyles);
 
-// JavaScript
-$this->headScript()->appendScript("var imageUrls = {$this->galeryFilesJs};");
-$this->headScript()
-    ->appendFile("/js/auswahl.js");
-?>
+    // JavaScript
+    $this->headScript()->appendScript("var imageUrls = {$this->galeryFilesJs};");
+    $this->headScript()
+        ->appendFile("/js/auswahl.js");
 
-
-<?php // Hauptmenue ?>
-<?php echo $this->partial('menu.phtml', array(
+    // Hauptmenue 
+    echo $this->partial('menu.phtml', array(
         'user' => $this->session->user,
         'isLoggedin' => $this->isLoggedin,
         'loginForm' => $this->loginForm,
@@ -25,21 +23,25 @@ $this->headScript()
         'requestResetForm' => $this->requestResetForm,
         'updateMemberForm' => $this->updateMemberForm)); ?>
 
-<?php // Hintergrundbilder ?>
+<!-- Hintergrundbilder -->
 <div id="bg-frame" class="sliding-frame">
     <?php foreach ($this->galeryFilesRel as $index => $galeryUrl) { ?>
         <div id="bg-<?php echo $index; ?>" class="sliding-card slided-<?php echo ($index == $this->imageIndex) ? 'center' : 'left'?>"></div>
     <?php } ?>
 </div>
-
-<?php // Hilfefenster ?>
-<div class="absoluteWrapper" >
+<!-- Hilfefenster -->
+<div class="absoluteWrapper">
     <div id="helpBox" class="container transparentLight">
         <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <button id="closeHelp" type="button" class="close">
-                    <span aria-hidden="true">&times;</span>
                     <span class="sr-only">Close</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" nviewBox="0 0 20 20">
+                        <g stroke="#000" stroke-width="2" fill="none" stroke-linecap="round">
+                            <path d="M1,19,19,1"></path>
+                            <path d="M1,1,19,19"></path>
+                        </g>
+                    </svg>
                 </button>
             </div>
         </div>
@@ -48,18 +50,38 @@ $this->headScript()
                 <h1>Schritt 1 von 3</h1>
                 <h2>Durchstöbere die Bilder</h2>
             </div>
-            <div class="row">
-                <div class="col-sm-3 col-sm-offset-2 col-md-2 col-md-offset-3">
-                    <img src="/images/hilfe1-1.png" class="center-block">
-                    <p>Mit den Pfeiltasten kannst du die Bilder durchstöbern.</p>
-                </div>
-                <div class="col-sm-2">
-                    <span class="glyphicon glyphicon-chevron-right center-block"></span>
-                </div>
-                <div class="col-sm-3 col-md-2">
-                    <img src="/images/hilfe1-2.png" class="center-block" />
-                    <p>Mit dem Auslöser bestätigst du deine Auswahl.</p>
-                </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3 col-sm-offset-2 col-md-2 col-md-offset-3">
+                <svg viewBox="0 0 60 60" version="1.1" xmlns="http://www.w3.org/2000/svg" class="help-icon">
+                    <g stroke="none" fill="none" fill-rule="evenodd">
+                        <path fill="#969696" d="M30.000375,17 C33.472375,17 36.737375,18.353 39.192375,20.808 C41.647375,23.263 43.000375,26.528 43.000375,30 C43.000375,33.473 41.647375,36.737 39.192375,39.193 C36.737375,41.648 33.472375,43 30.000375,43 C26.527375,43 23.263375,41.648 20.807375,39.193 C15.739375,34.124 15.739375,25.877 20.807375,20.808 C23.263375,18.353 26.527375,17 30.000375,17 M20.100375,20.101 C14.633375,25.568 14.633375,34.433 20.100375,39.9 C22.834375,42.634 26.417375,44 30.000375,44 C33.583375,44 37.166375,42.634 39.899375,39.9 C45.367375,34.433 45.367375,25.568 39.899375,20.101 C37.166375,17.367 33.583375,16.001 30.000375,16.001 C26.417375,16.001 22.834375,17.367 20.100375,20.101 Z"></path>
+                        <path fill="#91AF2D" d="M16.972375,19.093 L7.753375,9.875 C-2.583625,21.281 -2.583625,38.72 7.753375,50.126 L16.972375,40.907 C11.688375,34.609 11.688375,25.392 16.972375,19.093 L10.883375,26.921"></path>
+                        <path fill="#91AF2D" d="M52.247375,50.126 C62.583375,38.72 62.583375,21.281 52.247375,9.875 L43.028375,19.094 C48.311375,25.392 48.311375,34.609 43.028375,40.907 L52.247375,50.126 Z"></path>
+                        <path fill="#969696" d="M29.999375,1.001 C36.860375,1.001 43.446375,3.409 48.662375,7.803 L40.830375,15.635 C37.725375,13.291 33.914375,12.009 30.000375,12.009 C26.086375,12.009 22.275375,13.291 19.169375,15.635 L11.338375,7.802 C16.553375,3.409 23.139375,1.001 29.999375,1.001 M29.999375,0.001 C22.788375,0.001 15.578375,2.585 9.874375,7.753 L19.093375,16.973 C22.242375,14.331 26.122375,13.01 30.000375,13.01 C33.879375,13.01 37.757375,14.33 40.907375,16.973 L50.126375,7.754 C44.422375,2.585 37.211375,0.001 29.999375,0.001"></path>
+                        <path fill="#969696" d="M40.830375,44.366 L48.662375,52.198 C43.446375,56.592 36.860375,59 29.999375,59 C23.139375,59 16.553375,56.592 11.338375,52.198 L19.169375,44.366 C22.275375,46.71 26.086375,47.991 30.000375,47.991 C33.914375,47.991 37.725375,46.71 40.830375,44.366 M30.000375,46.991 C26.121375,46.991 22.242375,45.67 19.093375,43.028 L9.874375,52.247 C15.577375,57.415 22.789375,59.999 29.999375,59.999 C31.5980958,59.999 33.19662,59.872107 34.778615,59.6182882 C40.3341576,58.7269448 45.6858561,56.2703203 50.126375,52.247 L40.907375,43.028 C37.757375,45.67 33.878375,46.991 30.000375,46.991 Z"></path>
+                    </g>
+                </svg>
+                <p>Mit den Pfeiltasten kannst du die Bilder durchstöbern.</p>
+            </div>
+            <div class="col-sm-2">
+                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" nviewBox="0 0 20 20" class="tut-arrow">
+                    <g stroke="#969696" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m 5.5,1 9,9 -9,9"></path>
+                    </g>
+                </svg>
+            </div>
+            <div class="col-sm-3 col-md-2">
+                <svg viewBox="0 0 60 60" version="1.1" xmlns="http://www.w3.org/2000/svg" class="help-icon">
+                    <g stroke="none" fill="none" fill-rule="evenodd">
+                        <path fill="#91AF2D" d="M39.9,39.9 C34.432,45.367 25.568,45.367 20.101,39.9 C14.633,34.433 14.633,25.568 20.101,20.101 C25.568,14.633 34.432,14.633 39.9,20.101 C45.367,25.568 45.367,34.433 39.9,39.9"></path>
+                        <path fill="#969696" d="M7.802,11.337 L15.634,19.169 C10.782,25.581 10.782,34.42 15.634,40.831 L7.802,48.663 C-1.326,37.847 -1.326,22.153 7.802,11.337 M7.753,9.874 C-2.583,21.281 -2.583,38.72 7.753,50.126 L16.973,40.907 C11.688,34.609 11.688,25.392 16.973,19.093 L7.753,9.874"></path>
+                        <path fill="#969696" d="M52.198,11.337 C61.326,22.153 61.326,37.847 52.198,48.663 L44.367,40.831 C49.218,34.42 49.218,25.581 44.367,19.169 L52.198,11.337 M52.247,9.874 L43.028,19.094 C48.312,25.392 48.312,34.609 43.028,40.907 L52.247,50.126 C62.583,38.72 62.583,21.281 52.247,9.874"></path>
+                        <path fill="#969696" d="M30,1.001 C36.86,1.001 43.446,3.409 48.662,7.803 L40.831,15.634 C37.725,13.291 33.914,12.01 30,12.01 C26.086,12.01 22.275,13.291 19.17,15.634 L11.338,7.802 C16.553,3.409 23.139,1.001 30,1.001 M30,0.001 C22.789,0.001 15.578,2.585 9.874,7.753 L19.094,16.973 C22.242,14.331 26.122,13.01 30,13.01 C33.879,13.01 37.757,14.33 40.907,16.973 L50.126,7.753 C44.423,2.585 37.211,0.001 30,0.001"></path>
+                        <path fill="#969696" d="M40.831,44.366 L48.662,52.198 C43.446,56.591 36.86,58.999 30,58.999 C23.139,58.999 16.553,56.592 11.338,52.198 L19.17,44.366 C22.275,46.71 26.086,47.991 30,47.991 C33.914,47.991 37.725,46.71 40.831,44.366 M40.907,43.028 C37.758,45.67 33.879,46.991 30,46.991 C26.121,46.991 22.243,45.67 19.094,43.028 L9.874,52.247 C15.577,57.415 22.79,59.999 30,59.999 C37.212,59.999 44.421,57.416 50.126,52.247 L40.907,43.028"></path>
+                    </g>
+                </svg>
+                <p>Mit dem Auslöser bestätigst du deine Auswahl.</p>
             </div>
         </div>
     </div>
@@ -71,6 +93,7 @@ $this->headScript()
     </form>
 </div>
 
-<?php // Kontrollelement ?>
-<?php echo $this->partial('cameraControl.phtml', array(
+<?php
+    // Kontrollelement
+    echo $this->partial('cameraControl.phtml', array(
         'imageSelectable' => true)) ?>

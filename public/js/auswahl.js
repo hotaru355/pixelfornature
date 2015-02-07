@@ -72,38 +72,18 @@
 
 
 	    // camera controller
-	    $('area#backCtrl').mouseenter(function() {
-			$('div#controllerDiv').css('background-position', '0 0');
-		}).mousedown(function() {
-			$('div#controllerDiv').css('background-position', '-203px 0');
+
+	    $('#left-button').click(function() {
 			transitionBg(true);
-		}).mouseup(function() {
-			$('div#controllerDiv').css('background-position', '0 0');
-		}).mouseleave(function() {
-			$('div#controllerDiv').css('background-position', '-203px -406px');
 		});
 	    
-	    $('area#forwardCtrl').mouseenter(function() {
-			$('div#controllerDiv').css('background-position', '-203px -406px');
-		}).mousedown(function() {
-			$('div#controllerDiv').css('background-position', '-203px -406px');
-
+	    $('#right-button').click(function() {
 			transitionBg(false);
-		}).mouseup(function() {
-			$('div#controllerDiv').css('background-position', '-203px -406px');
-		}).mouseleave(function() {
-			$('div#controllerDiv').css('background-position', '-203px -406px');
 		});
 
-	    $('area#selectCtrl').click(function() {
+	    $('#middle-button').click(function() {
 			$('input#image').val($('#bg-frame .sliding-card.slided-center').attr('id').substr(3));
 		    $('form#auswahl').submit();
-		}).mouseenter(function() {
-			$('div#controllerDiv').css('background-position', '0 -203px');
-		}).mousedown(function() {
-			$('div#controllerDiv').css('background-position', '-203px -203px');
-		}).mouseleave(function() {
-			$('div#controllerDiv').css('background-position', '-203px -406px');
 		});
 
 	});

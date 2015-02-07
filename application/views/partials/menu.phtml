@@ -1,9 +1,32 @@
 <?php // Container fuer das Hauptmenue ?>
 <div id="menu" class="transparentDark fullscreenOverlay">
     <div class="close-container">
-        <button id="closeMenu" type="button" class="close">
-            <span aria-hidden="true">&times;</span>
+        <div id="prev-next-container" class="center-block">
+            <button id="prevMenu" type="button" class="menu-navigation" title="vorheriges Menü" disabled="true">
+                <span class="sr-only">Back</span>
+                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" nviewBox="0 0 20 20">
+                    <g stroke="#FFF" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m 14.5,1 -9,9 9,9"></path>
+                    </g>
+                </svg>
+            </button>
+            <button id="nextMenu" type="button" class="menu-navigation" title="nächstes Menü" disabled="true">
+                <span class="sr-only">Forward</span>
+                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" nviewBox="0 0 20 20">
+                    <g stroke="#FFF" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m 5.5,1 9,9 -9,9"></path>
+                    </g>
+                </svg>
+            </button>
+        </div>
+        <button id="closeMenu" type="button" class="menu-navigation" title="Menü schließen">
             <span class="sr-only">Close</span>
+            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" nviewBox="0 0 20 20">
+                <g stroke="#FFF" stroke-width="2" fill="none" stroke-linecap="round">
+                    <path d="M1,19,19,1"></path>
+                    <path d="M1,1,19,19"></path>
+                </g>
+            </svg>
         </button>
     </div>
     <div class="sliding-frame">

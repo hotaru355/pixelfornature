@@ -11,20 +11,7 @@ div#content {
 	min-height: 410px;
 }
 
-div#controllerDiv {
-	position: relative;
-	top: 0;
-	width: 203px;
-	height: 203px;
-	background-image: url('/images/ausloeserMap.png');
-	background-position: 0 -406px;
-	/* needs to sit on top of slider: */
-	z-index: 1;
-}
 
-div#controllerDiv.imageSelectable {
-	background-position: -203px -406px;
-}
 
 img#controllerImg {
 	width: 100%;
@@ -49,33 +36,6 @@ img#controllerImg {
 
 
 
-/**********
- * Camera control
- **********/
-
-div#rotationSliderContainer { 
-    position: relative;
-    top: -95px;
-    width: 270px;
-    height: 135px;
-    border-style: solid;
-    border-width: 0px 2px 2px 2px;
-    border-color: #00aa00;
-    border-radius: 0px 0px 135px 135px;
-    -moz-border-radius: 0px 0px 135px 135px;
-    -webkit-border-radius: 0px 0px 135px 135px;
-    margin: 0px auto;
-    cursor: default;
-}
-
-div#rotationSlider { 
-    position: absolute;
-    height: 20px;
-    width: 20px;
-    background: #008800;
-    border-radius: 10px;
-    cursor: pointer;
-}
 
 
 

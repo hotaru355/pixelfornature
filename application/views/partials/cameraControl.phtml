@@ -1,22 +1,220 @@
-<div id="controllerDiv" class="center-block<?php echo ($this->imageSelectable) ? ' imageSelectable' : ''; ?>">
-    <img id="controllerImg" usemap="#controllMap" draggable="false" alt="Bedienelement einer Kamera" 
-        src="/images/img_trans.gif" />
+<style type="text/css">
+    #middle-button:hover #middle-area {
+        filter: url('#filter-middle-hover');
+    }
+    #middle-button:active #middle-area {
+        filter: url('#filter-middle-active');
+    }
+
+    #left-button:active:not([disabled]) #left-area {
+        fill: url('#rg-left-button');
+    }
+
+    #right-button:active:not([disabled]) #right-area {
+        fill: url('#rg-right-button');
+    }
+
+    #up-button:active #up-area {
+        fill: url('#rg-up-button');
+    }
+
+    #down-button:active #down-area {
+        fill: url('#rg-down-button');
+    }
+</style>
+
+<svg id="master-control" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 190 190" width="190" height="190" class="center-block">
+    <defs id="defenitions">
+        <circle id="circle-64" cx="64" cy="64" r="64" />
+        <linearGradient id="lg-outer-shape-1" y1="0.864" x2="0.149" x1="0.845" y2="0.143">
+            <stop id="stop3601" stop-color="#CCC" offset="0" />
+            <stop id="stop3603" stop-color="#F0F0F0" offset="1" />
+        </linearGradient>
+        <linearGradient id="lg-outer-shape-2" y1="0.134" x2="0.848" x1="0.138" y2="0.873">
+            <stop id="stop3606" stop-color="#999" offset="0" />
+            <stop id="stop3608" stop-color="#4C4C4C" offset="1" />
+        </linearGradient>
+        <filter id="filter-outer-shape" height="2" width="2" color-interpolation-filters="sRGB" y="-0.5" x="-0.5" filterUnits="objectBoundingBox">
+            <feOffset id="feOffset3611" dy="2" result="shadowOffsetOuter1" dx="0" in="SourceAlpha" />
+            <feGaussianBlur id="feGaussianBlur3613" stdDeviation="2" result="shadowBlurOuter1" in="shadowOffsetOuter1" />
+            <feColorMatrix id="feColorMatrix3615" values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.35 0" type="matrix" result="shadowMatrixOuter1" in="shadowBlurOuter1" />
+            <feOffset id="feOffset3617" dy="1" result="shadowOffsetInner1" dx="1" in="SourceAlpha" />
+            <feGaussianBlur id="feGaussianBlur3619" stdDeviation="1.5" result="shadowBlurInner1" in="shadowOffsetInner1" />
+            <feComposite id="feComposite3621" k4="0" in2="SourceAlpha" k3="1" k2="-1" k1="0" result="shadowInnerInner1" in="shadowBlurInner1" operator="arithmetic" />
+            <feColorMatrix id="feColorMatrix3623" values="0 0 0 0 1   0 0 0 0 1   0 0 0 0 1  0 0 0 0.7 0" type="matrix" result="shadowMatrixInner1" in="shadowInnerInner1" />
+            <feOffset id="feOffset3625" dy="-1" result="shadowOffsetInner2" dx="-1" in="SourceAlpha" />
+            <feGaussianBlur id="feGaussianBlur3627" stdDeviation="1.5" result="shadowBlurInner2" in="shadowOffsetInner2" />
+            <feComposite id="feComposite3629" k4="0" in2="SourceAlpha" k3="1" k2="-1" k1="0" result="shadowInnerInner2" in="shadowBlurInner2" operator="arithmetic" />
+            <feColorMatrix id="feColorMatrix3631" values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.35 0" type="matrix" result="shadowMatrixInner2" in="shadowInnerInner2" />
+            <feMerge id="feMerge3633">
+                <feMergeNode id="feMergeNode3635" in="shadowMatrixOuter1" />
+                <feMergeNode id="feMergeNode3637" in="SourceGraphic" />
+                <feMergeNode id="feMergeNode3639" in="shadowMatrixInner1" />
+                <feMergeNode id="feMergeNode3641" in="shadowMatrixInner2" />
+            </feMerge>
+        </filter>
+        <filter id="filter-middle" x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox">
+            <feOffset dx="2" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.301960784   0 0 0 0 0.301960784   0 0 0 0 0.301960784  0 0 0 0.525 0" in="shadowBlurOuter1" type="matrix" result="shadowMatrixOuter1"></feColorMatrix>
+            <feOffset dx="0" dy="0" in="SourceAlpha" result="shadowOffsetOuter2"></feOffset>
+            <feGaussianBlur stdDeviation="0.5" in="shadowOffsetOuter2" result="shadowBlurOuter2"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.35 0" in="shadowBlurOuter2" type="matrix" result="shadowMatrixOuter2"></feColorMatrix>
+            <feOffset dx="1" dy="2" in="SourceAlpha" result="shadowOffsetInner1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feComposite in="shadowBlurInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 1   0 0 0 0 1   0 0 0 0 1  0 0 0 0.7 0" in="shadowInnerInner1" type="matrix" result="shadowMatrixInner1"></feColorMatrix>
+            <feOffset dx="-1" dy="-2" in="SourceAlpha" result="shadowOffsetInner2"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetInner2" result="shadowBlurInner2"></feGaussianBlur>
+            <feComposite in="shadowBlurInner2" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner2"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.49 0" in="shadowInnerInner2" type="matrix" result="shadowMatrixInner2"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="shadowMatrixOuter2"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+                <feMergeNode in="shadowMatrixInner1"></feMergeNode>
+                <feMergeNode in="shadowMatrixInner2"></feMergeNode>
+            </feMerge>
+        </filter>
+        <filter id="filter-middle-hover" x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox">
+            <feOffset dx="2" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.301960784   0 0 0 0 0.301960784   0 0 0 0 0.301960784  0 0 0 0.525 0" in="shadowBlurOuter1" type="matrix" result="shadowMatrixOuter1"></feColorMatrix>
+            <feOffset dx="0" dy="0" in="SourceAlpha" result="shadowOffsetOuter2"></feOffset>
+            <feGaussianBlur stdDeviation="0.5" in="shadowOffsetOuter2" result="shadowBlurOuter2"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.35 0" in="shadowBlurOuter2" type="matrix" result="shadowMatrixOuter2"></feColorMatrix>
+            <feOffset dx="0" dy="0" in="SourceAlpha" result="shadowOffsetOuter3"></feOffset>
+            <feGaussianBlur stdDeviation="4" in="shadowOffsetOuter3" result="shadowBlurOuter3"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.568627451   0 0 0 0 0.68627451   0 0 0 0 0.176470588  0 0 0 0.525 0" in="shadowBlurOuter3" type="matrix" result="shadowMatrixOuter3"></feColorMatrix>
+            <feOffset dx="1" dy="2" in="SourceAlpha" result="shadowOffsetInner1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feComposite in="shadowBlurInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 1   0 0 0 0 1   0 0 0 0 1  0 0 0 0.7 0" in="shadowInnerInner1" type="matrix" result="shadowMatrixInner1"></feColorMatrix>
+            <feOffset dx="-1" dy="-2" in="SourceAlpha" result="shadowOffsetInner2"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetInner2" result="shadowBlurInner2"></feGaussianBlur>
+            <feComposite in="shadowBlurInner2" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner2"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.35 0" in="shadowInnerInner2" type="matrix" result="shadowMatrixInner2"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="shadowMatrixOuter2"></feMergeNode>
+                <feMergeNode in="shadowMatrixOuter3"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+                <feMergeNode in="shadowMatrixInner1"></feMergeNode>
+                <feMergeNode in="shadowMatrixInner2"></feMergeNode>
+            </feMerge>
+        </filter>
+        <filter id="filter-middle-active" height="2" width="2" color-interpolation-filters="sRGB" y="-0.5" x="-0.5" filterUnits="objectBoundingBox">
+            <feOffset id="feOffset3660" dy="-1" result="shadowOffsetInner1" dx="-1" in="SourceAlpha" />
+            <feGaussianBlur id="feGaussianBlur3662" stdDeviation="2" result="shadowBlurInner1" in="shadowOffsetInner1" />
+            <feComposite id="feComposite3664" k4="0" in2="SourceAlpha" k3="1" k2="-1" k1="0" result="shadowInnerInner1" in="shadowBlurInner1" operator="arithmetic" />
+            <feColorMatrix id="feColorMatrix3666" values="0 0 0 0 1   0 0 0 0 1   0 0 0 0 1  0 0 0 0.7 0" type="matrix" result="shadowMatrixInner1" in="shadowInnerInner1" />
+            <feOffset id="feOffset3668" dy="1" result="shadowOffsetInner2" dx="0" in="SourceAlpha" />
+            <feGaussianBlur id="feGaussianBlur3670" stdDeviation="2" result="shadowBlurInner2" in="shadowOffsetInner2" />
+            <feComposite id="feComposite3672" k4="0" in2="SourceAlpha" k3="1" k2="-1" k1="0" result="shadowInnerInner2" in="shadowBlurInner2" operator="arithmetic" />
+            <feColorMatrix id="feColorMatrix3674" values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.49 0" type="matrix" result="shadowMatrixInner2" in="shadowInnerInner2" />
+            <feOffset id="feOffset3676" dy="0" result="shadowOffsetInner3" dx="0" in="SourceAlpha" />
+            <feGaussianBlur id="feGaussianBlur3678" stdDeviation="0.5" result="shadowBlurInner3" in="shadowOffsetInner3" />
+            <feComposite id="feComposite3680" k4="0" in2="SourceAlpha" k3="1" k2="-1" k1="0" result="shadowInnerInner3" in="shadowBlurInner3" operator="arithmetic" />
+            <feColorMatrix id="feColorMatrix3682" values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.35 0" type="matrix" result="shadowMatrixInner3" in="shadowInnerInner3" />
+            <feMerge id="feMerge3684">
+                <feMergeNode id="feMergeNode3686" in="SourceGraphic" />
+                <feMergeNode id="feMergeNode3688" in="shadowMatrixInner1" />
+                <feMergeNode id="feMergeNode3690" in="shadowMatrixInner2" />
+                <feMergeNode id="feMergeNode3692" in="shadowMatrixInner3" />
+            </feMerge>
+        </filter>
+        <radialGradient id="rg-left-button" cx="139.484262%" cy="50%" fx="139.484262%" fy="50%" r="139.484262%">
+            <stop stop-color="#CCCCCC" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#858585" stop-opacity="0" offset="37.109375%"></stop>
+            <stop stop-color="#000000" stop-opacity="0.15" offset="100%"></stop>
+        </radialGradient>
+        <radialGradient id="rg-right-button" cx="-38.3194693%" cy="50%" fx="-38.3194693%" fy="50%" r="138.319469%">
+            <stop stop-color="#000000" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#858585" stop-opacity="0" offset="37.109375%"></stop>
+            <stop stop-color="#000000" stop-opacity="0.15" offset="100%"></stop>
+        </radialGradient>
+        <radialGradient id="rg-up-button" cx="50%" cy="137.106969%" fx="50%" fy="137.106969%" r="137.106969%">
+            <stop stop-color="#000000" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#858585" stop-opacity="0" offset="36.463648%"></stop>
+            <stop stop-color="#000000" stop-opacity="0.15" offset="100%"></stop>
+        </radialGradient>
+        <radialGradient id="rg-down-button" cx="50%" cy="-36.4155858%" fx="50%" fy="-36.4155858%" r="136.415586%">
+            <stop stop-color="#FFFFFF" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#000000" stop-opacity="0.15" offset="100%"></stop>
+        </radialGradient>
+        <linearGradient id="lg-zoom-button" x2="50%" x1="50%" y2="100%">
+            <stop stop-color="#B4D938" offset="0" />
+            <stop stop-color="#91AF2D" offset="1" />
+        </linearGradient>
+        <filter id="filter-zoom-button" height="200%" width="200%" y="-50%" x="-50%" filterUnits="objectBoundingBox">
+            <feOffset in="SourceAlpha" result="shadowOffsetInner1" dx="1" dy="1" />
+            <feGaussianBlur stdDeviation="0.5" result="shadowBlurInner1" in="shadowOffsetInner1" />
+            <feComposite in2="SourceAlpha" k3="1" k2="-1" result="shadowInnerInner1" in="shadowBlurInner1" operator="arithmetic" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1   0 0 0 0 1   0 0 0 0 1  0 0 0 0.56 0" result="shadowMatrixInner1" in="shadowInnerInner1" />
+            <feOffset in="SourceAlpha" result="shadowOffsetInner2" dx="-1" dy="-1" />
+            <feGaussianBlur stdDeviation="0.5" result="shadowBlurInner2" in="shadowOffsetInner2" />
+            <feComposite in2="SourceAlpha" k3="1" k2="-1" result="shadowInnerInner2" in="shadowBlurInner2" operator="arithmetic" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.14 0" result="shadowMatrixInner2" in="shadowInnerInner2" />
+            <feMerge>
+                <feMergeNode in="SourceGraphic" />
+                <feMergeNode in="shadowMatrixInner1" />
+                <feMergeNode in="shadowMatrixInner2" />
+            </feMerge>
+        </filter>
+    </defs>
+    <g id="controls" transform="translate(31, 31)">
+        <g id="outer-shape" filter="url(#filter-outer-shape)">
+            <use id="use3705" xlink:href="#circle-64" height="138" width="138" stroke="url(#lg-outer-shape-2)" y="0" x="0" stroke-width="1" fill="#cccccc" />
+            <use id="use3707" xlink:href="#circle-64" height="138" width="138" y="0" x="0" fill="url(#lg-outer-shape-1)" />
+        </g>
+        <g id="up-button" >
+            <title>Hilfe</title>
+            <path id="up-area" fill="transparent" d="M109.26,18.74 L80.97,47.03 C76.62,42.69 70.62,40 64,40 C57.38,40 51.38,42.69 47.03,47.03 L18.74,18.74 C30.32,7.16 46.32,0 64,0 C81.68,0 97.68,7.16 109.26,18.74"></path>
+            <path id="up-icon" fill="#4d4d4d" d="m67,25.6-0.2,0.7c-0.5,0.3-0.8,0.4-1.1,0.5s-0.7,0.2-1,0.2c-0.6,0-1.1-0.2-1.4-0.5-0.4-0.3-0.5-0.7-0.5-1.2v-0.6c0-0.2,0.1-0.4,0.1-0.7l0.6-2.43c0.1-0.23,0.1-0.45,0.2-0.66v-0.57c0-0.31,0-0.53-0.1-0.65s-0.4-0.18-0.7-0.18c-0.1,0-0.3,0.02-0.5,0.08-0.1,0.06-0.3,0.11-0.4,0.16l0.2-0.75c0.4-0.18,0.7-0.34,1.1-0.47s0.7-0.2,1.1-0.2c0.5,0,1,0.16,1.3,0.48s0.5,0.73,0.5,1.25v0.55c-0.1,0.27-0.1,0.51-0.2,0.73l-0.6,2.42c0,0.2-0.1,0.44-0.1,0.64,0,0.3-0.1,0.5-0.1,0.6,0,0.3,0.1,0.5,0.2,0.7,0.2,0.1,0.4,0.1,0.7,0.1,0.1,0,0.3,0,0.5-0.1,0.2,0,0.3-0.1,0.4-0.1zm0-10.2c0,0.4-0.2,0.74-0.5,1.02s-0.7,0.42-1.2,0.42c-0.4,0-0.8-0.14-1.1-0.42-0.4-0.28-0.5-0.62-0.5-1.02s0.1-0.742,0.5-1.02c0.3-0.284,0.7-0.425,1.1-0.425,0.5,0,0.9,0.141,1.2,0.425,0.3,0.283,0.5,0.625,0.5,1.02z"></path>
+        </g>
+        <g id="down-button">
+            <title>Menü</title>
+            <path id="down-area" fill="transparent" d="M109.26,109.26 C97.68,120.84 81.68,128 64,128 C46.32,128 30.32,120.84 18.74,109.26 L47.03,80.97 C51.38,85.31 57.38,88 64,88 C70.62,88 76.62,85.31 80.97,80.97 L109.26,109.26"></path>
+            <g id="down-icon" fill="#4d4d4d">
+                <path id="text-M" d="m43.6,103,2.87,0,1.99,4.68,2-4.68,2.87,0,0,8.75-2.13,0,0-6.4-2.02,4.72-1.43,0-2.02-4.72,0,6.4-2.14,0,0-8.75"></path>
+                <path id="text-E" d="m56.6,103,6.09,0,0,1.71-3.83,0,0,1.63,3.6,0,0,1.71-3.6,0,0,2,3.96,0,0,1.71-6.22,0,0-8.75"></path>
+                <path id="text-N" d="m65.8,103,2.52,0,3.18,6,0-6,2.14,0,0,8.75-2.52,0-3.18-6,0,6-2.14,0,0-8.75"></path>
+                <path id="text-U" d="m76.8,103,2.26,0,0,5.24c-0.000003,0.723,0.117,1.24,0.352,1.55,0.238,0.309,0.625,0.463,1.16,0.463,0.539,0,0.926-0.154,1.16-0.463,0.238-0.312,0.357-0.83,0.357-1.55v-5.24h2.26v5.24c-0.000009,1.24-0.311,2.16-0.932,2.77-0.621,0.605-1.57,0.908-2.84,0.908s-2.21-0.303-2.84-0.908c-0.621-0.605-0.932-1.53-0.932-2.77v-5.24"></path>
+            </g>
+        </g>
+        <g id="left-button" <?php if (!$this->imageSelectable) { ?>disabled="true"<?php } ?>>
+            <title>Vorheriges Bild</title>
+            <path id="left-area" fill="transparent" d="M40,64 C40,70.62 42.69,76.62 47.03,80.97 L18.74,109.26 C7.16,97.68 0,81.68 0,64 C0,46.32 7.16,30.32 18.74,18.74 L47.03,47.03 C42.69,51.38 40,57.38 40,64"></path>
+            <path id="left-icon" fill="#4d4d4d" d="m15.6,63c-0.397,0.4-0.399,1.1-0.015,1.4l7.02,7.1c0.39,0.3,1.02,0.3,1.41,0,0.39-0.4,0.39-1.1,0.01-1.5l-6.25-6.3,6.23-6.1c0.39-0.4,0.4-1.1,0.01-1.5-0.38-0.4-1.02-0.4-1.42,0l-6.99,6.9z"></path>
+        </g>
+        <g id="right-button" <?php if (!$this->imageSelectable) { ?>disabled="true"<?php } ?>>
+            <title>Nächstes Bild</title>
+            <path id="right-area" fill="transparent" d="M128,64 C128,81.68 120.84,97.68 109.26,109.26 L80.97,80.97 C85.31,76.62 88,70.62 88,64 C88,57.38 85.31,51.38 80.97,47.03 L109.26,18.74 C120.84,30.32 128,46.32 128,64"></path>
+            <path id="right-icon" fill="#4d4d4d" d="m112,65c0.4-0.4,0.4-1.1,0-1.4l-7-7.1c-0.4-0.3-1-0.3-1.4,0-0.4,0.4-0.4,1.1,0,1.5l6.2,6.3-6.2,6.1c-0.4,0.4-0.4,1.1,0,1.5s1,0.4,1.4,0l7-6.9z"></path>
+        </g>
+        <g id="middle-button">
+            <title>Klick!</title>
+            <circle id="middle-area" cx="64" cy="64" r="24" fill="#91AF2D" filter="url('#filter-middle')"></circle>
+        </g>
+    </g>
+    <?php if (!$this->imageSelectable) { ?>
+    <path stroke="#4d4d4d" stroke-linecap="round" stroke-width="4" fill="none" d="m179,95a84,84,0,1,1,-168,0"></path>
+    <g id="zoom-button" transform="rotate(0, 95, 95)">
+        <title>Zoomen</title>
+        <circle id="zoom-area" r="8" cx="11" cy="95" stroke="#4c4c4c" fill="url(#lg-zoom-button)" filter="url(#filter-zoom-button)"></circle>
+    </g>
+    <?php } ?>
+</svg>
+
+<div id="controllerDiv" class="hidden center-block <?php echo ($this->imageSelectable) ? 'controller-normal' : 'controller-normal-noslide'; ?>">
+    <img id="controllerImg" usemap="#controllMap" draggable="false" alt="Bedienelement einer Kamera" src="/images/transparent.png" />
     <map name="controllMap">
-        <area id="backCtrl" alt="Zurück"
-            <?php if ($this->imageSelectable) {?>
-                title="Vorheriges Bild" href="javascript:void(0);"
-            <?php } ?>
-            shape="poly" coords="30,30,70,70,57,101,70,131,30,174,0,101,30,30">
-        <area id="forwardCtrl" alt="Vorwärts"
-            <?php if ($this->imageSelectable) {?>
-                 title="Nächstes Bild" href="javascript:void(0);"
-            <?php } ?>
-            shape="poly" coords="172,172,132,132,146,101,132,70,172,30,202,101,172,172">
-        <area id="flashCtrl" alt="Blitz" title="Hilfe" href="javascript:void(0);"
-            shape="poly" coords="30,30,70,70,101,55,132,70,172,30,101,0,30,30">
-        <area id="infoCtrl" alt="Info" title="Menü" href="javascript:void(0);"
-             shape="poly" coords="132,132,172,172,101,202,30,174,70,131,101,145,132,132">
-        <area id="selectCtrl" alt="Auslöser" title="Auslöser" href="javascript:void(0);"
-             shape="circle" coords="101,101,42">
+        <?php if ($this->imageSelectable) {?>
+        <area id="leftCtrl" alt="Zurück" title="Vorheriges Bild" href="javascript:void(0);" shape="poly" coords="24,24,51,51,45,69,51,87,24,114,0,69,24,24">
+        <area id="rightCtrl" alt="Vorwärts" title="Nächstes Bild" href="javascript:void(0);" shape="poly" coords="114,114,87,87,93,69,87,51,114,24,138,69,114,114">
+        <?php } ?>
+        <area id="upCtrl" alt="Blitz" title="Hilfe" href="javascript:void(0);" shape="poly" coords="24,24,51,51,69,45,87,51,114,24,69,0,24,24">
+        <area id="downCtrl" alt="Info" title="Menü" href="javascript:void(0);" shape="poly" coords="87,87,114,114,69,138,24,114,51,87,69,93,87,87">
+        <area id="middleCtrl" alt="Auslöser" title="Auslöser" href="javascript:void(0);" shape="circle" coords="69,69,24">
     </map>
 </div>

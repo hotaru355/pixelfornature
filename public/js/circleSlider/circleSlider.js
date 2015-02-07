@@ -1,5 +1,5 @@
 (function() {
-	function circleSlider(options) {
+	function circleSliderJs(options) {
 		var min = options.min || 0;
 		var max = options.max || 100;
 		var value = options.value || 0;
@@ -79,7 +79,83 @@
 			});
 	}
 
+	function circleSliderSvg(options) {
+		var min = options.min || 0;
+		var max = options.max || 100;
+		var initialValue = options.value || 0;
+		var slideFn = options.slide || function(e, val) {};
+		var container = $(options.container);
+		var slider = $(options.slider);
+
+		if (!container.length || !slider.length) {
+			throw Error('container or slider not found!');
+		}
+
+		function positionSlider(degree) {
+			slider.attr('transform', 'rotate(' + degree + ', 95, 95)');
+		}
+
+		function moveHandler(e) {
+			var evt = e ? e : window.event;
+			var moveX = 0, moveY = 0;
+			var radius = container.width() / 2;
+
+			if ((evt.clientX || evt.clientY) &&
+				document.body &&
+				document.body.scrollLeft!=null) {
+				moveX = evt.clientX + document.body.scrollLeft;
+				moveY = evt.clientY + document.body.scrollTop;
+			}
+			if ((evt.clientX || evt.clientY) &&
+				document.compatMode=='CSS1Compat' && 
+				document.documentElement && 
+				document.documentElement.scrollLeft!=null) {
+				moveX = evt.clientX + document.documentElement.scrollLeft;
+				moveY = evt.clientY + document.documentElement.scrollTop;
+			}
+			if (evt.pageX || evt.pageY) {
+				moveX = evt.pageX;
+				moveY = evt.pageY;
+			}
+
+			var x = moveX - container.offset().left - radius;
+			var y = moveY - container.offset().top - radius;
+			var deg = Math.atan2(x, y) / Math.PI * -180 + 270;
+
+			if (deg < 180) {
+				deg = 180;
+			} else if (deg > 360) {
+				deg = 360;
+			}
+			positionSlider(deg);
+
+			var value = min + (360 - deg) / 180 * (max - min);
+			slideFn(e, value);
+
+			$(this).addClass('moved');
+			slider.addClass('active');
+
+			return false;
+		}
+
+		// initial position
+		var initialDeg = (min - initialValue) * 180 / (max - min) + 360;
+		positionSlider(initialDeg);
+
+		slider.mousedown(function(e) {
+			e.originalEvent.preventDefault();
+			$('body')
+				.bind('mousemove', moveHandler)
+				.bind('mouseup', function(evt) {
+					$(this)
+						.unbind('mousemove', moveHandler)
+						.unbind(evt)
+						.removeClass('moved');
+					slider.removeClass('active');
+				});
+		});
+	}
 	$.fn.extend({
-		circleSlider: circleSlider
+		circleSlider: circleSliderSvg
 	});
 })();

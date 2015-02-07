@@ -1,6 +1,7 @@
 @import "bootstrap/bootstrap.less";
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:700,400);
+//@import url(http://fonts.googleapis.com/css?family=Fira+Sans:300italic);
 @import url(http://fonts.googleapis.com/css?family=Fira+Sans:300,400,500,700,300italic,400italic,500italic,700italic);
-
 
 @import "variables.less";
 @import "mixins.less";
@@ -15,7 +16,7 @@
 @import "pixelfornature/auswahl.less";
 @import "pixelfornature/ausschnitt.less";
 
-div.pixelCount {
+.pixelCount {
     color: @color-green-dark;
     text-align: center;
     font-size: 2.2em;
@@ -36,9 +37,10 @@ div.pixelCount {
     background-attachment: fixed;
     background-repeat: no-repeat;
     .background-size(cover);
+    z-index: -100;
 }
 
-hr.mainColumn {
+.mainColumn {
   border-top: 4px solid @color-green-dark;
 }
 
@@ -46,7 +48,7 @@ hr.mainColumn {
     overflow: hidden;
 }
 
-div#socials-container {
+#socials-container {
     margin-top: 50px;
 }
 
@@ -92,4 +94,151 @@ div#socials-container {
 
 .no-margin-bottom {
     margin-bottom: 0;
+}
+
+/**********
+ * Camera control
+ **********/
+
+// png-way of doing things
+/*
+#master-control {
+    position: relative;
+    top: 0;
+    width: @controller-dimension;
+    height: @controller-dimension;
+    background-image: url('/images/masterbutton.png');
+    //  needs to sit on top of slider:
+    z-index: 1;
+    cursor: pointer;
+    &.controller-normal {
+        background-position: 0 0;
+    }
+    &.controller-normal-noslide {
+        background-position: -@controller-dimension 0;
+    }
+    &.controller-middle-hover #middle-button {
+
+        // background-position: (@controller-dimension * 0) (@controller-dimension * -1);
+    }
+    &.controller-middle-active {
+        background-position: (@controller-dimension * -1) (@controller-dimension * -1);
+    }
+    &.controller-middle-hover-noslide {
+        background-position: (@controller-dimension * -2) (@controller-dimension * -1);
+    }
+    &.controller-middle-active-noslide {
+        background-position: (@controller-dimension * -3) (@controller-dimension * -1);
+    }
+    &.controller-up-hover {
+        background-position: (@controller-dimension * 0) (@controller-dimension * -2);
+    }
+    &.controller-up-active {
+        background-position: (@controller-dimension * -1) (@controller-dimension * -2);
+    }
+    &.controller-up-hover-noslide {
+        background-position: (@controller-dimension * 2) (@controller-dimension * -2);
+    }
+    &.controller-up-active-noslide {
+        background-position: (@controller-dimension * -3) (@controller-dimension * -2);
+    }
+    &.controller-down-hover {
+        background-position: (@controller-dimension * 0) (@controller-dimension * -3);
+    }
+    &.controller-down-active {
+        background-position: (@controller-dimension * -1) (@controller-dimension * -3);
+    }
+    &.controller-down-hover-noslide {
+        background-position: (@controller-dimension * -2) (@controller-dimension * -3);
+    }
+    &.controller-down-active-noslide {
+        background-position: (@controller-dimension * -3) (@controller-dimension * -3);
+    }
+    &.controller-left-hover {
+        background-position: (@controller-dimension * 0) (@controller-dimension * -4);
+    }
+    &.controller-left-active {
+        background-position: (@controller-dimension * -1) (@controller-dimension * -4);
+    }
+    &.controller-right-hover {
+        background-position: (@controller-dimension * -2) (@controller-dimension * -4);
+    }
+    &.controller-right-active {
+        background-position: (@controller-dimension * -3) (@controller-dimension * -4);
+    }
+}
+*/
+
+// Some styles are on the php file, as FF cannot resolve urls such as '#filter-middle-hover', since
+// it will look inside this CSS file and not in the php file. See:
+// http://stackoverflow.com/questions/20330149/svg-filter-only-working-when-added-in-style-attribute-firefox
+
+@master-hover-color: #91AF2D;
+@master-disabled-color: #AAA;
+
+#middle-button { 
+    cursor: pointer;
+
+    &:active #middle-area, &:hover #middle-area {
+        fill: #99b72c;
+    }
+}
+#left-button {
+    cursor: pointer;
+
+    &:active #left-icon, &:hover #left-icon {
+        fill: @master-hover-color;
+    }
+    &[disabled] {
+        cursor: not-allowed;
+        & #left-icon {
+            fill: @master-disabled-color;
+            cursor: not-allowed;
+        }
+    }
+}
+#right-button {
+    cursor: pointer;
+
+    &:active #right-icon, &:hover #right-icon {
+        fill: @master-hover-color;
+    }
+    &[disabled] {
+        cursor: not-allowed;
+        & #right-icon {
+            fill: @master-disabled-color;
+            cursor: not-allowed;
+        }
+    }
+}
+
+#up-button {
+    cursor: help;
+
+    &:active #up-icon, &:hover #up-icon {
+        fill: @master-hover-color;
+    }
+}
+
+#down-button {
+    cursor: pointer;
+
+    &:active #down-icon, &:hover #down-icon {
+        fill: @master-hover-color;
+    }
+}
+
+#zoom-button {
+    cursor: pointer;
+
+    &:active #zoom-area, &.active #zoom-area, &:hover #zoom-area, &.hover #zoom-area {
+        fill: #abcc37;
+    }
+}
+
+
+
+
+area:focus {
+    outline: 0;
 }

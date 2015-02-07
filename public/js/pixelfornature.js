@@ -59,10 +59,11 @@
 	        visible.css({
 	            display: 'none',
 	        });
+	        // focus is important, as otherwise hitting <enter> twice will behave incorrectly. 
 	        invisible.css({
 	            position: 'relative',
 	            display: 'inline-block',
-	        });
+	        }).find('button:first-child,a:first-child').focus();
 	    }
 
 	    card.one($.support.transition.end, onTransitionEnded);
@@ -73,11 +74,10 @@
 	    	}
 	    }, 2000);
 
-        // focus is important, as otherwise hitting <enter> twice will behave incorrectly. 
 	    invisible.css({
 	        position: 'absolute',
 	        display: 'inline-block'
-	    }).find('button,a').focus();
+	    });
 
     	card.css('min-height', tallerHight);
     	// the IE way: flip each face of the card
@@ -195,9 +195,21 @@
 	}
 	$(function() {
 		// DEBUG
-		// $('#test').click(function() {
-		// 	flipCard();
-		// });
+		$('#test').click(function() {
+			flipCard();
+		});
+		$('#test2').click(function() {
+			$.ajax({
+				url: 'test',
+				type: 'POST',
+				global: true,
+			}).always(function() {
+			}).done(function(responseJson) {
+			}).fail(function(responseJson) {
+				flipCard();
+			});
+		});
+
 
 		slidingFrame = $('div#sliding-frame');
 		menuLanding = $('div#menuLanding');
@@ -205,23 +217,23 @@
 		menuResetPassword = $('div#menuResetPassword');
 		menuAccount = $('div#menuAccount');
 
-		$('area#infoCtrl').click(function() {
+		$('#down-button').click(function() {
 			resetMenu();
 			dropDownMenu()
 		});
-		$('button#closeMenu').click(function() {
+		$('#closeMenu').click(function() {
 			dropDownMenu(true);
 		});
 
-		$('area#flashCtrl').click(function() {
+		$('#up-button').click(function() {
 			$('div#helpBox').toggle();
 		});
 
-		$('button#closeHelp').click(function() {
+		$('#closeHelp').click(function() {
 			$('div#helpBox').toggle();
 		});
 
-		$('button#closeReset').click(function() {
+		$('#closeReset').click(function() {
 			$('div#overlayReset').css('top', '-100%');
 			$('div#overlayReset').one($.support.transition.end, function() {
 				window.location.href = '/'
@@ -238,8 +250,16 @@
 		});
 
 		$('button#memberAccount').click(function() {
-			transitionMenu(menuAccount);
+			transitionMenu(menuAccount, false, function() {
+				$('#prevMenu').prop("disabled", false);
+			});
 		});
+
+		$('#prevMenu').click(function() {
+			transitionMenu(menuLanding, true, function() {
+				$('#prevMenu').prop("disabled", true);
+			});			
+		})
 
 		var signupForm = $('form#signupNewMember');
 		signupForm.submit(function(event) {
@@ -269,8 +289,8 @@
 				} else {
 					transitionMenu($('#menu .sliding-card:first-child'), true,
 						function() {
-							fillUserData();
 							flipCard();
+							fillUserData();
 						});
 				}
 			}).fail(function(responseJson) {
@@ -345,8 +365,8 @@
 			}).always(function() {
 				logoutBtn.removeAttr('disabled');
 			}).done(function(responseJson) {
-				clearUserData();
 				flipCard();
+				clearUserData();
 			}).fail(function(responseJson) {});
 		});
 
@@ -487,8 +507,8 @@
 					if (responseJson.success) {
 						transitionMenu($('#menuLanding'), true,
 							function() {
-								clearUserData();
 								flipCard();
+								clearUserData();
 							}
 						);
 					}
