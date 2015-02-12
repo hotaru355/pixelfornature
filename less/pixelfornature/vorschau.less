@@ -1,0 +1,33 @@
+/**********
+/* Vorschau
+ **********/
+
+#overlay {
+	position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    /* sit on top of camera control */
+    z-index: 10;
+   	-moz-transition: top 1s;
+	-webkit-transition: top 1s;
+	-ms-transition: top 1s;
+	-o-transition: top 1s;
+	transition: top 1s;
+}
+
+.overlay-content {
+	width: 100%;
+	height: 95%;
+	overflow: auto;
+}
+
+#upload, #download, #uploadLink {
+	width: 80%;
+	margin: 20px auto;
+}
+
+#continue {
+	max-width: 250px;
+}

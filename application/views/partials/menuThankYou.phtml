@@ -1,0 +1,34 @@
+<div id="menuThankyou" class="sliding-card slided-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+                <h2>Du hast erfolgreich</h2>
+                <div class="pixelCount">
+                    <?php echo $this->squarePixels ?> px&sup2;
+                </div>
+                <h2>gespendet.</h2>
+                <hr />
+                <div class="flipcard">
+                    <div id="" class="<?php echo (!$this->isLoggedin ? 'flipcard-front' : 'flipcard-back'); ?>">
+                        <p>Um deine Pixel zu sammeln, melde dich einfach mit deinem persönlichen Naturefund-Account an:</p>
+                        <form id="loginMember" class="groupForm" role="form">
+                            <div id="emailLoginGroup" class="form-group">
+                                <?php echo $this->loginForm->email->renderViewHelper(); ?>
+                            </div>
+                            <div id="passwortLoginGroup" class="form-group">
+                                <?php echo $this->loginForm->passwort->renderViewHelper(); ?>
+                            </div>
+                            <button type="submit" class="btn btn-default btn-block">Anmelden</button>
+                        </form>
+                        <a class="signupNow">Noch nicht registriert? Jetzt mitmachen!</a><br />
+                        <a class="lostPassword">Passwort vergessen?</a>
+                    </div>
+                    <div class="<?php echo ($this->isLoggedin ? 'flipcard-front' : 'flipcard-back'); ?>">
+                        <p>Deine Pixel wurden erfolgreich auf deinem Konto verbucht!</p>
+                        <a id="ok" href="/" class="btn btn-default" type="button">Noch ein Bild?</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

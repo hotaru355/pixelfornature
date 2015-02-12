@@ -26,65 +26,73 @@
 
 <!-- Hilfefenster -->
 <div id="overlay" class="fullScreen transparentLight">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12 col-sm-12 col-xs-12">
-                <button id="closeHelp" type="button" class="close">
-                    <span class="sr-only">Close</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" nviewBox="0 0 20 20">
-                        <g stroke="#000" stroke-width="2" fill="none" stroke-linecap="round">
-                            <path d="M1,19,19,1"></path>
-                            <path d="M1,1,19,19"></path>
-                        </g>
-                    </svg>
-                </button>
-            </div>
-        </div>
+    <div class="close-container">
+        <button id="closeOverlay" type="button" class="close" title="Abbrechen">
+            <span class="sr-only">Close</span>
+            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 20 20">
+                <g stroke="#000" stroke-width="2" fill="none" stroke-linecap="round">
+                    <path d="M1,19,19,1"></path>
+                    <path d="M1,1,19,19"></path>
+                </g>
+            </svg>
+        </button>
     </div>
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-6 col-sm-offset-3">
-                <h1 class="text-center">Schritt 3 von 3</h1>
-                <h2 class="text-center">Spende deine Fläche</h2>
+    <div class="overlay-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6 col-sm-offset-3">
+                    <h1 class="text-center">Schritt 3 von 3</h1>
+                    <h2 class="text-center">Spende deine Fläche</h2>
+                </div>
             </div>
-        </div>
 
-        <div class="row">
-            <div class="col-sm-12">
-                <div id="clipping">
-                    <img src="<?php echo $this->generatedPath; ?>">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div id="clipping">
+                        <img src="<?php echo $this->generatedPath; ?>">
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="row">
-            <div class="col-sm-5 col-sm-offset-1 col-md-4 col-md-offset-2">
-                <button id="upload" type="button" class="btn btn-fb center-block">Mit Facebook verbinden</button>
-                <p class="text-center">Du kannst dich im nächsten Schritt mit deinem Facebook-Account anmelden und das Bild automatisch hochladen lassen. Das war‘s schon!</p>
-            </div>
-            <div class="col-sm-5 col-md-4">
-                <a id="download" href="<?php echo $this->generatedPath; ?>" download="PixelForNature.png"
-                class="btn btn-default center-block" role="button">Downloaden</a>
-                <p class="text-center">Oder du kannst das Bild auf deinen Computer downloaden und manuell bei Facebook hochladen.</p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-8 col-sm-offset-2">
-                <div id="successMsg" class="alert alert-success hidden" role="alert">
-                    <p><strong>Vielen Dank!</strong><br />Klicke einfach auf den Link um dein Foto als Coverfoto zu setzen:<br/><a id="uploadLink"></a></p>
+            <div class="row">
+                <div class="col-sm-5 col-sm-offset-1 col-md-4 col-md-offset-2">
+                    <div id="upload-div">
+                        <button id="upload" type="button" class="btn btn-fb center-block">Mit Facebook verbinden</button>
+                        <p class="text-center">Du kannst dich im nächsten Schritt mit deinem Facebook-Account anmelden und das Bild automatisch hochladen lassen. Das war‘s schon!</p>
+                    </div>
+                    <div id="change-div" class="hidden">
+                        <a id="uploadLink" role="button" class="btn btn-fb center-block" target="_blank">Profilbild ändern</a>
+                        <p><strong>Vielen Dank!</strong><br />Dein Bild ist jetzt auf Facebook gespeichert. Wenn du möchtest, kannst du gleich dein Profilbild ändern.</p>
+                    </div>
                 </div>
-                <div id="commError" class="alert alert-danger hidden" role="alert">
-                    <p><span class="glyphicon glyphicon-warning-sign"></span>&nbsp;<strong>Kommikationsfehler:</strong><br />Leider lief bei der Kommunikation mit dem Naturefund-Server etwas schief und das Bild konnte nicht hochgeladen werden.</p>
+                <div class="col-sm-5 col-md-4">
+                    <a id="download" href="<?php echo $this->generatedPath; ?>" download="PixelForNature.png"
+                    class="btn btn-default center-block" role="button">Downloaden</a>
+                    <p class="text-center">Oder du kannst das Bild auf deinen Computer downloaden und manuell bei Facebook hochladen.</p>
                 </div>
-                <div id="facebookError" class="alert alert-danger hidden" role="alert">
-                    <p><span class="glyphicon glyphicon-warning-sign"></span>&nbsp;<strong>Fehler</strong>&nbsp;(<span id="errorCode"></span>):<br />Leider lief bei der Kommunikation mit dem Facebook-Server etwas schief und das Bild konnte nicht hochgeladen werden. Vielleicht probierst du es einfach später noch einmal.</p>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-8 col-sm-offset-2">
+                    <div id="commError" class="alert alert-danger hidden" role="alert">
+                        <p><span class="glyphicon glyphicon-warning-sign"></span>&nbsp;<strong>Kommikationsfehler:</strong><br />Leider lief bei der Kommunikation mit dem Naturefund-Server etwas schief und das Bild konnte nicht hochgeladen werden.</p>
+                    </div>
+                    <div id="facebookError" class="alert alert-danger hidden" role="alert">
+                        <p><span class="glyphicon glyphicon-warning-sign"></span>&nbsp;<strong>Fehler</strong>&nbsp;(<span id="errorCode"></span>):<br />Leider lief bei der Kommunikation mit dem Facebook-Server etwas schief und das Bild konnte nicht hochgeladen werden. Vielleicht probierst du es einfach später noch einmal.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <a id="continue" type="button" class="btn btn-default center-block hidden" href="danke">Weiter...</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<div id="content"></div>
+<!-- <div id="content"></div>
 
 <?php // Kontrollelement ?>
-<?php echo $this->partial('cameraControl.phtml') ?>
+<?php echo $this->partial('cameraControl.phtml') ?> -->

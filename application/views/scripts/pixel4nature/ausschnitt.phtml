@@ -15,41 +15,51 @@
 
     // JavaScript
     $this->headScript()
-        ->appendFile("/js/jquery/jquery.panzoom-1.7.0.js");
-    $this->headScript()
-        ->appendFile("/js/circleSlider/circleSlider.js");
-    $this->headScript()
+        ->appendFile("/js/jquery/jquery.panzoom-1.7.0.js")
+        ->appendFile("/js/circleSlider/circleSlider.js")
         ->appendScript(sprintf("
-    	var original = {
-    		width : %d,
-    		height : %d,
-            ratio : %f
-    	};
+            var original = {
+            	width : %d,
+            	height : %d,
+                ratio : %f
+            };
 
-    	// Bilddimensionen der Facebook Coverfotos
-    	var fbCover = {
-    		width : %d,
-    		height : %d,
-    		minScale : %f,
-    		maxScale : 1,
-    	};",
-        $this->dimensions ["original"] ["width"], 
-        $this->dimensions ["original"] ["height"], 
-        $this->dimensions ["original"] ["width"] / $this->dimensions ["original"] ["height"], 
-        $this->dimensions ["facebook"] ["cover"] ["width"],
-        $this->dimensions ["facebook"] ["cover"] ["height"], 
-        $this->dimensions ["facebook"] ["cover"] ["width"] / $this->dimensions ["original"] ["width"]));
-    $this->headScript()
+            // Bilddimensionen der Facebook Coverfotos
+            var fbCover = {
+            	width : %d,
+            	height : %d,
+            	minScale : %f,
+            	maxScale : 1,
+            };
+
+            var isLoggedin = %s;
+            var prevNextHandler;",
+            $this->dimensions ["original"] ["width"], 
+            $this->dimensions ["original"] ["height"], 
+            $this->dimensions ["original"] ["width"] / $this->dimensions ["original"] ["height"], 
+            $this->dimensions ["facebook"] ["cover"] ["width"],
+            $this->dimensions ["facebook"] ["cover"] ["height"], 
+            $this->dimensions ["facebook"] ["cover"] ["width"] / $this->dimensions ["original"] ["width"],
+            $this->isLoggedin ? 'true' : 'false'))
+        ->appendFile('/js/pixelfornature.js')
         ->appendFile("/js/ausschnitt.js");
 
     // Hauptmenue
     echo $this->partial('menu.phtml', array(
-        'user' => $this->session->user,
-        'isLoggedin' => $this->isLoggedin,
-        'loginForm' => $this->loginForm,
-        'newMemberForm' => $this->newMemberForm,
-        'requestResetForm' => $this->requestResetForm,
-        'updateMemberForm' => $this->updateMemberForm)); ?>
+        'slides' => array(
+            $this->partial('menuLanding.phtml', array(
+                'user' => $this->session->user,
+                'isLoggedin' => $this->isLoggedin,
+                'loginForm' => $this->loginForm)),
+            $this->partial('menuNewMember.phtml', array(
+                'newMemberForm' => $this->newMemberForm)),
+            $this->partial('menuResetPassword.phtml', array(
+                'requestResetForm' => $this->requestResetForm)),
+            $this->partial('menuAccount.phtml', array(
+                'user' => $this->session->user,
+                'updateMemberForm' => $this->updateMemberForm))
+        )
+    )); ?>
 
 <!-- Hintergrundbild -->
 <div id="bg" class="blur"></div>

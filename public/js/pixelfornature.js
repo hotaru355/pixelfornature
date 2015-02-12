@@ -1,10 +1,17 @@
 (function() {
 	var menuNewMember, menuLanding, menuResetPassword, menuAccount, slidingFrame, secondaryMenu;
+	var currentMenuIndex;
+	
+	// global variable ...
+	prevNextHandler = new PrevNextHandler();
 
 	function transitionMenu(menuDiv, isRight, onTransitionEnd) {
 		var slidingMenus = $('#menu .sliding-card');
 		var start = isRight ? 'slided-left': 'slided-right';
 		var end = isRight ? 'slided-right' : 'slided-left';
+
+		// update menu index
+		currentMenuIndex += isRight ? (-1) : 1;
 
 		// remove scroll bar from all menus during transition
 		slidingMenus.css({
@@ -28,6 +35,7 @@
 			slidingMenus.css({
 				'overflow-y': 'auto'
 			});
+			prevNextHandler.updateHandlers(currentMenuIndex);
 			if (onTransitionEnd) {
 				onTransitionEnd();
 			}
@@ -35,6 +43,8 @@
 	}
 
 	function resetMenu() {
+		currentMenuIndex = 1;
+		prevNextHandler.updateHandlers(currentMenuIndex);
 		$('#menu .sliding-card:not(#menuLanding)')
 			.removeClass('slided-center slided-right slided')
 			.addClass('slided-left');
@@ -191,9 +201,75 @@
 			});
 			menu.css('top', '0');
 		}
+	}
 
+	function PrevNextHandler(menusLoggedIn, menusLoggedOut) {
+		var menusIn = menusLoggedIn ? menusLoggedIn : [
+			null,
+			{
+				menu: '#menuLanding',
+				title: 'Das Projekt'
+			}, {
+				menu: '#menuAccount',
+				title: 'Mein Account'
+			}];
+		var menusOut = menusLoggedOut ? menusLoggedOut : [
+			{
+				menu: '#menuResetPassword',
+				title: 'Passwort vergessen?'
+			}, {
+				menu: '#menuLanding',
+				title: 'Das Projekt'
+			}, {
+				menu: '#menuNewMember',
+				title: 'Jetzt mitmachen!'
+			}];
+		this.initMenus = function(menusLoggedIn, menusLoggedOut) {
+			menusIn = menusLoggedIn;
+			menusOut = menusLoggedOut;
+		}
+		this.updateHandlers = function(menuIndex) {
+			var menus = (isLoggedin) ? menusIn : menusOut;
+			var prev = menus[menuIndex - 1];
+			var next = menus[menuIndex + 1];
+			var self = this;
+			var inTransition = false;
+
+			$('#prevMenu')
+				.prop('disabled', !prev)
+				.attr('title', prev ? prev.title : '');
+			if (prev) {
+				$('#prevMenu')
+					.unbind('click')
+					.click(function() {
+						if (!inTransition) {
+							inTransition = true;
+							transitionMenu($(prev.menu), true, function() {
+								inTransition = false;
+							});
+						}
+					})
+			}
+			
+			$('#nextMenu')
+				.prop('disabled', !next)
+				.attr('title', next ? next.title : '');
+			if (next) {
+				$('#nextMenu')
+					.unbind('click')
+					.click(function() {
+						if (!inTransition) {
+							inTransition = true;
+							transitionMenu($(next.menu), false, function() {
+								inTransition = false;
+							});
+						}
+					})
+			}
+		}
 	}
 	$(function() {
+
 		// DEBUG
 		$('#test').click(function() {
 			flipCard();
@@ -210,12 +286,14 @@
 			});
 		});
 
-
 		slidingFrame = $('div#sliding-frame');
 		menuLanding = $('div#menuLanding');
 		menuNewMember = $('div#menuNewMember');
 		menuResetPassword = $('div#menuResetPassword');
 		menuAccount = $('div#menuAccount');
+
+		currentMenuIndex = 1;
+		prevNextHandler.updateHandlers(currentMenuIndex);
 
 		$('#down-button').click(function() {
 			resetMenu();
@@ -240,26 +318,17 @@
 			});
 		})
 
-
 		$('a.signupNow').click(function() {
-			transitionMenu(menuNewMember);
+			transitionMenu(menuNewMember, false);
 		});
 
 		$('a.lostPassword').click(function() {
-			transitionMenu(menuResetPassword);
+			transitionMenu(menuResetPassword, true);
 		});
 
 		$('button#memberAccount').click(function() {
-			transitionMenu(menuAccount, false, function() {
-				$('#prevMenu').prop("disabled", false);
-			});
+			transitionMenu(menuAccount, false);
 		});
-
-		$('#prevMenu').click(function() {
-			transitionMenu(menuLanding, true, function() {
-				$('#prevMenu').prop("disabled", true);
-			});			
-		})
 
 		var signupForm = $('form#signupNewMember');
 		signupForm.submit(function(event) {
@@ -287,6 +356,7 @@
 				if (responseJson.error) {
 					mapErrorToLabel(responseJson.error, 'Signup');
 				} else {
+					isLoggedin = true;
 					transitionMenu($('#menu .sliding-card:first-child'), true,
 						function() {
 							flipCard();
@@ -337,6 +407,8 @@
 				} else if (responseJson.success) {
 					flipCard();
 					fillUserData();
+					isLoggedin = true;
+					prevNextHandler.updateHandlers(currentMenuIndex);
 				}
 			}
 		));
@@ -348,6 +420,8 @@
 					mapErrorToLabel(responseJson.error, 'Login');
 				} else if (responseJson.success) {
 					flipCard();
+					isLoggedin = true;
+					prevNextHandler.updateHandlers(currentMenuIndex);
 				}
 			}
 		));
@@ -367,6 +441,8 @@
 			}).done(function(responseJson) {
 				flipCard();
 				clearUserData();
+				isLoggedin = false;
+				prevNextHandler.updateHandlers(currentMenuIndex);
 			}).fail(function(responseJson) {});
 		});
 
@@ -443,8 +519,8 @@
 				if (responseJson.error) {
 					mapErrorToLabel(responseJson.error, 'RequestReset');
 				} else {
-					alert('Eine E-Mail zum Zurücksetzen deines Passworts wurde an dich gesand!');
-					transitionMenu($('#menu .sliding-card:first-child'), true);
+					alert('Eine E-Mail zum Zurücksetzen deines Passworts wurde an dich gesandt!');
+					transitionMenu($('#menu .sliding-card:first-child'), false);
 				}
 			}).fail(function(responseJson) {
 				$('div#commError').show();
@@ -492,7 +568,7 @@
 
 		var deleteAccountBtn = $('a#deleteAccount');
 		deleteAccountBtn.click(function() {
-			if (confirm('Willst Du wirklich Dein Konto löschen?')) {
+			if (confirm('Möchtest du wirklich dein Konto löschen?')) {
 				$.ajax({
 					url: 'mitglieder/loeschen',
 					type: 'POST',
@@ -505,6 +581,7 @@
 					deleteAccountBtn.removeAttr('disabled');
 				}).done(function(responseJson) {
 					if (responseJson.success) {
+						isLoggedin = false;
 						transitionMenu($('#menuLanding'), true,
 							function() {
 								flipCard();

@@ -79,6 +79,8 @@
 			onChange: function(event, pzObj) {
 				// Debug
 				//console.log(pzObj.getMatrix());
+				// console.log('x', Math.round(0.5 * original.width * pzObj.getMatrix()[0] - 0.5 * original.width - pzObj.getMatrix()[4]));
+				// console.log('y', Math.round(0.5 * original.height * pzObj.getMatrix()[0] - 0.5 * original.height - pzObj.getMatrix()[5]));
 			},
 		});
 		

@@ -26,6 +26,7 @@ CREATE TABLE `projekte` (
   `timeline_name` varchar(255) DEFAULT NULL,
   `beschreibung` text DEFAULT NULL,
   `bild_url` varchar(255) DEFAULT '/images/projekt.jpg',
+  `seite_url` varchar(255) DEFAULT NULL,
   `status` enum('aktiv','inaktiv') NOT NULL DEFAULT 'inaktiv',
   `datum_erstellt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `datum_geaendert` timestamp NULL DEFAULT NULL,

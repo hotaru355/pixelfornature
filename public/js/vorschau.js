@@ -1,6 +1,5 @@
 (function() {
 
-
 	// Init Facebook
 	window.fbAsyncInit = function() {
 		FB.init({
@@ -41,10 +40,11 @@
 		}).done(function(responseJson) {
 			if (responseJson.linkUrl) {
 				$('a#uploadLink').attr('href', responseJson.linkUrl);
-				$('a#uploadLink').html(responseJson.linkUrl);
-				$('div#successMsg').removeClass('hidden');
-				alert(responseJson.linkUrl);
-				window.location.href = 'danke';
+				//$('a#uploadLink').html(responseJson.linkUrl);
+				$('#upload-div').hide();
+				$('#change-div').removeClass('hidden');
+				$('#continue').removeClass('hidden');
+				//window.location.href = 'danke';
 			} else {
 				$('span#errorCode').html(responseJson.errorCode);
 				$('div#facebookError').removeClass('hidden');
@@ -83,7 +83,7 @@
 			});
 		});
 
-		$('button#closeOverlay').click(function() {
+		$('#closeOverlay').click(function() {
 			$('div#overlay').css('top', '-100%');
 			$('div#overlay').one($.support.transition.end, function() {
 				window.location.href = '/'

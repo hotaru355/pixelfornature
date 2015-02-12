@@ -7,7 +7,8 @@ class ImageService {
 
 	public function __construct() {
 		$this->log = Zend_Registry::get('Zend_Log');
-		$this->logoPath = realpath(APPLICATION_PATH . "/../public/images/logo.png");
+		// $this->logoPath = realpath(APPLICATION_PATH . "/../public/images/logo.png");
+		$this->logoPath = realpath(APPLICATION_PATH . "/../public/images/Logo_no_shadow.png");
 	}
 
 	/**
@@ -19,46 +20,53 @@ class ImageService {
 		return array(
 			"width" => round($imageDimensions["width"] * $scale),
 			"height" => round($imageDimensions["height"] * $scale),
-			"x" => round(-0.5 * ($imageDimensions["width"]-$imageDimensions["width"] * $scale) - $x),
-			"y" => round(-0.5 * ($imageDimensions["height"]-$imageDimensions["height"] * $scale) - $y)
+			"x" => round(-0.5 * ($imageDimensions["width"] - $imageDimensions["width"] * $scale) - $x),
+			"y" => round(-0.5 * ($imageDimensions["height"] - $imageDimensions["height"] * $scale) - $y)
 		);
 	}
 
-	public function generateCoverPhotoAPI($params) {
-		$scaled = $this->getScaling($params["x"], $params["y"], $params["scale"]);
+	public function generateCoverPhotoAPI($imagePath, $imageDimensions, $fbCover, $params) {
+		$this->checkArguments($imagePath, $imageDimensions, $fbCover, $params);
+		$outputFile = $this->getRandomImagePath();
+		$labelText = $params["name"] . " spendet Fläche für Natur.";
+		$scaled = $this->getScaling($imageDimensions, $params["x"], $params["y"], $params["scale"]);
 
-		$image = new Imagick($params["imagePath"]);
+		$image = new Imagick($imagePath);
 		$image->resizeImage($scaled["width"], $scaled["height"], Imagick::FILTER_LANCZOS, 1);
 		$image->cropimage($fbCover["width"], $fbCover["height"], $scaled["x"], $scaled["y"]);
 
-		$logo = new Imagick($params["logoPath"]);
-		$image->compositeImage($logo, Imagick::COMPOSITE_DEFAULT, 580, 0);
+		$logo = new Imagick($this->logoPath);
+		$shadow_layer = $logo->clone(); 
+		$shadow_layer->setImageBackgroundColor(new ImagickPixel('black')); 
+		$shadow_layer->shadowImage(40, 2, 0, 0); 
+		$shadow_layer->compositeImage($logo, Imagick::COMPOSITE_OVER, 4, 4);
+		$image->compositeImage($shadow_layer, Imagick::COMPOSITE_OVER, 691, 7);
 		$logo->destroy();
 
-		$drawColor = new ImagickPixel("ivory2");
 		$draw = new ImagickDraw();
-		$draw->setFont('DejaVu-Serif-Book');
+		$draw->setFont('Helvetica-Narrow-Bold');
 		$draw->setFontSize(24);
-		$draw->setfillcolor($drawColor);
+		$draw->setfillcolor(new ImagickPixel("white"));
+
 		$label = new Imagick();
-		$font_info = $label->queryFontMetrics($draw, $params["labelText"]);
-		$blackTransparentBG = new ImagickPixel("rgba(0,0,0,0.5)");
-		$label->newImage($font_info['textWidth']+20, $font_info['textHeight']+9, $blackTransparentBG);
-		$label->annotateImage($draw, 10, 26, 0, $params["labelText"]);
-		$image->compositeImage($label, Imagick::COMPOSITE_DEFAULT, 0, 100);
+		$font_info = $label->queryFontMetrics($draw, $labelText);
+		$label->newImage($font_info['textWidth']+20, $font_info['textHeight']+9, 'none');
+		$label->annotateImage($draw, 10, 26, 0, $labelText);
 		$draw->destroy();
-		$blackTransparentBG->destroy();
+
+		$shadow_layer = $label->clone(); 
+		$shadow_layer->setImageBackgroundColor( new ImagickPixel( 'black' ) ); 
+		$shadow_layer->shadowImage(40, 2, 0, 0); 
+		$shadow_layer->compositeImage($label, Imagick::COMPOSITE_OVER, 4, 4);
+
+		$image->compositeImage($shadow_layer, Imagick::COMPOSITE_OVER, 2, 30);
+		$shadow_layer->destroy();
 		$label->destroy();
 
-		$whtiteBar = new Imagick();
-		$whiteTransparentBG = new ImagickPixel("rgba(255,255,255,0.5)");
-		$whtiteBar->newImage($font_info['textWidth']+20, 6, $whiteTransparentBG);
-		$image->compositeImage($whtiteBar, Imagick::COMPOSITE_DEFAULT, 0, 136);
-		$whiteTransparentBG->destroy();
-		$whtiteBar->destroy();
-
-		$image->writeimage($params["outputFile"]);
+		$image->writeimage($outputFile);
 		$image->destroy();
+
+		return $outputFile;
 	}
 
 	public function generateCoverPhotoCL($imagePath, $imageDimensions, $fbCover, $params) {

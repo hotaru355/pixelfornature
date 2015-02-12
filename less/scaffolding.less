@@ -25,22 +25,14 @@ img {
 }
 // Links
 
-a {
+a:not(.btn) {
   text-decoration: underline;
+  cursor: pointer;
 
   &:visited {
     color: @link-visited-color;
   }
 
-}
-
-a.btn {
-  &:visited {
-    color: @btn-default-color;
-  }
-  &:visited:hover {
-    color: @btn-default-hover-color;
-  }
 }
 
 

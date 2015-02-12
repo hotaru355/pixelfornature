@@ -51,8 +51,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
 		$view->headScript()->appendFile('/js/jquery/jquery.1.11.1.min.js');
 		// Bootstrap
 		$view->headScript()->appendFile('/js/bootstrap/bootstrap.min.js');
-		// Custom scripts
-		$view->headScript()->appendFile('/js/pixelfornature.js');
 	}
 
 	protected function _initLogger() {

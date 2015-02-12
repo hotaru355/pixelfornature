@@ -1,72 +1,40 @@
 <?php
-// Seitentitel
-$this->headTitle()
-    ->append("Danke!");
+    // Seitentitel
+    $this->headTitle()
+        ->append("Danke!");
 
-$this->headStyle()->appendStyle(
-    "#bg {
-        background-image: url('{$this->imagePath}');
-    }");
+    $this->headStyle()->appendStyle(
+        "#bg {
+            background-image: url('{$this->imagePath}');
+        }");
 
-$this->headScript()
-    ->appendFile("/js/danke.js");
+    $this->headScript()->appendScript(sprintf("
+            var isLoggedin = %s;
+            var prevNextHandler;",
+            $this->isLoggedin ? 'true' : 'false'))
+        ->appendFile('/js/pixelfornature.js')
+        ->appendFile("/js/danke.js");
 ?>
 
-<?php // Hintergrundbild ?>
+<!-- Hintergrundbild -->
 <div id="bg" class=""></div>
 
-<?php // Hauptmenue ?>
-<div id="menu" class="transparentDark fullscreenOverlay">
-    <div class="close-container">
-        <button id="closeMenu" type="button" class="close">
-            <span aria-hidden="true">&times;</span>
-            <span class="sr-only">Close</span>
-        </button>
-    </div>
-    <div class="sliding-frame">
-        <div id="menuThankyou" class="sliding-card slided-center">
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
-                        <h2>Du hast erfolgreich</h2>
-                        <div class="pixelCount">
-                            <?php echo $this->squarePixels ?> px&sup2;
-                        </div>
-                        <h2>gespendet.</h2>
-                        <hr />
-                        <div class="flipcard">
-                            <div id="" class="<?php echo (!$this->isLoggedin ? 'flipcard-front' : 'flipcard-back'); ?>">
-                                <p>Um deine Pixel zu sammeln, melde dich einfach mit deinem persönlichen Naturefund-Account an:</p>
-                                <form id="loginMember" class="groupForm" role="form">
-                                    <div id="emailLoginGroup" class="form-group">
-                                        <?php echo $this->loginForm->email->renderViewHelper(); ?>
-                                    </div>
-                                    <div id="passwortLoginGroup" class="form-group">
-                                        <?php echo $this->loginForm->passwort->renderViewHelper(); ?>
-                                    </div>
-                                    <button type="submit" class="btn btn-default btn-block">Anmelden</button>
-                                </form>
-                                <a class="signupNow">Noch nicht registriert? Jetzt mitmachen!</a><br />
-                                <a class="lostPassword">Passwort vergessen?</a>
-                            </div>
-                            <div class="<?php echo ($this->isLoggedin ? 'flipcard-front' : 'flipcard-back'); ?>">
-                                <p>Deine Pixel wurden erfolgreich auf deinem Konto verbucht!</p>
-                                <a id="ok" href="/" class="btn btn-default" type="button">Noch ein Bild?</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <?php
-        if (!$this->isLoggedin) {
-            echo $this->partial('menuNewMember.phtml', array('newMemberForm' => $this->newMemberForm));
-            echo $this->partial('menuResetPassword.phtml', array('requestResetForm' => $this->requestResetForm));
-        } ?>
-    </div>
-</div>
+<?php 
+    // Hauptmenue
+    echo $this->partial('menu.phtml', array(
+        'slides' => array(
+            $this->partial('menuThankYou.phtml', array(
+                'squarePixels' => $this->squarePixels,
+                'isLoggedin' => $this->isLoggedin,
+                'loginForm' => $this->loginForm)),
+            $this->partial('menuNewMember.phtml', array(
+                'newMemberForm' => $this->newMemberForm)),
+            $this->partial('menuResetPassword.phtml', array(
+                'requestResetForm' => $this->requestResetForm))
+        )
+    ));
+?>
 
-<div id="content"></div>
-
-<?php // Kontrollelement ?>
-<?php echo $this->partial('cameraControl.phtml') ?>
+<?php 
+    // Kontrollelement
+    // echo $this->partial('cameraControl.phtml') ?>

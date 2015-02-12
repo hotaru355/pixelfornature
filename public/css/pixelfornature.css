@@ -76,41 +76,6 @@ h3#illegalNameHeader {
 }
 
 
-/**********
-/* Vorschau
- **********/
-
-div#overlay {
-	position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0px;
-    left: 0px;
-    /* sit on top of camera control */
-    z-index: 10;
-   	-moz-transition: top 1s;
-	-webkit-transition: top 1s;
-	-ms-transition: top 1s;
-	-o-transition: top 1s;
-	transition: top 1s;
-}
-
-button#upload,
-a#download {
-	width: 80%;
-	margin: 20px auto;
-}
-
-a.btn {
-	text-decoration: none;
-}
-
-
-
-
-
-
-
 
 
 

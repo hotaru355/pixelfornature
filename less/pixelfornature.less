@@ -1,7 +1,4 @@
 @import "bootstrap/bootstrap.less";
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:700,400);
-//@import url(http://fonts.googleapis.com/css?family=Fira+Sans:300italic);
-@import url(http://fonts.googleapis.com/css?family=Fira+Sans:300,400,500,700,300italic,400italic,500italic,700italic);
 
 @import "variables.less";
 @import "mixins.less";
@@ -12,15 +9,18 @@
 @import "forms.less";
 @import "menus.less";
 @import "type.less";
+@import "fonts.less";
 
 @import "pixelfornature/auswahl.less";
 @import "pixelfornature/ausschnitt.less";
+@import "pixelfornature/vorschau.less";
 
 .pixelCount {
     color: @color-green-dark;
     text-align: center;
     font-size: 2.2em;
-    font-weight: @font-weight-bold;
+    font-family: 'fira_sansbold';
+    font-weight: normal;
 	padding-top: 0.3em;
 	padding-bottom: 0.3em;
     border: 4px solid;
@@ -49,7 +49,8 @@
 }
 
 #socials-container {
-    margin-top: 50px;
+    margin: 50px 0;
+    height: 48px;
 }
 
 @media(min-width: @screen-lg-min) {
@@ -236,7 +237,9 @@
     }
 }
 
-
+#overlay {
+    padding: 10px;
+}
 
 
 area:focus {

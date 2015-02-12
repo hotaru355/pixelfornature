@@ -10,18 +10,31 @@
     $this->headStyle()->appendStyle($bgStyles);
 
     // JavaScript
-    $this->headScript()->appendScript("var imageUrls = {$this->galeryFilesJs};");
-    $this->headScript()
+    $this->headScript()->appendScript(sprintf("
+            var prevNextHandler;
+            var imageUrls = %s;
+            var isLoggedin = %s;",
+            $this->galeryFilesJs,
+            $this->isLoggedin ? 'true' : 'false'))
+        ->appendFile('/js/pixelfornature.js')
         ->appendFile("/js/auswahl.js");
 
     // Hauptmenue 
     echo $this->partial('menu.phtml', array(
-        'user' => $this->session->user,
-        'isLoggedin' => $this->isLoggedin,
-        'loginForm' => $this->loginForm,
-        'newMemberForm' => $this->newMemberForm,
-        'requestResetForm' => $this->requestResetForm,
-        'updateMemberForm' => $this->updateMemberForm)); ?>
+        'slides' => array(
+            $this->partial('menuLanding.phtml', array(
+                'user' => $this->session->user,
+                'isLoggedin' => $this->isLoggedin,
+                'loginForm' => $this->loginForm)),
+            $this->partial('menuNewMember.phtml', array(
+                'newMemberForm' => $this->newMemberForm)),
+            $this->partial('menuResetPassword.phtml', array(
+                'requestResetForm' => $this->requestResetForm)),
+            $this->partial('menuAccount.phtml', array(
+                'user' => $this->session->user,
+                'updateMemberForm' => $this->updateMemberForm))
+        )
+    )); ?>
 
 <!-- Hintergrundbilder -->
 <div id="bg-frame" class="sliding-frame">

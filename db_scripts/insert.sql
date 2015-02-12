@@ -1,5 +1,5 @@
 INSERT INTO `projekte`
-(`name`,`timeline_name`,`beschreibung`,`status`) VALUES(
+(`name`,`timeline_name`,`beschreibung`,`status`, `seite_url`) VALUES(
 	'<strong>Hangquellmoor</strong> in Baden-Württemberg',
 	'das <strong>Hangquellmoor in Baden-Württemberg</strong>',
 	'<p>Naturefund will mit dem Förderverein Stiftung Wilde Argen ein Hangquellmoor kaufen und
@@ -11,4 +11,5 @@ INSERT INTO `projekte`
     <p>
     Machen Sie mit! Bei diesem Projekt sichern Sie mit 5,00 EUR volle 4 m&sup2; für Libellen &amp; Co!
     </p>',
-	'aktiv');
+	'aktiv',
+    'http://www.naturefund.de/projekte/alle_projekte/geschuetztes_land/hangquellmoor.html');

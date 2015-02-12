@@ -99,7 +99,12 @@ class Pixel4natureController extends Zend_Controller_Action {
 				// Generiere Bild
 				$dimensions = Zend_Registry::get('dimensions');
 				$imageService = new ImageService();
-				$outputPath = $imageService->generateCoverPhotoCL(
+				// $outputPath = $imageService->generateCoverPhotoCL(
+				// 	$this->session->image['pathAbs'],
+				// 	$dimensions["original"],
+				// 	$dimensions["facebook"]["cover"],
+				// 	$imageProps);
+				$outputPath = $imageService->generateCoverPhotoAPI(
 					$this->session->image['pathAbs'],
 					$dimensions["original"],
 					$dimensions["facebook"]["cover"],
@@ -205,7 +210,6 @@ class Pixel4natureController extends Zend_Controller_Action {
 	public function dankeAction() {
 		$this->view->assign("squarePixels", number_format(Zend_Registry::get('dimensions')['squarePixels'], 0, ",", "."));
 		$this->view->assign("imagePath", $this->session->image['pathRel']);
-		// Es wurde nichts gespendet. Zurueck zur Auswahl.
 		// $this->_helper->redirector->gotoUrl('/');
 	}
 }
